@@ -28,7 +28,7 @@ public class ProductServlet extends HttpServlet {
     }
 
     private String getProductTable(List<Product> productList) {
-        StringBuilder result = new StringBuilder("<table>");
+        StringBuilder result = new StringBuilder("<html><body><table>");
         result.append("<tr><th>Id</th><th>Title</th><th>Cost</th></tr>");
 
         for (Product product : productList) {
@@ -41,6 +41,6 @@ public class ProductServlet extends HttpServlet {
             result.append("</tr>");
         }
 
-        return result.append("</table>").toString();
+        return result.append("</table></body></html>").toString();
     }
 }
