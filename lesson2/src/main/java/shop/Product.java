@@ -1,3 +1,5 @@
+package shop;
+
 public class Product {
 
     private int id;
@@ -14,28 +16,16 @@ public class Product {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public double getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
     @Override
     public String toString() {
-        return id + "\t" + title + "\t" + cost + "$";
+        return String.format("%4d\t%-20s\t%.2f$", id, title, cost);
     }
 }

@@ -1,3 +1,5 @@
+package shop;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -5,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.*;
 
 @Configuration
-@ComponentScan("ru.geekbrains")
+@ComponentScan("shop")
 public class AppConfig {
     @Bean
     public List<Product> productList() {

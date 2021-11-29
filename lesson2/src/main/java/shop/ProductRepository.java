@@ -1,3 +1,5 @@
+package shop;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,16 @@ public class ProductRepository {
     }
 
     public Product getProduct(int id) {
+        if (id > productList.size()) {
+            System.out.println("Product with id = " + id + " not found.");
+            return null;
+        }
         return productList.get(id - 1);
+    }
+
+    public void printProductList() {
+        for (Product prod : productList) {
+            System.out.println(prod);
+        }
     }
 }
