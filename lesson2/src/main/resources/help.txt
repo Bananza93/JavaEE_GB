@@ -1,0 +1,7 @@
+List of available commands:
+    add <id> <qnt>      - add product with that ID and quantity to cart
+    remove <id> <qnt>   - remove product with that ID and quantity from cart
+    products            - print list of available products
+    cart                - print current cart
+    help                - print help message
+    exit                - close program
