@@ -40,6 +40,6 @@ public class ProductController {
                                 @RequestParam String title,
                                 @RequestParam Double cost) {
         productService.addNewProduct(new Product(id, title, cost));
-        return "redirect:add";
+        return "redirect:/add";
     }
 }
