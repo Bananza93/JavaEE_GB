@@ -21,11 +21,9 @@
                 <input type="number" name="cost" class="form-control" id="productCost">
             </div>
         </form>
-        <div class="btn-group" role="group" >
+        <div class="btn-group" role="group">
             <button type="submit" class="btn btn-primary" form="addForm">Save</button>
-            <form method="get" th:action="@{/products}">
-                <button type="submit" class="btn btn-secondary">Back</button>
-            </form>
+            <a th:href="@{/products}" class="btn btn-secondary">Back</a>
         </div>
     </div>
 </body>

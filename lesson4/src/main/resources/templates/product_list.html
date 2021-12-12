@@ -32,9 +32,7 @@
                     <td th:text="${product.title}"></td>
                     <td th:text="${product.cost}"></td>
                     <td>
-                        <form method="get" th:action="@{${'/products/' + product.id}}">
-                            <button type="submit" class="btn btn-info">Show more</button>
-                        </form>
+                        <a th:href="@{${'/products/' + product.id}}" class="btn btn-info">Show more</a>
                     </td>
                     <td>
                         <form method="post" th:action="@{${'/delete/' + product.id}}">
@@ -44,9 +42,7 @@
                 </tr>
             </tbody>
         </table>
-        <form method="get" th:action="@{/add}">
-            <button type="submit" class="btn btn-primary">Add</button>
-        </form>
+        <a th:href="@{/add}" class="btn btn-primary">Add</a>
     </div>
 </body>
 </html>

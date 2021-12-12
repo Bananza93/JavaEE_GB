@@ -21,9 +21,7 @@
                 <td th:text="${product.cost}"></td>
             </tr>
         </table>
-        <form method="get" th:action="@{/products}">
-            <button type="submit" class="btn btn-secondary">Back</button>
-        </form>
+        <a th:href="@{/products}" class="btn btn-secondary">Back</a>
     </div>
 </body>
 </html>
