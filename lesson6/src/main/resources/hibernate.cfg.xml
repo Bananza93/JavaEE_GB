@@ -1,0 +1,20 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">123456</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/gb_hibernate</property>
+        <property name="hibernate.connection.isolation">4</property>
+        <property name="connection_pool_size">1</property>
+        <property name="show_sql">true</property>
+        <property name="current_session_context_class">thread</property>
+
+        <mapping class="ru.geekbrains.model.Product"/>
+        <mapping class="ru.geekbrains.model.Client"/>
+    </session-factory>
+</hibernate-configuration>
