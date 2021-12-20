@@ -24,14 +24,14 @@ public class ProductDAO {
     }
 
     public Product getProductById(Long id) {
-        return getProductById0(id, false);
+        return getProductById(id, false);
     }
 
     public Product getProductByIdWithClients(Long id) {
-        return getProductById0(id, true);
+        return getProductById(id, true);
     }
 
-    private Product getProductById0(Long id, boolean withClients) {
+    private Product getProductById(Long id, boolean withClients) {
         Product product;
         StringBuilder query = new StringBuilder("select p from Product p");
         if (withClients) query.append(" join fetch p.clients");
@@ -46,5 +46,29 @@ public class ProductDAO {
         }
 
         return product;
+    }
+
+    public void addNewProduct(Product product) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.getTransaction().begin();
+            session.save(product);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void updateProduct(Product product) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.getTransaction().begin();
+            session.update(product);
+            session.getTransaction().commit();
+        }
+    }
+
+    public void deleteProduct(Long id) {
+        try (Session session = sessionFactory.getCurrentSession()) {
+            session.getTransaction().begin();
+            session.delete(session.load(Product.class, id));
+            session.getTransaction().commit();
+        }
     }
 }
