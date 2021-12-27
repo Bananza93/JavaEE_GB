@@ -40,8 +40,6 @@ public class ProductsRestController {
 
     @PostMapping("/products/add")
     public void addProduct(@Valid @RequestBody ProductDto productDto) {
-        System.out.println("Title = " + productDto.getTitle());
-        System.out.println("Price = " + productDto.getPrice());
         productService.addProduct(productDto);
     }
 
