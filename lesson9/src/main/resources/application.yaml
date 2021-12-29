@@ -1,0 +1,15 @@
+server:
+  port: 8888
+  servlet:
+    context-path: /lesson9
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:gb_products_db;MODE=PostgreSQL
+    username: admin
+    password: 123456
+  jpa:
+    show-sql: true
+  h2:
+    console:
+      enabled: true
