@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rest")
+@RequestMapping("/rest/products")
 public class ProductsRestController {
 
     ProductService productService;
@@ -27,29 +27,30 @@ public class ProductsRestController {
         this.productService = productService;
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/{id}")
     public ProductDto getProduct(@PathVariable Long id) {
-        return productService.getProductById(id);
+        return productService.getProductDtoById(id);
     }
 
-    @GetMapping("/products")
+    @GetMapping()
     public List<ProductDto> getAllProducts(@RequestParam(defaultValue = Product.STR_MIN_PRICE) BigDecimal minPrice,
                                            @RequestParam(defaultValue = Product.STR_MAX_PRICE) BigDecimal maxPrice) {
-        return productService.getAllProductsWithPriceRange(minPrice, maxPrice);
+        return productService.getAllProductsDtoWithPriceRange(minPrice, maxPrice);
     }
 
-    @PostMapping("/products/add")
+    @PostMapping("/add")
     public void addProduct(@Valid @RequestBody ProductDto productDto) {
         productService.addProduct(productDto);
     }
 
-    @PutMapping("/products/update/{id}")
+    @PutMapping("/update/{id}")
     public void updateProduct(@PathVariable Long id, @Valid @RequestBody ProductDto productDto) {
         productService.updateProduct(id, productDto);
     }
 
-    @DeleteMapping("/products/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
     }
+
 }
