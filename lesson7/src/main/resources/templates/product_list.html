@@ -42,6 +42,50 @@
                 </tr>
             </tbody>
         </table>
+        <nav aria-label="Products navigation">
+            <ul class="pagination justify-content-center">
+                <li th:if="${products.isFirst()}" class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+                <li th:unless="${products.isFirst()}" class="page-item">
+                    <a class="page-link" th:href="@{/products}" aria-label="First">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <li th:if="${products.isFirst()}" class="page-item disabled">
+                    <span class="page-link">&lt;</span>
+                </li>
+                <li th:unless="${products.isFirst()}" class="page-item">
+                    <a th:if="${products.getNumber() - 1 == 0}" class="page-link" th:href="@{/products}">&lt;</a>
+                    <a th:unless="${products.getNumber() - 1 == 0}" class="page-link" th:href="@{/products(page=${products.getNumber() - 1})}">&lt;</a>
+                </li>
+
+                <div th:each="i: ${#numbers.sequence(0, products.getTotalPages() - 1)}">
+                    <li th:if="${products.getNumber() == i}" class="page-item active" aria-current="page">
+                        <span class="page-link" th:text="${i + 1}">0</span>
+                    </li>
+                    <li th:unless="${products.getNumber() == i}" class="page-item">
+                        <a th:if="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/products}">0</a>
+                        <a th:unless="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/products(page=${i})}">0</a>
+                    </li>
+                </div>
+
+                <li th:if="${products.isLast()}" class="page-item disabled">
+                    <span class="page-link">&gt;</span>
+                </li>
+                <li th:unless="${products.isLast()}" class="page-item">
+                    <a class="page-link" th:href="@{/products(page=${products.getNumber() + 1})}">&gt;</a>
+                </li>
+
+                <li th:if="${products.isLast()}" class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+                <li th:unless="${products.isLast()}" class="page-item">
+                    <a class="page-link" th:href="@{/products(page=${products.getTotalPages() - 1})}" aria-label="Last">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
         <a th:href="@{/add}" class="btn btn-primary">Add</a>
     </div>
 </body>

@@ -1,5 +1,7 @@
 package ru.geekbrains.lesson7.controller;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +24,9 @@ public class ProductController {
     @GetMapping("/products")
     public String getAllProducts(Model model,
                                  @RequestParam(defaultValue = Product.STR_MIN_PRICE) Float minPrice,
-                                 @RequestParam(defaultValue = Product.STR_MAX_PRICE) Float maxPrice) {
-        model.addAttribute("products", productService.getAllProductsWithPriceRange(minPrice, maxPrice));
+                                 @RequestParam(defaultValue = Product.STR_MAX_PRICE) Float maxPrice,
+                                 @PageableDefault(size = 5) Pageable pageable) {
+        model.addAttribute("products", productService.getAllProductsWithinPriceRangeByPage(minPrice, maxPrice, pageable));
         return "product_list";
     }
 
