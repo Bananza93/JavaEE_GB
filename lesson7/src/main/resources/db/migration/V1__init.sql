@@ -1,7 +1,7 @@
 create table if not exists products (
     id bigserial primary key,
     title varchar(255),
-    price float
+    price numeric(9,2)
 );
 
 insert into products (title, price)

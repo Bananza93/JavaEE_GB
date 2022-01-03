@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Product list</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
+    <div>
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-primary">Login</a>
+        <h4 sec:authorize="isAuthenticated()" th:text="'Logged in as: ' + ${#authentication.getName()}"></h4>
+        <form sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+    </div>
     <div class="container">
         <h1>Available products</h1><br>
         <table class="table table-hover" style="width: 100%">
@@ -23,6 +30,7 @@
                     <td>Price</td>
                     <td></td>
                     <td></td>
+                    <td></td>
                 </tr>
             </thead>
 
@@ -32,10 +40,13 @@
                     <td th:text="${product.title}"></td>
                     <td th:text="${product.price}"></td>
                     <td>
-                        <a th:href="@{${'/products/info/' + product.id}}" class="btn btn-info">Show more</a>
+                        <a sec:authorize="isAuthenticated()" th:href="@{${'/products/info/' + product.id}}" class="btn btn-info">Show info</a>
                     </td>
                     <td>
-                        <form method="post" th:action="@{${'products/delete/' + product.id}}">
+                        <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" th:href="@{${'/products/edit/' + product.id}}" class="btn btn-info">Edit</a>
+                    </td>
+                    <td>
+                        <form sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" method="post" th:action="@{${'products/delete/' + product.id}}">
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
@@ -61,7 +72,7 @@
                     <a th:unless="${products.getNumber() - 1 == 0}" class="page-link" th:href="@{/products(page=${products.getNumber() - 1})}">&lt;</a>
                 </li>
 
-                <div th:each="i: ${#numbers.sequence(0, products.getTotalPages() - 1)}">
+                <th:block th:each="i: ${#numbers.sequence(0, products.getTotalPages() - 1)}">
                     <li th:if="${products.getNumber() == i}" class="page-item active" aria-current="page">
                         <span class="page-link" th:text="${i + 1}">0</span>
                     </li>
@@ -69,7 +80,7 @@
                         <a th:if="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/products}">0</a>
                         <a th:unless="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/products(page=${i})}">0</a>
                     </li>
-                </div>
+                </th:block>
 
                 <li th:if="${products.isLast()}" class="page-item disabled">
                     <span class="page-link">&gt;</span>
@@ -86,7 +97,7 @@
                 </li>
             </ul>
         </nav>
-        <a th:href="@{/add}" class="btn btn-primary">Add</a>
+        <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" th:href="@{/products/add}" class="btn btn-primary">Add product</a>
     </div>
 </body>
 </html>

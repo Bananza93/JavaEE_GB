@@ -7,18 +7,14 @@
 <body>
     <div class="container">
         <h1>Adding new product</h1>
-        <form id="addForm" method="post" th:action="@{/add}">
-            <div class="mb-3">
-                <label for="productID" class="form-label">ID:</label>
-                <input type="number" name="id" class="form-control" id="productID">
-            </div>
+        <form id="addForm" method="post" th:action="@{/products/add}">
             <div class="mb-3">
                 <label for="productTitle" class="form-label">Title:</label>
                 <input type="text" name="title" class="form-control" id="productTitle">
             </div>
             <div class="mb-3">
-                <label for="productCost" class="form-label">Price:</label>
-                <input type="number" name="cost" class="form-control" id="productCost">
+                <label for="productPrice" class="form-label">Price:</label>
+                <input type="number" name="price" class="form-control" id="productPrice">
             </div>
         </form>
         <div class="btn-group" role="group">

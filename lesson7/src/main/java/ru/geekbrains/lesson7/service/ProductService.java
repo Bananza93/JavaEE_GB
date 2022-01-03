@@ -6,12 +6,13 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.repository.ProductRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -21,18 +22,20 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    public Page<Product> getAllProductsWithinPriceRangeByPage(Float minPrice, Float maxPrice, Pageable pageable) {
-        if (minPrice < Product.MIN_PRICE || minPrice > Product.MAX_PRICE) minPrice = Product.MIN_PRICE;
-        if (maxPrice < Product.MIN_PRICE || maxPrice > Product.MAX_PRICE) maxPrice = Product.MAX_PRICE;
-        if (maxPrice < minPrice) {
-            float tmpMinPrice = minPrice;
+    public Page<Product> getAllProductsWithinPriceRangeByPage(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
+        if (minPrice.compareTo(Product.MIN_PRICE) < 0 || minPrice.compareTo(Product.MAX_PRICE) > 0)
+            minPrice = Product.MIN_PRICE;
+        if (maxPrice.compareTo(Product.MIN_PRICE) < 0 || maxPrice.compareTo(Product.MAX_PRICE) > 0)
+            maxPrice = Product.MAX_PRICE;
+        if (maxPrice.compareTo(minPrice) < 0) {
+            BigDecimal tmpMinPrice = minPrice;
             minPrice = maxPrice;
             maxPrice = tmpMinPrice;
         }
         return productRepository.findAllProductsWithinPriceRangeByPage(minPrice, maxPrice, pageable);
     }
 
-    public List<Product> getAllProductsWithPriceRange(Float minPrice, Float maxPrice) {
+    public List<Product> getAllProductsWithPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         return getAllProductsWithinPriceRangeByPage(minPrice, maxPrice, null).toList();
     }
 
@@ -42,5 +45,10 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public void editProduct(Long id, Product product) {
+        product.setId(id);
+        productRepository.save(product);
     }
 }

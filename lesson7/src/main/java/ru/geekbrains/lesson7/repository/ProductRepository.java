@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.geekbrains.lesson7.model.Product;
 
+import java.math.BigDecimal;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p where p.price between :minPrice and :maxPrice")
-    Page<Product> findAllProductsWithinPriceRangeByPage(Float minPrice, Float maxPrice, Pageable pageable);
+    Page<Product> findAllProductsWithinPriceRangeByPage(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 }

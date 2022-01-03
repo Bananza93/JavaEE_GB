@@ -11,6 +11,7 @@ import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.service.ProductService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static ru.geekbrains.lesson7.mapper.ProductMapper.productDtoToProduct;
@@ -31,8 +32,8 @@ public class ProductsRestController {
     }
 
     @GetMapping("/products")
-    public List<Product> getAllProducts(@RequestParam(defaultValue = Product.STR_MIN_PRICE) Float minPrice,
-                                        @RequestParam(defaultValue = Product.STR_MAX_PRICE) Float maxPrice) {
+    public List<Product> getAllProducts(@RequestParam(defaultValue = Product.STR_MIN_PRICE) BigDecimal minPrice,
+                                        @RequestParam(defaultValue = Product.STR_MAX_PRICE) BigDecimal maxPrice) {
         return productService.getAllProductsWithPriceRange(minPrice, maxPrice);
     }
 
