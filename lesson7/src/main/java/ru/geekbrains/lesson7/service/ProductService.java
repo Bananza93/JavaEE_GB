@@ -1,5 +1,7 @@
 package ru.geekbrains.lesson7.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.repository.ProductRepository;
@@ -19,7 +21,7 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    public List<Product> getAllProductsWithPriceRange(Float minPrice, Float maxPrice) {
+    public Page<Product> getAllProductsWithinPriceRangeByPage(Float minPrice, Float maxPrice, Pageable pageable) {
         if (minPrice < Product.MIN_PRICE || minPrice > Product.MAX_PRICE) minPrice = Product.MIN_PRICE;
         if (maxPrice < Product.MIN_PRICE || maxPrice > Product.MAX_PRICE) maxPrice = Product.MAX_PRICE;
         if (maxPrice < minPrice) {
@@ -27,7 +29,11 @@ public class ProductService {
             minPrice = maxPrice;
             maxPrice = tmpMinPrice;
         }
-        return productRepository.findAllProductsWithinPriceRange(minPrice, maxPrice);
+        return productRepository.findAllProductsWithinPriceRangeByPage(minPrice, maxPrice, pageable);
+    }
+
+    public List<Product> getAllProductsWithPriceRange(Float minPrice, Float maxPrice) {
+        return getAllProductsWithinPriceRangeByPage(minPrice, maxPrice, null).toList();
     }
 
     public void addProduct(Product product) {
