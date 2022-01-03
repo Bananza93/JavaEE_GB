@@ -7,8 +7,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.geekbrains.lesson7.dto.UserDto;
+import ru.geekbrains.lesson7.mapper.UserMapper;
 import ru.geekbrains.lesson7.repository.UserRepository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,5 +34,9 @@ public class UserService implements UserDetailsService {
                                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                                 .collect(Collectors.toSet())
                 )).orElseThrow(() -> new UsernameNotFoundException("User \"" + username + "\" not found"));
+    }
+
+    public List<UserDto> getAllUsersDto() {
+        return userRepository.findAll().stream().map(UserMapper::userToUserDto).collect(Collectors.toList());
     }
 }

@@ -9,15 +9,12 @@ import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.service.ProductService;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import java.math.BigDecimal;
-import java.net.http.HttpResponse;
 
 import static ru.geekbrains.lesson7.mapper.ProductMapper.productDtoToProduct;
 import static ru.geekbrains.lesson7.mapper.ProductMapper.productToProductDto;
-
 
 @Controller
 @RequestMapping("/products")
