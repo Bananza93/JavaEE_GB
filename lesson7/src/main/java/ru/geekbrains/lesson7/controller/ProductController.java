@@ -13,15 +13,16 @@ import static ru.geekbrains.lesson7.mapper.ProductMapper.productDtoToProduct;
 
 
 @Controller
+@RequestMapping("/products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping("/products")
+    @GetMapping
     public String getAllProducts(Model model,
                                  @RequestParam(defaultValue = Product.STR_MIN_PRICE) Float minPrice,
                                  @RequestParam(defaultValue = Product.STR_MAX_PRICE) Float maxPrice,
@@ -30,7 +31,7 @@ public class ProductController {
         return "product_list";
     }
 
-    @GetMapping("/products/{id}")
+    @GetMapping("/info/{id}")
     public String getProduct(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.getProductById(id));
         return "product_info";
