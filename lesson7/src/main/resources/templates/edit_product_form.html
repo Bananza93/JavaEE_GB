@@ -6,8 +6,16 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
+<div class="mt-5">
+    <div class="d-flex justify-content-end me-5">
+        <form method="post" th:action="@{/logout}">
+            <span th:text="'Logged in as: ' + ${#authentication.getName()}" class="me-2"></span>
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+    </div>
+</div>
 <div class="container">
-    <h2 th:text="'Editing: ' + ${product.title}"></h2>
+    <h1 th:text="'Editing: ' + ${product.title}"></h1><br>
     <form id="editForm" th:action="@{/products/edit/__${product.id}__}" method="post">
         <div class="mb-3">
             <label for="productTitle" class="form-label">Title:</label>
@@ -19,7 +27,7 @@
         </div>
     </form>
     <div class="btn-group" role="group">
-        <button type="submit" class="btn btn-primary" form="editForm">Save</button>
+        <button type="submit" class="btn btn-primary me-2" form="editForm">Save</button>
         <a th:href="@{/products}" class="btn btn-secondary">Back</a>
     </div>
 </div>
