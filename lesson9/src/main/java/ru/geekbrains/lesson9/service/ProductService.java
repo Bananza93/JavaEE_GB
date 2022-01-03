@@ -16,18 +16,27 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    public ProductDto getProductById(Long id) {
-        return ProductMapper.productToProductDto(productRepository.findById(id).orElse(null));
+    public ProductDto getProductDtoById(Long id) {
+        return ProductMapper.productToProductDto(getProductById(id));
     }
 
-    public List<ProductDto> getAllProductsWithPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
 
+    public List<ProductDto> getAllProductsDtoWithPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
+        return getAllProductsWithPriceRange(minPrice, maxPrice).stream()
+                .map(ProductMapper::productToProductDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<Product> getAllProductsWithPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         if (minPrice.compareTo(Product.MIN_PRICE) < 0 || minPrice.compareTo(Product.MAX_PRICE) > 0)
             minPrice = Product.MIN_PRICE;
         if (maxPrice.compareTo(Product.MIN_PRICE) < 0 || maxPrice.compareTo(Product.MAX_PRICE) > 0)
@@ -37,10 +46,7 @@ public class ProductService {
             minPrice = maxPrice;
             maxPrice = tmpMinPrice;
         }
-        List<Product> products = productRepository.findAllProductsWithinPriceRange(minPrice, maxPrice);
-        return products.stream()
-                .map(ProductMapper::productToProductDto)
-                .collect(Collectors.toList());
+        return productRepository.findAllProductsWithinPriceRange(minPrice, maxPrice);
     }
 
     public void addProduct(ProductDto productDto) {
@@ -64,4 +70,5 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product with id = " + id + " not found");
         }
     }
+
 }
