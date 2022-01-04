@@ -1,92 +1,108 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Product list</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    <div class="container">
-        <h1>Available products</h1><br>
-        <table class="table table-hover" style="width: 100%">
-            <colgroup>
-                <col span="1" style="width: 10%;">
-                <col span="1" style="width: 50%;">
-                <col span="1" style="width: 15%;">
-                <col span="1" style="width: 10%;">
-                <col span="1" style="width: 10%;">
-            </colgroup>
-
-            <thead class="table-secondary">
-                <tr>
-                    <td>ID</td>
-                    <td>Title</td>
-                    <td>Price</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr th:each="product : ${products}">
-                    <td th:text="${product.id}"></td>
-                    <td th:text="${product.title}"></td>
-                    <td th:text="${product.price}"></td>
-                    <td>
-                        <a th:href="@{${'/products/' + product.id}}" class="btn btn-info">Show more</a>
-                    </td>
-                    <td>
-                        <form method="post" th:action="@{${'/delete/' + product.id}}">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <nav aria-label="Products navigation">
-            <ul class="pagination justify-content-center">
-                <li th:if="${products.isFirst()}" class="page-item disabled">
-                    <span class="page-link">&laquo;</span>
-                </li>
-                <li th:unless="${products.isFirst()}" class="page-item">
-                    <a class="page-link" th:href="@{/products}" aria-label="First">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-
-                <li th:if="${products.isFirst()}" class="page-item disabled">
-                    <span class="page-link">&lt;</span>
-                </li>
-                <li th:unless="${products.isFirst()}" class="page-item">
-                    <a th:if="${products.getNumber() - 1 == 0}" class="page-link" th:href="@{/products}">&lt;</a>
-                    <a th:unless="${products.getNumber() - 1 == 0}" class="page-link" th:href="@{/products(page=${products.getNumber() - 1})}">&lt;</a>
-                </li>
-
-                <div th:each="i: ${#numbers.sequence(0, products.getTotalPages() - 1)}">
-                    <li th:if="${products.getNumber() == i}" class="page-item active" aria-current="page">
-                        <span class="page-link" th:text="${i + 1}">0</span>
-                    </li>
-                    <li th:unless="${products.getNumber() == i}" class="page-item">
-                        <a th:if="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/products}">0</a>
-                        <a th:unless="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/products(page=${i})}">0</a>
-                    </li>
-                </div>
-
-                <li th:if="${products.isLast()}" class="page-item disabled">
-                    <span class="page-link">&gt;</span>
-                </li>
-                <li th:unless="${products.isLast()}" class="page-item">
-                    <a class="page-link" th:href="@{/products(page=${products.getNumber() + 1})}">&gt;</a>
-                </li>
-
-                <li th:if="${products.isLast()}" class="page-item disabled">
-                    <span class="page-link">&raquo;</span>
-                </li>
-                <li th:unless="${products.isLast()}" class="page-item">
-                    <a class="page-link" th:href="@{/products(page=${products.getTotalPages() - 1})}" aria-label="Last">&raquo;</a>
-                </li>
-            </ul>
-        </nav>
-        <a th:href="@{/add}" class="btn btn-primary">Add</a>
+<div class="mt-5">
+    <div class="d-flex justify-content-end me-5">
+        <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="btn btn-primary">Login</a>
+        <form sec:authorize="isAuthenticated()" method="post" th:action="@{/logout}">
+                <span sec:authorize="isAuthenticated()" th:text="'Logged in as: ' + ${#authentication.getName()}"
+                      class="me-2"></span>
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
     </div>
+</div>
+<div class="container">
+    <h1>Available products</h1><br>
+    <table class="table table-hover" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 30%;">
+        </colgroup>
+
+        <thead class="table-secondary">
+        <tr>
+            <td>ID</td>
+            <td>Title</td>
+            <td>Price</td>
+            <td></td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.title}"></td>
+            <td th:text="${product.price}"></td>
+            <td>
+                <div class="btn-group" data-toggle="buttons">
+                    <a sec:authorize="isAuthenticated()" th:href="@{${'/products/info/' + product.id}}"
+                       class="btn btn-info me-2">Show info</a>
+                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" th:href="@{${'/products/edit/' + product.id}}"
+                       class="btn btn-warning me-2">Edit</a>
+                    <form sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" method="post"
+                          th:action="@{${'products/delete/' + product.id}}">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Products navigation">
+        <ul class="pagination justify-content-center">
+            <li th:if="${products.isFirst()}" class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+            <li th:unless="${products.isFirst()}" class="page-item">
+                <a class="page-link" th:href="@{/products}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li th:if="${products.isFirst()}" class="page-item disabled">
+                <span class="page-link">&lt;</span>
+            </li>
+            <li th:unless="${products.isFirst()}" class="page-item">
+                <a th:if="${products.getNumber() - 1 == 0}" class="page-link" th:href="@{/products}">&lt;</a>
+                <a th:unless="${products.getNumber() - 1 == 0}" class="page-link"
+                   th:href="@{/products(page=${products.getNumber() - 1})}">&lt;</a>
+            </li>
+
+            <th:block th:each="i: ${#numbers.sequence(0, products.getTotalPages() - 1)}">
+                <li th:if="${products.getNumber() == i}" class="page-item active" aria-current="page">
+                    <span class="page-link" th:text="${i + 1}">0</span>
+                </li>
+                <li th:unless="${products.getNumber() == i}" class="page-item">
+                    <a th:if="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/products}">0</a>
+                    <a th:unless="${i == 0}" class="page-link" th:text="${i + 1}"
+                       th:href="@{/products(page=${i})}">0</a>
+                </li>
+            </th:block>
+
+            <li th:if="${products.isLast()}" class="page-item disabled">
+                <span class="page-link">&gt;</span>
+            </li>
+            <li th:unless="${products.isLast()}" class="page-item">
+                <a class="page-link" th:href="@{/products(page=${products.getNumber() + 1})}">&gt;</a>
+            </li>
+
+            <li th:if="${products.isLast()}" class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+            <li th:unless="${products.isLast()}" class="page-item">
+                <a class="page-link" th:href="@{/products(page=${products.getTotalPages() - 1})}" aria-label="Last">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" th:href="@{/products/add}" class="btn btn-primary me-2">Add product</a>
+    <a sec:authorize="hasRole('ADMIN')" th:href="@{/users}" class="btn btn-primary">Users list</a>
+</div>
 </body>
 </html>

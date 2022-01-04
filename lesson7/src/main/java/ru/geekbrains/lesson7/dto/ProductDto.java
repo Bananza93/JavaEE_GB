@@ -1,11 +1,21 @@
 package ru.geekbrains.lesson7.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import ru.geekbrains.lesson7.model.Product;
+
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 @Data
-@NoArgsConstructor
 public class ProductDto {
+    private Long id;
+
+    @NotNull(message = "{validation.Product.TitleEmptyOrNull.message}")
+    @NotEmpty(message = "{validation.Product.TitleEmptyOrNull.message}")
     private String title;
-    private Float price;
+
+    @DecimalMin(value = Product.STR_MIN_PRICE, message = "{validation.Product.PriceMin.message}")
+    @DecimalMax(value = Product.STR_MAX_PRICE, message = "{validation.Product.PriceMax.message}")
+    @Digits(integer = 7, fraction = 2, message = "{validation.Product.PriceDigits.message}")
+    private BigDecimal price;
 }

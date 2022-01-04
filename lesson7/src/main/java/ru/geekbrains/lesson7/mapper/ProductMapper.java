@@ -16,8 +16,9 @@ public class ProductMapper {
     public static ProductDto productToProductDto(Product product) {
         if (product == null) return null;
         ProductDto productDto = new ProductDto();
-        productDto.setTitle(productDto.getTitle());
-        productDto.setPrice(productDto.getPrice());
+        productDto.setId(product.getId());
+        productDto.setTitle(product.getTitle());
+        productDto.setPrice(product.getPrice());
         return productDto;
     }
 }
