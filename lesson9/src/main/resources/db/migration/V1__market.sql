@@ -32,7 +32,7 @@ CREATE TABLE "product_attributes" (
 -- Перечень значений характеристик для конкретного товара
 CREATE TABLE "product_attribute_values" (
   "product_id" bigint,
-  "product_attribute_id" bigint,
+  "attribute_id" bigint,
   "value" varchar NOT NULL
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE "product_availabilities" (
 CREATE TABLE "product_price_histories" (
   "product_id" bigint,
   "price" decimal(9,2) NOT NULL,
-  "start_date" timestamp(3) DEFAULT 'now()'
+  "start_date" timestamp(3) DEFAULT 'now()',
   "end_date" timestamp(3) DEFAULT '2999-12-31'
 );
 
@@ -97,7 +97,7 @@ CREATE TABLE "user_delivery_profiles" (
   "building" varchar,
   "entrance" integer,
   "floor" integer,
-  "appartment" integer
+  "apartment" integer
 );
 
 -- Перечень заказов
@@ -140,8 +140,8 @@ CREATE TYPE "order_statuses" AS ENUM ('Created',
 -- История изменений статуса заказа
 CREATE TABLE "order_status_histories" (
   "order_id" bigint,
-  "status" order_statuses DEFAULT 'Created'
-  "start_date" timestamp(3) DEFAULT 'now()'
+  "status" order_statuses DEFAULT 'Created',
+  "start_date" timestamp(3) DEFAULT 'now()',
   "end_date" timestamp(3) DEFAULT '2999-12-31'
 );
 
@@ -183,8 +183,8 @@ ALTER TABLE "order_payments" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("
 
 ALTER TABLE "order_status_histories" ADD FOREIGN KEY ("order_id") REFERENCES "orders" ("id");
 
-CREATE UNIQUE INDEX "unique_prod_attr_idx" ON "product_characteristic_values" ("product_id", "product_attribute_id");
+CREATE UNIQUE INDEX "unique_prod_attr_idx" ON "product_attribute_values" ("product_id", "attribute_id");
 
-ALTER TABLE "product_attribute_values" ADD CONSTRAINT "unique_prod_attr_id" UNIQUE USING INDEX "unique_prod_attr_idx";
+ALTER TABLE product_attribute_values ADD CONSTRAINT "product_attribute_values_uq" UNIQUE USING INDEX unique_prod_attr_idx;
 
 CREATE INDEX "prod_attr_values_idx" ON "product_attribute_values" USING BTREE ("value", "attribute_id", "product_id");
