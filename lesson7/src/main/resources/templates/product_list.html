@@ -55,7 +55,7 @@
         </tr>
         </tbody>
     </table>
-    <nav aria-label="Products navigation">
+    <nav aria-label="Products navigation" th:if="${products.getTotalPages() &gt; 1}">
         <ul class="pagination justify-content-center">
             <li th:if="${products.isFirst()}" class="page-item disabled">
                 <span class="page-link">&laquo;</span>

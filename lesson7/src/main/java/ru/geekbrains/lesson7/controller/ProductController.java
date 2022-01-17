@@ -41,32 +41,5 @@ public class ProductController {
         return "product_info";
     }
 
-    @GetMapping("/add")
-    public String getAddNewProductForm() {
-        return "new_product_form";
-    }
 
-    @PostMapping("/add")
-    public String addNewProduct(@Valid ProductDto productDto) {
-        productService.addProduct(productDtoToProduct(productDto));
-        return "redirect:/products";
-    }
-
-    @PostMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-        return "redirect:/products";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String getEditProductForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productToProductDto(productService.getProductById(id)));
-        return "edit_product_form";
-    }
-
-    @PostMapping("/edit/{id}")
-    public String editProduct(@PathVariable Long id, @Valid ProductDto productDto) {
-        productService.editProduct(id, productDtoToProduct(productDto));
-        return "redirect:/products/info/{id}";
-    }
 }
