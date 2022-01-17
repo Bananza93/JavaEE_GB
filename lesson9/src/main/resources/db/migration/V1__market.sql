@@ -185,6 +185,6 @@ ALTER TABLE "order_status_histories" ADD FOREIGN KEY ("order_id") REFERENCES "or
 
 CREATE UNIQUE INDEX "unique_prod_attr_idx" ON "product_attribute_values" ("product_id", "attribute_id");
 
-ALTER TABLE product_attribute_values ADD CONSTRAINT "product_attribute_values_uq" UNIQUE USING INDEX unique_prod_attr_idx;
+ALTER TABLE "product_attribute_values" ADD CONSTRAINT "unique_prod_attr" UNIQUE USING INDEX "unique_prod_attr_idx";
 
 CREATE INDEX "prod_attr_values_idx" ON "product_attribute_values" USING BTREE ("value", "attribute_id", "product_id");
