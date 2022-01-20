@@ -12,21 +12,25 @@ CREATE TABLE "product_brands" (
   "name" varchar UNIQUE NOT NULL
 );
 
--- Перечень товаров магазина
+-- Перечень товаров магазина и кол-во доступных товаров
 -- is_available - доступность товара для отображения
 CREATE TABLE "products" (
   "id" BIGSERIAL PRIMARY KEY NOT NULL,
   "name" varchar UNIQUE NOT NULL,
+  "description" varchar,
+  "image" varchar,
   "category_id" bigint,
   "brand_id" bigint,
   "created_at" timestamp(3) NOT NULL DEFAULT 'now()',
+  "quantity" integer NOT NULL DEFAULT 0,
   "is_available" boolean NOT NULL DEFAULT true
 );
 
 -- Перечень характеристик товара
 CREATE TABLE "product_attributes" (
   "id" BIGSERIAL PRIMARY KEY NOT NULL,
-  "name" varchar UNIQUE NOT NULL
+  "name" varchar UNIQUE NOT NULL,
+  "description" varchar
 );
 
 -- Перечень значений характеристик для конкретного товара
@@ -36,18 +40,12 @@ CREATE TABLE "product_attribute_values" (
   "value" varchar NOT NULL
 );
 
--- Кол-во доступных ед. товара
-CREATE TABLE "product_availabilities" (
-  "product_id" bigint UNIQUE,
-  "quantity" integer NOT NULL DEFAULT 0
-);
-
 -- История изменений цен на товары
 CREATE TABLE "product_price_histories" (
   "product_id" bigint,
   "price" decimal(9,2) NOT NULL,
   "start_date" timestamp(3) DEFAULT 'now()',
-  "end_date" timestamp(3) DEFAULT '2999-12-31'
+  "end_date" timestamp(3)
 );
 
 CREATE TABLE "users" (
@@ -71,7 +69,7 @@ CREATE TABLE "users_roles" (
 -- Личная информация пользователя
 CREATE TABLE "user_personal_data" (
   "id" BIGSERIAL PRIMARY KEY NOT NULL,
-  "user_id" bigint,
+  "user_id" bigint UNIQUE,
   "surname" varchar NOT NULL,
   "name" varchar NOT NULL,
   "middle_name" varchar,
@@ -130,7 +128,7 @@ CREATE TABLE "order_payments" (
 -- Статусы заказа
 CREATE TYPE "order_statuses" AS ENUM ('Created', 
 									  'Awaiting Payment', 
-									  'Awaiting Fulfillmen', 
+									  'Awaiting Fulfillment',
 								      'Awaiting Shipment',
 									  'Shipped ',
 									  'Completed',
@@ -142,7 +140,7 @@ CREATE TABLE "order_status_histories" (
   "order_id" bigint,
   "status" order_statuses DEFAULT 'Created',
   "start_date" timestamp(3) DEFAULT 'now()',
-  "end_date" timestamp(3) DEFAULT '2999-12-31'
+  "end_date" timestamp(3)
 );
 
 ALTER TABLE "products" ADD FOREIGN KEY ("category_id") REFERENCES "product_categories" ("id");
@@ -154,8 +152,6 @@ ALTER TABLE "product_categories" ADD FOREIGN KEY ("parent_id") REFERENCES "produ
 ALTER TABLE "product_attribute_values" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
 
 ALTER TABLE "product_attribute_values" ADD FOREIGN KEY ("attribute_id") REFERENCES "product_attributes" ("id");
-
-ALTER TABLE "product_availabilities" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
 
 ALTER TABLE "product_price_histories" ADD FOREIGN KEY ("product_id") REFERENCES "products" ("id");
 
