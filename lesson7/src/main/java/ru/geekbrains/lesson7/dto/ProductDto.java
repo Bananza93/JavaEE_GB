@@ -18,4 +18,8 @@ public class ProductDto {
     @DecimalMax(value = Product.STR_MAX_PRICE, message = "{validation.Product.PriceMax.message}")
     @Digits(integer = 7, fraction = 2, message = "{validation.Product.PriceDigits.message}")
     private BigDecimal price;
+
+    @NotNull
+    @NotEmpty
+    private String category;
 }

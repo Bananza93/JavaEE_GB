@@ -16,7 +16,7 @@
 </div>
 <div class="container">
     <h1 th:text="'Editing: ' + ${product.title}"></h1><br>
-    <form id="editForm" th:action="@{/products/edit/__${product.id}__}" method="post">
+    <form id="editForm" th:action="@{/admin/products/edit/__${product.id}__}" method="post">
         <div class="mb-3">
             <label for="productTitle" class="form-label">Title:</label>
             <input type="text" name="title" class="form-control" id="productTitle" th:value="${product.title}">
@@ -28,7 +28,7 @@
     </form>
     <div class="btn-group" role="group">
         <button type="submit" class="btn btn-primary me-2" form="editForm">Save</button>
-        <a th:href="@{/products}" class="btn btn-secondary">Back</a>
+        <a th:href="@{/admin/products}" class="btn btn-secondary">Back</a>
     </div>
 </div>
 </body>

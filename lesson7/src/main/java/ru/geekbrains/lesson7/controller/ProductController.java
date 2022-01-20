@@ -5,16 +5,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.service.ProductService;
 
-import javax.validation.Valid;
 
 import java.math.BigDecimal;
-
-import static ru.geekbrains.lesson7.mapper.ProductMapper.productDtoToProduct;
-import static ru.geekbrains.lesson7.mapper.ProductMapper.productToProductDto;
 
 @Controller
 @RequestMapping("/products")
