@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("select p from Product p where p.price between :minPrice and :maxPrice")
+    @Query(value = "from Product p left join fetch p.category where p.price between :minPrice and :maxPrice",
+            countQuery = "select count(p) from Product p left join p.category where p.price between :minPrice and :maxPrice")
     Page<Product> findAllProductsWithinPriceRangeByPage(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 }

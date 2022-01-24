@@ -7,15 +7,8 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto mb-2 mb-lg-0 me-5">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Products
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Category 1</a></li>
-                        <li><a class="dropdown-item" href="#">Category 2</a></li>
-                        <li><a class="dropdown-item" href="#">Category 3</a></li>
-                    </ul>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/products'}">Catalog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{'#'}">Contacts</a>
@@ -30,7 +23,7 @@
             </form>
         </div>
 
-        <i class="fas fa-shopping-bag shopping-cart-badge" onclick="displayCart()"></i>
+        <i class="fa fa-shopping-cart cart-icon" onclick="displayCart()"></i>
 
         <div class="form-inline">
             <a sec:authorize="!isAuthenticated()" th:href="@{'/login'}" class="btn btn-sm btn-outline-secondary">Войти</a>

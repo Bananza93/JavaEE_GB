@@ -17,7 +17,7 @@
     </div>
 </div>
 <div class="container">
-    <h1>Adding new product</h1><br>
+    <h1 th:text="#{title.product.form}">Форма добавления товара</h1><br>
     <form id="addForm" method="post" th:action="@{/admin/products/add}">
         <div class="mb-3">
             <label for="productTitle" class="form-label">Title:</label>

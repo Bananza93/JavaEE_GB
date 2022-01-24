@@ -22,6 +22,7 @@ public class Cart {
             oldItem.increaseQnt(qnt);
             return oldItem;
         });
+        currentCart.forEach((k,v) -> System.out.println(k + " | " + v));
         recalculateSumPrice();
     }
 

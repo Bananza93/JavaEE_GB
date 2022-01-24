@@ -18,18 +18,64 @@
                 <img class="card-body card-img-top" th:src="@{/images/image.png}" src="..." alt="Product info">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">
-                        <a class="link-dark" th:href="@{${'/info/' + product.id}}" th:text="${product.title}">Подробнее</a>
+                        <a class="link-dark" th:href="@{${'/products/info/' + product.id}}" th:text="${product.title}">Подробнее</a>
                     </h5>
 
                     <p th:text="${product.category}" class="card-text">Категория</p>
                     <p th:text="${product.price}" class="card-text mt-auto">Цена</p>
-                    <button th:attr="data-product-id=${product.id}" class="btn btn-success w-100" onclick="onClickAddToCart(this)">
+                    <button th:attr="data-product-id=${product.id}" class="btn btn-success w-100" onclick="onClickAddToCart(this, 1)">
                         В корзину
                     </button>
                 </div>
             </div>
         </div>
     </div>
+    <nav aria-label="Products navigation" th:if="${products.getTotalPages() &gt; 1}">
+        <ul class="pagination justify-content-center">
+            <li th:if="${products.isFirst()}" class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+            <li th:unless="${products.isFirst()}" class="page-item">
+                <a class="page-link" th:href="@{/products}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li th:if="${products.isFirst()}" class="page-item disabled">
+                <span class="page-link">&lt;</span>
+            </li>
+            <li th:unless="${products.isFirst()}" class="page-item">
+                <a th:if="${products.getNumber() - 1 == 0}" class="page-link" th:href="@{/products}">&lt;</a>
+                <a th:unless="${products.getNumber() - 1 == 0}" class="page-link"
+                   th:href="@{/admin/products(page=${products.getNumber() - 1})}">&lt;</a>
+            </li>
+
+            <th:block th:each="i: ${#numbers.sequence(0, products.getTotalPages() - 1)}">
+                <li th:if="${products.getNumber() == i}" class="page-item active" aria-current="page">
+                    <span class="page-link" th:text="${i + 1}">0</span>
+                </li>
+                <li th:unless="${products.getNumber() == i}" class="page-item">
+                    <a th:if="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/products}">0</a>
+                    <a th:unless="${i == 0}" class="page-link" th:text="${i + 1}"
+                       th:href="@{/products(page=${i})}">0</a>
+                </li>
+            </th:block>
+
+            <li th:if="${products.isLast()}" class="page-item disabled">
+                <span class="page-link">&gt;</span>
+            </li>
+            <li th:unless="${products.isLast()}" class="page-item">
+                <a class="page-link" th:href="@{/products(page=${products.getNumber() + 1})}">&gt;</a>
+            </li>
+
+            <li th:if="${products.isLast()}" class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+            <li th:unless="${products.isLast()}" class="page-item">
+                <a class="page-link" th:href="@{/products(page=${products.getTotalPages() - 1})}" aria-label="Last">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 </body>
 </html>

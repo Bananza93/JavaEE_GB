@@ -15,6 +15,7 @@ public class CartPosition {
     public CartPosition(Product product, Integer qnt) {
         this.product = product;
         this.qnt = qnt;
+        calculatePositionPrice();
     }
 
     public void increaseQnt(Integer value) {

@@ -11,10 +11,10 @@ create table if not exists products (
     category_id BIGINT REFERENCES categories (id)
 );
 
-insert into categories
+insert into categories (title)
 values ('PC Components'), ('Peripherals');
 
-insert into products (title, price)
+insert into products (title, price, category_id)
 values ('PSU', 100.0, 1),
        ('Motherboard', 200.0, 1),
        ('Memory RAM', 300.0, 1),

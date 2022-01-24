@@ -6,18 +6,24 @@ import ru.geekbrains.lesson7.dto.CartDto;
 import ru.geekbrains.lesson7.mapper.CartMapper;
 import ru.geekbrains.lesson7.model.Cart;
 
+import javax.annotation.PostConstruct;
+
 @Service
 @SessionScope
 public class CartService {
 
     private final CartMapper cartMapper;
     private final ProductService productService;
-    private final Cart cart;
+    private Cart cart;
 
-    public CartService(CartMapper cartMapper, ProductService productService, Cart cart) {
+    public CartService(CartMapper cartMapper, ProductService productService) {
         this.cartMapper = cartMapper;
         this.productService = productService;
-        this.cart = cart;
+    }
+
+    @PostConstruct
+    public void init() {
+        cart = new Cart();
     }
 
     public CartDto getCart() {
