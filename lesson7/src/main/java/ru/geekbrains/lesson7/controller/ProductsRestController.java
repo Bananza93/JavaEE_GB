@@ -30,7 +30,7 @@ public class ProductsRestController {
 
     @GetMapping("/products/{id}")
     public Product getProduct(@PathVariable Long id) {
-        return productService.getProductById(id);
+        return productService.getProductById(id).orElse(null);
     }
 
     @GetMapping("/products")

@@ -63,7 +63,7 @@ public class AdminPanelController {
 
     @GetMapping("/products/edit/{id}")
     public String getEditProductForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productMapper.productToProductDto(productService.getProductById(id)));
+        model.addAttribute("product", productMapper.productToProductDto(productService.getProductById(id).orElse(null)));
         return "admin/edit_product_form";
     }
 
