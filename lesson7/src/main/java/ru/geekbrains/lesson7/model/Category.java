@@ -24,10 +24,6 @@ public class Category {
     @Column
     private String name;
 
-    @OneToMany(
-            mappedBy = "category",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> product;
 }

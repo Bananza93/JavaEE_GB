@@ -74,7 +74,8 @@ CREATE TABLE user_personal_data (
 -- Методы доставки (до магазина, до пункта выдачи, до двери)
 CREATE TABLE delivery_methods (
   id BIGSERIAL PRIMARY KEY NOT NULL,
-  name varchar
+  code varchar not null unique,
+  description varchar
 );
 
 -- Методы/адреса доставки пользователя
@@ -97,13 +98,13 @@ CREATE TABLE orders (
   user_id bigint,
   user_pers_data_id bigint,
   user_deli_prof_id bigint,
-  created_at timestamp(3) DEFAULT CURRENT_TIMESTAMP(3)
+  created_at timestamp(3) not null DEFAULT CURRENT_TIMESTAMP(3)
 );
 
 -- Перечень позиций заказа и их стоимоть
-CREATE TABLE order_details (
-  order_id bigint,
-  product_id bigint,
+CREATE TABLE order_items (
+  order_id bigint not null,
+  product_id bigint not null,
   quantity integer NOT NULL,
   price decimal(9,2) NOT NULL
 );
@@ -111,10 +112,10 @@ CREATE TABLE order_details (
 -- Платежная информация по заказу
 -- Method: PayPal, карта и т.д.
 CREATE TABLE order_payments (
-  order_id bigint,
-  tx_id varchar NOT NULL,
-  method varchar NOT NULL,
-  amount decimal(9,2) NOT NULL,
+  order_id bigint not null,
+  tx_id varchar,
+  method varchar,
+  price decimal(9,2) NOT NULL,
   paid_for_at timestamp(3)
 );
 
@@ -125,8 +126,8 @@ CREATE TABLE order_statuses (
 
 -- История изменений статуса заказа
 CREATE TABLE order_status_histories (
-  order_id bigint,
-  status_id bigint,
+  order_id bigint not null,
+  status_id bigint default 1,
   start_date timestamp(3) DEFAULT 'now()',
   end_date timestamp(3)
 );
@@ -144,8 +145,8 @@ ALTER TABLE user_delivery_profiles ADD FOREIGN KEY (method_id) REFERENCES delive
 ALTER TABLE orders ADD FOREIGN KEY (user_id) REFERENCES users (id);
 ALTER TABLE orders ADD FOREIGN KEY (user_pers_data_id) REFERENCES user_personal_data (id);
 ALTER TABLE orders ADD FOREIGN KEY (user_deli_prof_id) REFERENCES user_delivery_profiles (id);
-ALTER TABLE order_details ADD FOREIGN KEY (order_id) REFERENCES orders (id);
-ALTER TABLE order_details ADD FOREIGN KEY (product_id) REFERENCES products (id);
+ALTER TABLE order_items ADD FOREIGN KEY (order_id) REFERENCES orders (id);
+ALTER TABLE order_items ADD FOREIGN KEY (product_id) REFERENCES products (id);
 ALTER TABLE order_payments ADD FOREIGN KEY (order_id) REFERENCES orders (id);
 ALTER TABLE order_status_histories ADD FOREIGN KEY (order_id) REFERENCES orders (id);
 ALTER TABLE order_status_histories ADD FOREIGN KEY (status_id) REFERENCES order_statuses (id);
@@ -225,3 +226,8 @@ values ('ROLE_ADMIN'), ('ROLE_MANAGER'), ('ROLE_USER');
 
 insert into users_roles
 values (1,1), (2,2), (3,3);
+
+insert into delivery_methods (code, description)
+values ('toStore', 'Доставка до выбранного магазина'),
+       ('toPost', 'Доставка до пункта выдачи'),
+       ('toDoor', 'Доставка курьером по адресу');
