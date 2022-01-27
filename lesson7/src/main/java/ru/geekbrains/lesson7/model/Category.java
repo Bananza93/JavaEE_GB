@@ -10,10 +10,10 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @ToString(exclude = "product")
 @Entity
-@Table(name = "categories")
-@Data
+@Table(name = "product_categories")
 public class Category {
 
     @Id
@@ -22,10 +22,12 @@ public class Category {
     private Long id;
 
     @Column
-    private String title;
+    private String name;
 
-    @OneToMany(mappedBy = "category",
+    @OneToMany(
+            mappedBy = "category",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = true
+    )
     private List<Product> product;
 }

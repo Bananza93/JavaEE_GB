@@ -30,7 +30,7 @@ public class ProductController {
     public String getAllProducts(Model model,
                                  @RequestParam(defaultValue = Product.STR_MIN_PRICE) BigDecimal minPrice,
                                  @RequestParam(defaultValue = Product.STR_MAX_PRICE) BigDecimal maxPrice,
-                                 @PageableDefault Pageable pageable) {
+                                 @PageableDefault(size = 8) Pageable pageable) {
         Page<ProductDto> productsDto = productService.getAllProductsWithinPriceRangeByPage(minPrice, maxPrice, pageable).map(productMapper::productToProductDto);
         model.addAttribute("products", productsDto);
         return "product_list";

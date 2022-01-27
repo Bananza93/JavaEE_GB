@@ -75,7 +75,7 @@ public class AdminPanelController {
 
     @GetMapping("products/info/{id}")
     public String getProduct(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.getProductById(id));
+        model.addAttribute("product", productService.getProductById(id).orElse(null));
         return "admin/product_info";
     }
 }

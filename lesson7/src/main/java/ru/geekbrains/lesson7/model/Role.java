@@ -1,17 +1,17 @@
 package ru.geekbrains.lesson7.model;
 
-import lombok.Data;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Set;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = "users")
+@ToString(exclude = "users")
+@Data
 @Entity
 @Table(name = "roles")
-@Data
 public class Role {
 
     @Id
@@ -21,4 +21,7 @@ public class Role {
 
     @Column
     private String name;
+
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 }

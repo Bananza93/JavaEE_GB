@@ -3,15 +3,20 @@ package ru.geekbrains.lesson7.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
 @Table(name="products")
-@Data
+@SecondaryTable(name = "product_price_histories", pkJoinColumns = @PrimaryKeyJoinColumn(name = "product_id"))
+@DynamicInsert
+@DynamicUpdate
 public class Product {
 
     public static final BigDecimal MIN_PRICE = BigDecimal.ZERO;
@@ -24,13 +29,25 @@ public class Product {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "price")
-    private BigDecimal price;
+    @Column
+    private String description;
+
+    @Column(name = "image")
+    private String imageURL;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+
+    @Column(nullable = false)
+    private Integer quantity;
+
+    @Column(name = "is_available", nullable = false)
+    private Boolean isAvailable;
+
+    @Column(name = "price", table = "product_price_histories", nullable = false)
+    private BigDecimal price;
 }

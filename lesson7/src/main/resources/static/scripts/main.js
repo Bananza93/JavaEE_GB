@@ -15,7 +15,6 @@ function onClickRemoveFromCart(button, qnt) {
 }
 
 function getAndRenderCart() {
-    console.log(window.location.origin);
     fetch(window.location.origin + "/lesson7/cart")
         .then(response => response.json())
         .then(body => renderCart(body));
@@ -29,7 +28,7 @@ function renderCart(cart) {
     var cartInnerHtml = `
     <div class="shopping-cart-header">
         <span class="lighter-text">Товары (</span>
-        <span class="lighter-text">${cart.currentCart.length}</span>
+        <span class="lighter-text">${cart.productCount}</span>
         <span class="lighter-text">)</span>
 
     </div>
