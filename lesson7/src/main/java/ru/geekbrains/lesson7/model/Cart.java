@@ -1,12 +1,14 @@
 package ru.geekbrains.lesson7.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Data
+@ToString(onlyExplicitlyIncluded = true)
 public class Cart {
 
     private Integer productCount;

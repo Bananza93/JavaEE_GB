@@ -4,19 +4,31 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.lesson7.model.*;
 import ru.geekbrains.lesson7.repository.OrderRepository;
 
+import javax.annotation.PostConstruct;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
     private final UserService userService;
+    private Map<String, OrderStatus> orderStatusCache;
 
     public OrderService(OrderRepository orderRepository, UserService userService) {
         this.orderRepository = orderRepository;
         this.userService = userService;
+    }
+
+    @PostConstruct
+    private void loadOrderStatusCache() {
+        System.out.println("Loading order status cache...");
+        List<OrderStatus> statuses = orderRepository.getOrderStatuses();
+        orderStatusCache = statuses.stream().collect(Collectors.toMap(OrderStatus::getCode, Function.identity()));
     }
 
     public void makeOrder(Cart cart, Principal principal) {
@@ -32,6 +44,7 @@ public class OrderService {
             items.add(item);
         }
         order.setOrderItems(items);
+        order.setOrderStatus(orderStatusCache.get("notPaid"));
         orderRepository.save(order);
     }
 }

@@ -10,8 +10,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@EqualsAndHashCode(exclude = "roles")
-@ToString(exclude = "roles")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "users")
 public class User {
@@ -43,4 +43,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserPersonalData personalData;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private DeliveryAddress deliveryAddress;
 }

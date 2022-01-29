@@ -8,7 +8,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = "users")
-@ToString(exclude = "users")
+@ToString(onlyExplicitlyIncluded = true)
 @Data
 @Entity
 @Table(name = "roles")
