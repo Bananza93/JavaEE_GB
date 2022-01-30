@@ -3,7 +3,11 @@ package ru.geekbrains.lesson7.dto;
 import lombok.Data;
 import ru.geekbrains.lesson7.model.Product;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data

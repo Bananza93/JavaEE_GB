@@ -1,7 +1,12 @@
 package ru.geekbrains.lesson7.service;
 
 import org.springframework.stereotype.Service;
-import ru.geekbrains.lesson7.model.*;
+import ru.geekbrains.lesson7.model.Cart;
+import ru.geekbrains.lesson7.model.CartPosition;
+import ru.geekbrains.lesson7.model.Order;
+import ru.geekbrains.lesson7.model.OrderItem;
+import ru.geekbrains.lesson7.model.OrderItemId;
+import ru.geekbrains.lesson7.model.OrderStatus;
 import ru.geekbrains.lesson7.repository.OrderRepository;
 
 import javax.annotation.PostConstruct;
@@ -26,7 +31,6 @@ public class OrderService {
 
     @PostConstruct
     private void loadOrderStatusCache() {
-        System.out.println("Loading order status cache...");
         List<OrderStatus> statuses = orderRepository.getOrderStatuses();
         orderStatusCache = statuses.stream().collect(Collectors.toMap(OrderStatus::getCode, Function.identity()));
     }

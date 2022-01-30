@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Data
@@ -13,11 +15,11 @@ import java.io.Serializable;
 @Embeddable
 public class OrderItemId implements Serializable {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false, updatable = false)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id", nullable = false, updatable = false)
     private Product product;
 }

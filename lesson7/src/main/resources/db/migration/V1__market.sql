@@ -16,25 +16,38 @@ CREATE TABLE products
     description  varchar,
     image        varchar,
     category_id  bigint                not null,
-    created_at   timestamp(3)          NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    created_at   timestamp(3)          NOT NULL DEFAULT now(),
     quantity     integer               NOT NULL default 0,
     is_available boolean               NOT NULL default true
 );
 
 -- Перечень характеристик товара
-CREATE TABLE product_attributes
+CREATE TABLE attributes
 (
     id          BIGSERIAL PRIMARY KEY NOT NULL,
     name        varchar UNIQUE        NOT NULL,
     description varchar
 );
 
--- Перечень значений характеристик для конкретного товара
-CREATE TABLE product_attribute_values
+-- Доступные хар-ки для категории
+CREATE TABLE attributes_categories
 (
-    product_id   bigint,
-    attribute_id bigint,
+    attribute_id bigint NOT NULL,
+    category_id bigint NOT NULL
+);
+
+-- Перечень значений характеристик для конкретного товара
+CREATE TABLE attribute_values
+(
+    id           BIGSERIAL PRIMARY KEY NOT NULL,
+    attribute_id bigint NOT NULL,
     value        varchar NOT NULL
+);
+
+CREATE TABLE products_attribute_values
+(
+    product_id    bigint NOT NULL,
+    attr_value_id bigint NOT NULL
 );
 
 -- История изменений цен на товары
@@ -42,7 +55,7 @@ CREATE TABLE product_price_histories
 (
     product_id bigint,
     price      decimal(9, 2) NOT NULL,
-    start_date timestamp(3)  not null DEFAULT CURRENT_TIMESTAMP(3),
+    start_date timestamp(3)  not null DEFAULT now(),
     end_date   timestamp(3)
 );
 
@@ -51,7 +64,7 @@ CREATE TABLE users
     id         BIGSERIAL PRIMARY KEY NOT NULL,
     username   varchar UNIQUE        NOT NULL,
     password   varchar               NOT NULL,
-    created_at timestamp(3) DEFAULT CURRENT_TIMESTAMP(3),
+    created_at timestamp(3) DEFAULT now(),
     is_enable  boolean      DEFAULT false
 );
 
@@ -109,9 +122,9 @@ CREATE TABLE orders
 (
     id                BIGSERIAL PRIMARY KEY NOT NULL,
     user_id           bigint,
-    user_pers_data_id bigint not null,
-    deli_addr_id      bigint not null,
-    created_at        timestamp(3)          not null DEFAULT CURRENT_TIMESTAMP(3)
+    user_pers_data_id bigint,
+    deli_addr_id      bigint,
+    created_at        timestamp(3)          not null DEFAULT now()
 );
 
 -- Перечень позиций заказа и их стоимоть
@@ -146,7 +159,7 @@ CREATE TABLE order_status_histories
 (
     order_id   bigint not null,
     status_id  bigint       default 1,
-    start_date timestamp(3) DEFAULT CURRENT_TIMESTAMP(3),
+    start_date timestamp(3) DEFAULT now(),
     end_date   timestamp(3)
 );
 
@@ -154,10 +167,16 @@ ALTER TABLE products
     ADD FOREIGN KEY (category_id) REFERENCES product_categories (id);
 ALTER TABLE product_categories
     ADD FOREIGN KEY (parent_id) REFERENCES product_categories (id);
-ALTER TABLE product_attribute_values
+ALTER TABLE attribute_values
+    ADD FOREIGN KEY (attribute_id) REFERENCES attributes (id);
+ALTER TABLE attributes_categories
+    ADD FOREIGN KEY (category_id) REFERENCES product_categories (id);
+ALTER TABLE attributes_categories
+    ADD FOREIGN KEY (attribute_id) REFERENCES attributes (id);
+ALTER TABLE products_attribute_values
     ADD FOREIGN KEY (product_id) REFERENCES products (id);
-ALTER TABLE product_attribute_values
-    ADD FOREIGN KEY (attribute_id) REFERENCES product_attributes (id);
+ALTER TABLE products_attribute_values
+    ADD FOREIGN KEY (attr_value_id) REFERENCES attribute_values (id);
 ALTER TABLE product_price_histories
     ADD FOREIGN KEY (product_id) REFERENCES products (id);
 ALTER TABLE users_roles
@@ -187,11 +206,11 @@ ALTER TABLE order_status_histories
 ALTER TABLE order_status_histories
     ADD FOREIGN KEY (status_id) REFERENCES order_statuses (id);
 
---CREATE UNIQUE INDEX "unique_prod_attr_idx" ON "product_attribute_values" ("product_id", "attribute_id");
+CREATE UNIQUE INDEX unique_prod_attr_idx ON products_attribute_values (product_id, attr_value_id);
 
---ALTER TABLE "product_attribute_values" ADD CONSTRAINT "unique_prod_attr" UNIQUE USING INDEX "unique_prod_attr_idx";
+ALTER TABLE products_attribute_values ADD constraint unique_prod_attr UNIQUE (product_id, attr_value_id);
 
---CREATE INDEX "prod_attr_values_idx" ON "product_attribute_values" USING BTREE ("value", "attribute_id", "product_id");
+CREATE INDEX prod_attr_values_idx ON products_attribute_values (product_id, attr_value_id);
 
 insert into product_categories (name)
 values ('PC Components'),

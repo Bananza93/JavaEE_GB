@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
@@ -16,19 +17,23 @@ import java.util.List;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
-@Table(name = "order_statuses")
-public class OrderStatus {
+@Table(name = "attributes")
+public class ProductAttribute {
 
     @Id
     @Column
     private Long id;
 
     @Column
-    private String code;
+    private String name;
 
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "orderStatus", cascade = CascadeType.ALL)
-    List<Order> orders;
+    @ManyToMany(mappedBy = "attributes")
+    private List<Category> categories;
+
+    @OneToMany(mappedBy = "attribute", cascade = CascadeType.ALL)
+    private List<ProductAttributeValue> attributeValues;
+
 }
