@@ -33,14 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/products/info/**").fullyAuthenticated()
-                .antMatchers("/products/add").hasAnyRole("ADMIN", "MANAGER")
-                .antMatchers("/products/edit/**").hasAnyRole("ADMIN", "MANAGER")
-                .antMatchers("/products/delete/**").hasRole("ADMIN")
-                .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
             .and()
-                .formLogin().defaultSuccessUrl("/products")
+                .formLogin().loginPage("/login").defaultSuccessUrl("/")
             .and()
-                .logout().logoutSuccessUrl("/products");
+                .logout().logoutSuccessUrl("/");
 
         http.csrf().disable().headers().frameOptions().disable();
     }

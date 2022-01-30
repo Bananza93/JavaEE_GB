@@ -8,27 +8,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.geekbrains.lesson7.dto.ProductDto;
+import ru.geekbrains.lesson7.mapper.ProductMapper;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.service.ProductService;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import static ru.geekbrains.lesson7.mapper.ProductMapper.productDtoToProduct;
-
 @RestController
 @RequestMapping("/rest")
 public class ProductsRestController {
 
-    ProductService productService;
+    private final ProductService productService;
+    private final ProductMapper productMapper;
 
-    public ProductsRestController(ProductService productService) {
+
+    public ProductsRestController(ProductService productService, ProductMapper productMapper) {
         this.productService = productService;
+        this.productMapper = productMapper;
     }
 
     @GetMapping("/products/{id}")
     public Product getProduct(@PathVariable Long id) {
-        return productService.getProductById(id);
+        return productService.getProductById(id).orElse(null);
     }
 
     @GetMapping("/products")
@@ -39,7 +41,7 @@ public class ProductsRestController {
 
     @PostMapping("/products")
     public void addProduct(@RequestBody ProductDto productDto) {
-        productService.addProduct(productDtoToProduct(productDto));
+        productService.addProduct(productMapper.productDtoToProduct(productDto));
     }
 
     @GetMapping("/products/delete/{id}")

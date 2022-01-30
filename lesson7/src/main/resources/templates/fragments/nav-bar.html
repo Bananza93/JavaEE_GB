@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="nav-bar">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#" th:href="@{'/'}">Shop name</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto mb-2 mb-lg-0 me-5">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'/products'}">Catalog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{'#'}">Contacts</a>
+                </li>
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                    <a class="nav-link" th:href="@{'/admin/products'}">Admin panel</a>
+                </li>
+            </ul>
+            <form class="d-flex ms-5">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+
+        <i class="fa fa-shopping-cart cart-icon" onclick="displayCart()"></i>
+
+        <div class="form-inline">
+            <a sec:authorize="!isAuthenticated()" th:href="@{'/login'}" class="btn btn-sm btn-outline-secondary">Войти</a>
+        </div>
+        <form sec:authorize="isAuthenticated()" method="post" th:action="@{'/logout'}" class="form-inline">
+            <button type="submit" class="btn btn-sm btn-outline-secondary">Выйти</button>
+        </form>
+
+        <div id="shoppingCart" class="shopping-cart d-none">
+        </div>
+
+        <script>getAndRenderCart();</script>
+    </div>
+</nav>

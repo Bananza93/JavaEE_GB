@@ -8,6 +8,7 @@ import ru.geekbrains.lesson7.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -18,8 +19,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
     }
 
     public Page<Product> getAllProductsWithinPriceRangeByPage(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
