@@ -14,14 +14,6 @@ function onClickRemoveFromCart(button, qnt) {
         .finally(() => button.disabled = false);
 }
 
-function onClickMakeOrder(button) {
-    button.disabled = true;
-    fetch(window.location.origin + "/lesson7/cart/makeOrder", {method: "POST"})
-        .then(response => response.json())
-        .then(body => renderCart(body))
-        .finally(() => button.disabled = false);
-}
-
 function getAndRenderCart() {
     fetch(window.location.origin + "/lesson7/cart")
         .then(response => response.json())
@@ -59,6 +51,6 @@ function renderCart(cart) {
         <span class="lighter-text">Итог:</span>
         <span class="main-color-text">${cart.sumPrice} ₽</span>
     </div>
-    <a href="#" class="btn btn-success w-100" onclick="onClickMakeOrder(this)">Оформить заказ</a>`;
+    <a href="/lesson7/order" class="btn btn-success w-100"">Оформить заказ</a>`;
     document.getElementById("shoppingCart").innerHTML = cartInnerHtml;
 }

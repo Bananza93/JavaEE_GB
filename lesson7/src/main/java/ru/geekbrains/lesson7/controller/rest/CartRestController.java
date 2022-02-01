@@ -10,8 +10,6 @@ import ru.geekbrains.lesson7.dto.CartDto;
 import ru.geekbrains.lesson7.service.CartService;
 import ru.geekbrains.lesson7.service.OrderService;
 
-import java.security.Principal;
-
 @RestController
 @RequestMapping("/cart")
 public class CartRestController {
@@ -37,10 +35,5 @@ public class CartRestController {
     @DeleteMapping("/product")
     public CartDto removeFromCart(@RequestParam Long id, @RequestParam Integer qnt) {
         return cartService.removeFromCart(id, qnt);
-    }
-
-    @PostMapping("/makeOrder")
-    public CartDto makeOrder(Principal principal) {
-        return cartService.proceedOrder(principal);
     }
 }

@@ -112,9 +112,9 @@ CREATE TABLE delivery_addresses
     city      varchar,
     street    varchar,
     building  varchar,
-    entrance  integer,
-    floor     integer,
-    apartment integer
+    entrance  varchar,
+    floor     varchar,
+    apartment varchar
 );
 
 -- Перечень заказов
@@ -288,3 +288,9 @@ insert into delivery_methods (code, description)
 values ('toStore', 'Доставка до выбранного магазина'),
        ('toPost', 'Доставка до пункта выдачи'),
        ('toDoor', 'Доставка курьером по адресу');
+
+insert into user_personal_data (user_id, surname, name, email, phone_number)
+values (1, 'admin_surname', 'admin_name', 'admin@email', 'admin_phone');
+
+insert into delivery_addresses (user_id, postcode, city, street, building, entrance, floor, apartment)
+values (1, 'admin_post', 'admin_city', 'admin_street', 'admin_build', 'admin_entr', 'admin_floor', 'admin_apt');

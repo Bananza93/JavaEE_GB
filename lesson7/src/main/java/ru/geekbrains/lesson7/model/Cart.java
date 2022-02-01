@@ -53,9 +53,4 @@ public class Cart {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void clear() {
-        currentCart.clear();
-        recalculateAfterChange();
-    }
-
 }

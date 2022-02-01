@@ -1,6 +1,10 @@
 package ru.geekbrains.lesson7.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -52,11 +56,11 @@ public class Order {
     )
     private OrderStatus orderStatus;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_pers_data_id", referencedColumnName = "id")
     private UserPersonalData userPersonalData;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "deli_addr_id", referencedColumnName = "id")
     private DeliveryAddress deliveryAddress;
 }
