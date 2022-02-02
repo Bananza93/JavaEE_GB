@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.geekbrains.lesson7.aspect.TrackExecutionTime;
 import ru.geekbrains.lesson7.dto.UserDto;
 import ru.geekbrains.lesson7.mapper.UserMapper;
 import ru.geekbrains.lesson7.repository.UserRepository;
@@ -24,6 +25,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @TrackExecutionTime
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findUserByUsername(username)
@@ -36,10 +38,12 @@ public class UserService implements UserDetailsService {
                 )).orElseThrow(() -> new UsernameNotFoundException("User \"" + username + "\" not found"));
     }
 
+    @TrackExecutionTime
     public List<UserDto> getAllUsersDto() {
         return userRepository.findAll().stream().map(UserMapper::userToUserDto).collect(Collectors.toList());
     }
 
+    @TrackExecutionTime
     public ru.geekbrains.lesson7.model.User getUserByUsername(String username) {
         return userRepository.findUserByUsername(username).orElse(null);
     }

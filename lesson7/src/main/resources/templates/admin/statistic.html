@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head">
+    <title>Product list</title>
+</head>
+<body>
+<nav th:replace="fragments/admin-nav-bar::nav-bar">
+</nav>
+<div class="mt-5">
+    <div class="d-flex justify-content-end me-5">
+        <form method="post" th:action="@{/logout}">
+            <span th:text="'Logged in as: ' + ${#authentication.getName()}" class="me-2"></span>
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <h2>Statistic</h2>
+    <table class="table" style="width: 75%">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 20%;">
+        </colgroup>
+
+        <thead class="table-secondary">
+        <tr>
+            <td>CLass</td>
+            <td>Time</td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="statRow : ${stat.entrySet()}">
+            <td th:text="${statRow.getKey()}"></td>
+            <td th:text="${statRow.getValue()} + ' ms'"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
