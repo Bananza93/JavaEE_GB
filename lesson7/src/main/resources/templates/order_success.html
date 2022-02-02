@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head">
+    <title>Список товаров</title>
+</head>
+<body>
+<nav th:replace="fragments/nav-bar::nav-bar"></nav>
+    <h2>Thank you for your order!</h2>
+    <h4 th:text="'Your order number is: '+${order.id}"></h4>
+</body>
+</html>

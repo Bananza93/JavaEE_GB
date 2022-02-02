@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class CartDto {
+    private Integer productCount;
     private List<CartPositionDto> currentCart;
     private BigDecimal sumPrice;
 }

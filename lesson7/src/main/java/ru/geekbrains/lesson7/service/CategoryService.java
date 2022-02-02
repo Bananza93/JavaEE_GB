@@ -18,11 +18,11 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Category getCategoryByTitle(String title) {
-        return categoryRepository.findCategoryByTitle(title).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Категория " + title + " не найдена"));
+    public Category getCategoryByName(String name) {
+        return categoryRepository.findCategoryByName(name).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Категория " + name + " не найдена"));
     }
 
-    public List<String> getAllTitles() {
-        return categoryRepository.findAll().stream().map(Category::getTitle).collect(Collectors.toList());
+    public List<String> getAllNames() {
+        return categoryRepository.findAll().stream().map(Category::getName).collect(Collectors.toList());
     }
 }

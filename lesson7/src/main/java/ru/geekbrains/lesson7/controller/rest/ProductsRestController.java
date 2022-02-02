@@ -1,4 +1,4 @@
-package ru.geekbrains.lesson7.controller;
+package ru.geekbrains.lesson7.controller.rest;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

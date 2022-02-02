@@ -12,6 +12,7 @@ public class CartMapper {
     public CartDto cartToCartDto(Cart cart) {
         if (cart == null) return null;
         CartDto cartDto = new CartDto();
+        cartDto.setProductCount(cart.getProductCount());
         cartDto.setCurrentCart(cart.getCurrentCart().values().stream().map(this::cartPositionToCartPositionDto).toList());
         cartDto.setSumPrice(cart.getSumPrice());
         return cartDto;
@@ -21,7 +22,7 @@ public class CartMapper {
         if (cartPosition == null) return null;
         CartPositionDto cartPositionDto = new CartPositionDto();
         cartPositionDto.setProductId(cartPosition.getProduct().getId());
-        cartPositionDto.setTitle(cartPosition.getProduct().getTitle());
+        cartPositionDto.setTitle(cartPosition.getProduct().getName());
         cartPositionDto.setPrice(cartPosition.getPositionPrice());
         cartPositionDto.setQnt(cartPosition.getQnt());
         return cartPositionDto;

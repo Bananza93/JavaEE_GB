@@ -1,18 +1,22 @@
 package ru.geekbrains.lesson7.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Data
+@ToString(onlyExplicitlyIncluded = true)
 public class Cart {
 
+    private Integer productCount;
     private Map<Long, CartPosition> currentCart;
     private BigDecimal sumPrice;
 
     public Cart() {
+        productCount = 0;
         currentCart = new LinkedHashMap<>();
         sumPrice = BigDecimal.ZERO;
     }
@@ -22,15 +26,25 @@ public class Cart {
             oldItem.increaseQnt(qnt);
             return oldItem;
         });
-        currentCart.forEach((k,v) -> System.out.println(k + " | " + v));
-        recalculateSumPrice();
+        recalculateAfterChange();
     }
 
     public void removeProduct(Long productId, Integer qnt) {
         CartPosition position = currentCart.get(productId);
         position.decreaseQnt(qnt);
         if (position.getQnt() <= 0) currentCart.remove(productId);
+        recalculateAfterChange();
+    }
+
+    private void recalculateAfterChange() {
+        recalculateProductCount();
         recalculateSumPrice();
+    }
+
+    private void recalculateProductCount() {
+        productCount = currentCart.values().stream()
+                .mapToInt(CartPosition::getQnt)
+                .sum();
     }
 
     private void recalculateSumPrice() {
@@ -38,4 +52,5 @@ public class Cart {
                 .map(CartPosition::getPositionPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
 }

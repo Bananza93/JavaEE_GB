@@ -5,7 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.mapper.ProductMapper;
 import ru.geekbrains.lesson7.model.Product;
@@ -30,7 +33,7 @@ public class ProductController {
     public String getAllProducts(Model model,
                                  @RequestParam(defaultValue = Product.STR_MIN_PRICE) BigDecimal minPrice,
                                  @RequestParam(defaultValue = Product.STR_MAX_PRICE) BigDecimal maxPrice,
-                                 @PageableDefault Pageable pageable) {
+                                 @PageableDefault(size = 8) Pageable pageable) {
         Page<ProductDto> productsDto = productService.getAllProductsWithinPriceRangeByPage(minPrice, maxPrice, pageable).map(productMapper::productToProductDto);
         model.addAttribute("products", productsDto);
         return "product_list";
@@ -41,6 +44,5 @@ public class ProductController {
         model.addAttribute("product", productService.getProductById(id).orElse(null));
         return "product_info";
     }
-
 
 }
