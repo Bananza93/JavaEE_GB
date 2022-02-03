@@ -2,11 +2,13 @@ package ru.geekbrains.lesson7.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
 public class CartPosition {
     private Product product;
     private Integer qnt;

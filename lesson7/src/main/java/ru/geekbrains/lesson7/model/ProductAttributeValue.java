@@ -8,30 +8,32 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "users")
-@ToString(onlyExplicitlyIncluded = true)
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "attribute_values")
+public class ProductAttributeValue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
-    @Column
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "attribute_id", referencedColumnName = "id")
+    private ProductAttribute attribute;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
+    @Column
+    private String value;
 }

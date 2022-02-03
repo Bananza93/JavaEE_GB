@@ -39,4 +39,8 @@ public class UserService implements UserDetailsService {
     public List<UserDto> getAllUsersDto() {
         return userRepository.findAll().stream().map(UserMapper::userToUserDto).collect(Collectors.toList());
     }
+
+    public ru.geekbrains.lesson7.model.User getUserByUsername(String username) {
+        return userRepository.findUserByUsername(username).orElse(null);
+    }
 }

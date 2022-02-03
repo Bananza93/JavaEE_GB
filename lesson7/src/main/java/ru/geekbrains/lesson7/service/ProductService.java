@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.repository.ProductRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class ProductService {
     }
 
     public void addProduct(Product product) {
-        productRepository.save(product);
+        productRepository.saveAndFlush(product);
     }
 
     public void deleteProduct(Long id) {
@@ -49,7 +50,10 @@ public class ProductService {
     }
 
     public void editProduct(Long id, Product product) {
-        product.setId(id);
-        productRepository.save(product);
+        Product sourceProduct = productRepository.findById(id).orElseThrow(() -> {throw new EntityNotFoundException();});
+        product.setId(sourceProduct.getId());
+        product.setQuantity(sourceProduct.getQuantity());
+        product.setIsAvailable(sourceProduct.getIsAvailable());
+        productRepository.saveAndFlush(product);
     }
 }

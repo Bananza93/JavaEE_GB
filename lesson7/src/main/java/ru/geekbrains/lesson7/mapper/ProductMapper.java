@@ -18,9 +18,12 @@ public class ProductMapper {
     public Product productDtoToProduct(ProductDto productDto) {
         if (productDto == null) return null;
         Product product = new Product();
-        product.setTitle(productDto.getTitle());
-        product.setPrice(productDto.getPrice());
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.setImageURL(productDto.getImageURL());
         product.setCategory(getCategoryFromCategoryTitle(productDto.getCategory()));
+        product.setPrice(productDto.getPrice());
+        product.setQuantity(productDto.getQuantity());
         return product;
     }
 
@@ -28,13 +31,16 @@ public class ProductMapper {
         if (product == null) return null;
         ProductDto productDto = new ProductDto();
         productDto.setId(product.getId());
-        productDto.setTitle(product.getTitle());
+        productDto.setName(product.getName());
+        productDto.setDescription(product.getDescription());
+        productDto.setImageURL(product.getImageURL());
+        productDto.setCategory(product.getCategory().getName());
         productDto.setPrice(product.getPrice());
-        productDto.setCategory(product.getCategory().getTitle());
+        productDto.setQuantity(product.getQuantity());
         return productDto;
     }
 
-    private Category getCategoryFromCategoryTitle(String title) {
-        return categoryService.getCategoryByTitle(title);
+    private Category getCategoryFromCategoryTitle(String name) {
+        return categoryService.getCategoryByName(name);
     }
 }

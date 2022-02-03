@@ -8,30 +8,25 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.List;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(exclude = "users")
+@AllArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
 @Entity
-@Table(name = "roles")
-public class Role {
+@Table(name = "delivery_methods")
+public class DeliveryMethod {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
 
     @Column
-    private String name;
+    private String code;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
+    @Column
+    private String description;
 }

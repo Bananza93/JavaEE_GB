@@ -26,17 +26,22 @@ public class CartService {
         cart = new Cart();
     }
 
-    public CartDto getCart() {
+    public CartDto getCartDto() {
         return cartMapper.cartToCartDto(cart);
+    }
+
+    public Cart getCart() {
+        return cart;
     }
 
     public CartDto addToCart(Long id, Integer qnt) {
         productService.getProductById(id).ifPresent(product -> cart.addProduct(product, qnt));
-        return cartMapper.cartToCartDto(cart);
+        return getCartDto();
     }
 
     public CartDto removeFromCart(Long id, Integer qnt) {
         cart.removeProduct(id, qnt);
-        return cartMapper.cartToCartDto(cart);
+        return getCartDto();
     }
+
 }

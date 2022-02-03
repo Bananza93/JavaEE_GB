@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="fragments/common-head">
     <title>Product list</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 <nav th:replace="fragments/admin-nav-bar::nav-bar">
@@ -40,13 +39,14 @@
         <tbody>
         <tr th:each="product : ${products}">
             <td th:text="${product.id}"></td>
-            <td th:text="${product.title}"></td>
+            <td th:text="${product.name}"></td>
             <td th:text="${product.price}"></td>
             <td>
                 <div class="btn-group" data-toggle="buttons">
                     <a sec:authorize="isAuthenticated()" th:href="@{${'/admin/products/info/' + product.id}}"
                        class="btn btn-info me-2">Show info</a>
-                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" th:href="@{${'/admin/products/edit/' + product.id}}"
+                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
+                       th:href="@{${'/admin/products/edit/' + product.id}}"
                        class="btn btn-warning me-2">Edit</a>
                     <form sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" method="post"
                           th:action="@{${'/admin/products/delete/' + product.id}}">
@@ -99,7 +99,8 @@
                 <span class="page-link">&raquo;</span>
             </li>
             <li th:unless="${products.isLast()}" class="page-item">
-                <a class="page-link" th:href="@{/admin/products(page=${products.getTotalPages() - 1})}" aria-label="Last">&raquo;</a>
+                <a class="page-link" th:href="@{/admin/products(page=${products.getTotalPages() - 1})}"
+                   aria-label="Last">&raquo;</a>
             </li>
         </ul>
     </nav>
