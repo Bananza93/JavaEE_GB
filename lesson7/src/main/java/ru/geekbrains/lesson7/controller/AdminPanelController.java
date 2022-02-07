@@ -13,6 +13,7 @@ import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.mapper.ProductMapper;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.service.ProductService;
+import ru.geekbrains.lesson7.service.StatisticService;
 import ru.geekbrains.lesson7.service.UserService;
 
 import javax.validation.Valid;
@@ -26,11 +27,13 @@ public class AdminPanelController {
     private final UserService userService;
     private final ProductService productService;
     private final ProductMapper productMapper;
+    private final StatisticService statisticService;
 
-    public AdminPanelController(UserService userService, ProductService productService, ProductMapper productMapper) {
+    public AdminPanelController(UserService userService, ProductService productService, ProductMapper productMapper, StatisticService statisticService) {
         this.userService = userService;
         this.productService = productService;
         this.productMapper = productMapper;
+        this.statisticService = statisticService;
     }
 
     @GetMapping("/users")
@@ -81,5 +84,11 @@ public class AdminPanelController {
     public String getProduct(@PathVariable Long id, Model model) {
         model.addAttribute("product", productService.getProductById(id).orElse(null));
         return "admin/product_info";
+    }
+
+    @GetMapping("/statistic")
+    public String getStatistic(Model model) {
+        model.addAttribute("stat", statisticService.getStatistic());
+        return "/admin/statistic";
     }
 }

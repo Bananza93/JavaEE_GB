@@ -2,6 +2,7 @@ package ru.geekbrains.lesson7.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.geekbrains.lesson7.aspect.TrackExecutionTime;
 import ru.geekbrains.lesson7.dto.UserCheckoutDto;
 import ru.geekbrains.lesson7.mapper.UserMapper;
 import ru.geekbrains.lesson7.model.CartPosition;
@@ -40,6 +41,7 @@ public class OrderService {
         orderStatusCache = statuses.stream().collect(Collectors.toMap(OrderStatus::getCode, Function.identity()));
     }
 
+    @TrackExecutionTime
     @Transactional
     public Order makeOrder(UserCheckoutDto ucd, Principal principal) {
         if (cartService.getCart().getCurrentCart().isEmpty()) {

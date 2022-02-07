@@ -3,6 +3,7 @@ package ru.geekbrains.lesson7.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.geekbrains.lesson7.aspect.TrackExecutionTime;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.repository.ProductRepository;
 
@@ -24,6 +25,7 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    @TrackExecutionTime
     public Page<Product> getAllProductsWithinPriceRangeByPage(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
         if (minPrice.compareTo(Product.MIN_PRICE) < 0 || minPrice.compareTo(Product.MAX_PRICE) > 0)
             minPrice = Product.MIN_PRICE;
@@ -37,18 +39,22 @@ public class ProductService {
         return productRepository.findAllProductsWithinPriceRangeByPage(minPrice, maxPrice, pageable);
     }
 
+    @TrackExecutionTime
     public List<Product> getAllProductsWithPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         return getAllProductsWithinPriceRangeByPage(minPrice, maxPrice, null).toList();
     }
 
+    @TrackExecutionTime
     public void addProduct(Product product) {
         productRepository.saveAndFlush(product);
     }
 
+    @TrackExecutionTime
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
 
+    @TrackExecutionTime
     public void editProduct(Long id, Product product) {
         Product sourceProduct = productRepository.findById(id).orElseThrow(() -> {throw new EntityNotFoundException();});
         product.setId(sourceProduct.getId());
