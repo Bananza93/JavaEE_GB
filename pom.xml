@@ -18,6 +18,9 @@
         <module>lesson7</module>
         <module>lesson9</module>
         <module>lesson16</module>
+        <module>lesson17_DS</module>
+        <module>lesson17_back</module>
+        <module>lesson17_front</module>
     </modules>
 
     <properties>
