@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head">
+    <title>Product list</title>
+</head>
+<body>
+<div class="container">
+    <h1>Available products</h1><br>
+    <div th:if="${response}">
+        <div th:if="${response.statusCode == '400'}" th:text="${response.message}" class="alert alert-danger"></div>
+        <div th:if="${response.statusCode == '200'}" th:text="${response.message}" class="alert alert-success"></div>
+    </div>
+    <table class="table table-hover" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 5%;">
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 20%;">
+        </colgroup>
+
+        <thead class="table-secondary">
+        <tr>
+            <td>ID</td>
+            <td>Name</td>
+            <td>Category</td>
+            <td>Price</td>
+            <td>Quantity</td>
+            <td></td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.category}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.quantity}"></td>
+            <td>
+                <form method="post" th:action="@{${'/products/delete/' + product.id}}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/products/add}" class="btn btn-primary me-2">Add product</a>
+</div>
+</body>
+</html>
