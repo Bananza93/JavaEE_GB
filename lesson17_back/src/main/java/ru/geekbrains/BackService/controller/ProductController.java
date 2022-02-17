@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.geekbrains.BackService.dto.ProductDto;
-import ru.geekbrains.BackService.dto.ResponseDto;
+
 import ru.geekbrains.BackService.mapper.ProductMapper;
 import ru.geekbrains.BackService.service.ProductService;
+import ru.geekbrains.ProductDto;
+import ru.geekbrains.ResponseDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,28 +39,16 @@ public class ProductController {
     @PostMapping("/add")
     public ResponseDto addProduct(@RequestBody ProductDto productDto) {
         ResponseDto responseDto = new ResponseDto();
-        try {
-            productService.addProduct(productMapper.productDtoToProduct(productDto));
-            responseDto.setStatusCode("200");
-            responseDto.setMessage("Product added");
-        } catch (Exception e) {
-            responseDto.setStatusCode("400");
-            responseDto.setMessage("Caught error! " + e.getMessage());
-        }
+        productService.addProduct(productMapper.productDtoToProduct(productDto));
+        responseDto.setMessage("Product added");
         return responseDto;
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseDto deleteProduct(@PathVariable Long id) {
         ResponseDto responseDto = new ResponseDto();
-        try {
-            productService.deleteProduct(id);
-            responseDto.setStatusCode("200");
-            responseDto.setMessage("Product deleted");
-        } catch (Exception e) {
-            responseDto.setStatusCode("400");
-            responseDto.setMessage("Caught error! Message: " + e.getMessage());
-        }
+        productService.deleteProduct(id);
+        responseDto.setMessage("Product deleted");
         return responseDto;
     }
 }

@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
-import ru.geekbrains.FrontService.dto.ProductDto;
+
 import ru.geekbrains.FrontService.feignClient.BackService;
+import ru.geekbrains.FrontService.feignClient.exception.FeignClientException;
+import ru.geekbrains.ProductDto;
+import ru.geekbrains.ResponseDto;
 
 @Controller
 @RequestMapping("/products")
@@ -34,7 +37,12 @@ public class FrontController {
 
     @PostMapping("/add")
     public String addNewProduct(Model model, ProductDto productDto) {
-        model.addAttribute("response", backService.addProduct(productDto));
+        try {
+            ResponseDto responseDto = backService.addProduct(productDto);
+            model.addAttribute("response", responseDto);
+        } catch (FeignClientException e) {
+            model.addAttribute("errorResponse", e);
+        }
         return "new_product_form";
     }
 

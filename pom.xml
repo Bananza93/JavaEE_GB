@@ -21,6 +21,8 @@
         <module>lesson17_DS</module>
         <module>lesson17_back</module>
         <module>lesson17_front</module>
+        <module>lesson17_model_api</module>
+        <module>lesson18_gateway</module>
     </modules>
 
     <properties>

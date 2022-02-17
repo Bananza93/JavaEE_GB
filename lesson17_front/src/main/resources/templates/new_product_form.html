@@ -6,10 +6,8 @@
 <body>
 <div class="container">
     <h1>Adding new product</h1><br>
-    <div th:if="${response}">
-        <div th:if="${response.statusCode == '400'}" th:text="${response.message}" class="alert alert-danger"></div>
-        <div th:if="${response.statusCode == '200'}" th:text="${response.message}" class="alert alert-success"></div>
-    </div>
+    <div th:if="${response}" th:text="${response.message}" class="alert alert-success"></div>
+    <div th:if="${errorResponse}" th:text="${'Status code: ' + errorResponse.getStatus() + ' ' + errorResponse.getErrorMessage()}" class="alert alert-danger"></div>
     <form id="addForm" method="post" th:action="@{/products/add}">
         <div class="mb-3">
             <label for="productName" class="form-label">Title:</label>

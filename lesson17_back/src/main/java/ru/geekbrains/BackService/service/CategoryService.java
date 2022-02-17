@@ -1,8 +1,7 @@
 package ru.geekbrains.BackService.service;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import ru.geekbrains.BackService.exception.CategoryNotFoundException;
 import ru.geekbrains.BackService.model.Category;
 import ru.geekbrains.BackService.repository.CategoryRepository;
 
@@ -16,6 +15,6 @@ public class CategoryService {
 
     public Category getCategoryByName(String name) {
         return categoryRepository.findCategoryByName(name)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Категория " + name + " не найдена"));
+                .orElseThrow(() -> new CategoryNotFoundException(name));
     }
 }

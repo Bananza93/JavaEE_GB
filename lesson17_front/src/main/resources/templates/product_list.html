@@ -7,9 +7,9 @@
 <div class="container">
     <h1>Available products</h1><br>
     <div th:if="${response}">
-        <div th:if="${response.statusCode == '400'}" th:text="${response.message}" class="alert alert-danger"></div>
-        <div th:if="${response.statusCode == '200'}" th:text="${response.message}" class="alert alert-success"></div>
+        <div th:if="${#response.getStatus() == 200}" th:text="${response.message}" class="alert alert-success"></div>
     </div>
+    <!--<div th:if="${#response.getStatus() >= 400}" th:text="${#response.get}" class="alert alert-danger"></div>-->
     <table class="table table-hover" style="width: 100%">
         <colgroup>
             <col span="1" style="width: 5%;">
