@@ -1,7 +1,9 @@
 package ru.geekbrains.BackService.service;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.geekbrains.BackService.exception.ProductAlreadyExistsException;
 import ru.geekbrains.BackService.model.Product;
 import ru.geekbrains.BackService.repository.ProductRepository;
 
@@ -21,8 +23,12 @@ public class ProductService {
     }
 
     @Transactional
-    public void addProduct(Product product) {
-        productRepository.save(product);
+    public void addProduct(Product product)  {
+        try {
+            productRepository.save(product);
+        } catch (DataAccessException e) {
+            throw new ProductAlreadyExistsException(product.getName());
+        }
     }
 
     @Transactional

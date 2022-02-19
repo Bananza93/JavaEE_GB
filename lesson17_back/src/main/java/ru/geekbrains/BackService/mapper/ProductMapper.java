@@ -1,10 +1,10 @@
 package ru.geekbrains.BackService.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.geekbrains.BackService.dto.ProductDto;
 import ru.geekbrains.BackService.model.Category;
 import ru.geekbrains.BackService.model.Product;
 import ru.geekbrains.BackService.service.CategoryService;
+import ru.geekbrains.ProductDto;
 
 @Component
 public class ProductMapper {
