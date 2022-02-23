@@ -15,11 +15,9 @@ import ru.geekbrains.lesson7.service.OrderService;
 public class CartRestController {
 
     private final CartService cartService;
-    private final OrderService orderService;
 
-    public CartRestController(CartService cartService, OrderService orderService) {
+    public CartRestController(CartService cartService) {
         this.cartService = cartService;
-        this.orderService = orderService;
     }
 
     @GetMapping()
