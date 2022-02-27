@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="fragments/common-head">
-    <title th:text="${product.name}"></title>
+<head th:include="fragments/common-head" th:with="currntPage=${product.name}">
 </head>
 <body>
 <div class="mt-5">

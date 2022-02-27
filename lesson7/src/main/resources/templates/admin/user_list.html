@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="fragments/common-head">
-    <title>Product list</title>
+<head th:include="fragments/common-head" th:with="currentPage='Admin - Users list'">
 </head>
 <body>
 <nav th:replace="fragments/admin-nav-bar::nav-bar">

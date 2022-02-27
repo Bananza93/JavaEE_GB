@@ -49,6 +49,6 @@ class OrderServiceTest {
 
         assertNotNull(order.getId());
         assertSame(1, order.getOrderItems().size());
-        assertEquals("notPaid", order.getOrderStatus().getCode());
+        assertEquals("notPaid", order.getOrderStatus().get(0).getCode());
     }
 }

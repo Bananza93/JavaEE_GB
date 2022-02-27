@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:include="fragments/common-head">
-    <title>Main</title>
+<head th:include="fragments/common-head" th:with="currentPage='Main'">
 </head>
 <body>
 <nav th:replace="fragments/nav-bar::nav-bar">
