@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head" th:with="currentPage='Admin - Processed orders list'">
+</head>
+<body>
+<nav th:replace="fragments/admin-nav-bar::nav-bar">
+</nav>
+<div class="mt-5">
+    <div class="d-flex justify-content-end me-5">
+        <form method="post" th:action="@{/logout}">
+            <span th:text="'Logged in as: ' + ${#authentication.getName()}" class="me-2"></span>
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+    </div>
+</div>
+<div class="container">
+    <h2>Orders</h2>
+    <table class="table" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 15%;">
+        </colgroup>
+
+        <thead class="table-secondary">
+        <tr>
+            <td>ID</td>
+            <td>Status</td>
+            <td>Created</td>
+            <td>Last change status</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.getId()}"></td>
+            <td th:text="${statusMap.get(order.getStatusCode()).getDescription()}"></td>
+            <td th:text="${order.getCreatedAt()}"></td>
+            <td th:text="${order.getLastChangeStatusDate()}"></td>
+            <form method="post" th:object="${order}"
+                  th:action="@{${'/admin/orders/' + order.getId() + '/changeStatus'}}">
+                <td>
+                    <select id="status" th:field="*{statusCode}">
+                        <option th:unless="${order.getStatusCode() == 'notPaid'}" th:value="'notPaid'"
+                                th:text="${statusMap.get('notPaid').getDescription()}"></option>
+                        <option th:unless="${order.getStatusCode() == 'created'}" th:value="'created'"
+                                th:text="${statusMap.get('created').getDescription()}"></option>
+                        <option th:unless="${order.getStatusCode() == 'fulfilled'}" th:value="'fulfilled'"
+                                th:text="${statusMap.get('fulfilled').getDescription()}"></option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-primary">Change status</button>
+                </td>
+            </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

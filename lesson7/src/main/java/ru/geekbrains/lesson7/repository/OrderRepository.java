@@ -14,4 +14,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("from OrderStatus os")
     List<OrderStatus> getOrderStatuses();
 
+    @Query("from Order o where o.lastChangeStatusEndDate is null")
+    List<Order> getProcessedOrders();
+
+    void closeCurrentOrderStatus(Long orderId);
+
+    void insertNewOrderStatus(Long orderId, Long orderStatusId);
 }

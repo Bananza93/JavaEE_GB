@@ -41,6 +41,10 @@ public class OrderService {
         orderStatusCache = statuses.stream().collect(Collectors.toMap(OrderStatus::getCode, Function.identity()));
     }
 
+    public Map<String, OrderStatus> getOrderStatusCache() {
+        return orderStatusCache;
+    }
+
     @TrackExecutionTime
     @Transactional
     public Order makeOrder(UserCheckoutDto ucd, Principal principal) {
@@ -65,9 +69,20 @@ public class OrderService {
             items.add(item);
         }
         order.setOrderItems(items);
-        order.setOrderStatus(orderStatusCache.get("notPaid"));
+
+        order.setOrderStatus(List.of(orderStatusCache.get("notPaid")));
         orderRepository.save(order);
         cartService.init();
         return order;
+    }
+
+    public List<Order> getAllProcessedOrders() {
+        return orderRepository.getProcessedOrders();
+    }
+
+    @Transactional
+    public void changeOrderStatus(Long orderId, String newStatusCode) {
+        orderRepository.closeCurrentOrderStatus(orderId);
+        orderRepository.insertNewOrderStatus(orderId, orderStatusCache.get(newStatusCode).getId());
     }
 }

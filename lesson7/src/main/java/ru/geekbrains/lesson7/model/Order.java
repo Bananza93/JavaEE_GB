@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.WhereJoinTable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,8 +20,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
+import javax.persistence.SecondaryTables;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @NoArgsConstructor
@@ -30,7 +33,10 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "orders")
-@SecondaryTable(name = "order_payments", pkJoinColumns = @PrimaryKeyJoinColumn(name = "order_id"))
+@SecondaryTables({
+        @SecondaryTable(name = "order_payments", pkJoinColumns = @PrimaryKeyJoinColumn(name = "order_id")),
+        @SecondaryTable(name = "order_status_histories", pkJoinColumns = @PrimaryKeyJoinColumn(name = "order_id"))
+})
 public class Order {
 
     @Id
@@ -48,13 +54,14 @@ public class Order {
     @Column(name = "price", table = "order_payments", nullable = false)
     private BigDecimal totalPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "order_status_histories",
             joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "status_id", referencedColumnName = "id")
     )
-    private OrderStatus orderStatus;
+    @WhereJoinTable(clause = "end_date is null")
+    private List<OrderStatus> orderStatus;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_pers_data_id", referencedColumnName = "id")
@@ -63,4 +70,13 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "deli_addr_id", referencedColumnName = "id")
     private DeliveryAddress deliveryAddress;
+
+    @Column(name = "created_at", insertable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "start_date", table = "order_status_histories")
+    private LocalDateTime lastChangeStatusStartDate;
+
+    @Column(name = "end_date", table = "order_status_histories")
+    private LocalDateTime lastChangeStatusEndDate;
 }
