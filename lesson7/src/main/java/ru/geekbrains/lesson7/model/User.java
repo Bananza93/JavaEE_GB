@@ -36,7 +36,7 @@ public class User {
     private Long id;
 
     @Column
-    private String username;
+    private String email;
 
     @Column
     private String password;
@@ -45,7 +45,7 @@ public class User {
     private Instant createdTime;
 
     @Column(name = "is_enable")
-    private boolean isEnable;
+    private boolean enabled;
 
     @ManyToMany
     @JoinTable(

@@ -14,7 +14,7 @@ public class UserMapper {
     public static UserDto userToUserDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
-        userDto.setUsername(user.getUsername());
+        userDto.setEmail(user.getEmail());
         userDto.setRoles(user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
         return userDto;
     }
@@ -22,11 +22,11 @@ public class UserMapper {
     public static UserCheckoutDto userToUserCheckoutDto(User user) {
         UserCheckoutDto userCheckoutDto = new UserCheckoutDto();
 
+        userCheckoutDto.setEmail(user.getEmail());
         UserPersonalData upd = user.getPersonalData();
         if (upd != null) {
             userCheckoutDto.setSurname(upd.getSurname());
             userCheckoutDto.setName(upd.getName());
-            userCheckoutDto.setEmail(upd.getEmail());
             userCheckoutDto.setPhoneNumber(upd.getPhoneNumber());
         }
 
@@ -45,6 +45,10 @@ public class UserMapper {
     }
 
     public static User userCheckoutDtoToUser(UserCheckoutDto userCheckoutDto, User user) {
+        if (user.getEmail() == null) {
+            user.setEmail(userCheckoutDto.getEmail());
+        }
+
         if (user.getPersonalData() == null) {
             user.setPersonalData(new UserPersonalData());
         }
@@ -56,7 +60,6 @@ public class UserMapper {
         UserPersonalData upd = user.getPersonalData();
         upd.setSurname(userCheckoutDto.getSurname());
         upd.setName(userCheckoutDto.getName());
-        upd.setEmail(userCheckoutDto.getEmail());
         upd.setPhoneNumber(userCheckoutDto.getPhoneNumber());
 
         DeliveryAddress da = user.getDeliveryAddress();

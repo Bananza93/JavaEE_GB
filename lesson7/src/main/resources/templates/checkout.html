@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:include="fragments/common-head" th:with="currentPage='Checkout'">
 </head>
 <body>
@@ -27,7 +28,7 @@
                                        th:value="${user.surname}">
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6">
+                        <div th:unless="${#authentication.isAuthenticated()}" class="col-lg-6 col-md-6">
                             <div class="mb-3">
                                 <label class="form-label">Email Address<span>*</span></label>
                                 <input type="email" class="form-control" name="email" required="required"
