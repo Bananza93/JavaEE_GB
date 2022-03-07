@@ -41,7 +41,7 @@ public class User {
     @Column
     private String password;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", insertable = false)
     private Instant createdTime;
 
     @Column(name = "is_enable")

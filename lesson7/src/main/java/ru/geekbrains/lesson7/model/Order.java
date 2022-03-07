@@ -48,6 +48,9 @@ public class Order {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @Column(name = "contact_email")
+    private String contactEmail;
+
     @OneToMany(mappedBy = "id.order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 

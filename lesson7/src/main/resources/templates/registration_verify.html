@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head" th:with="currentPage='Registration complete'">
+</head>
+<body>
+
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <div class="row justify-content-center">
+        <h4 th:if="${verify_result.getIsSuccess()}">Registration complete successfully!</h4>
+        <th:block th:if="${!verify_result.getIsSuccess()}">
+            <h4 th:if="${verify_result.getReason() == 'tokenNotFound'}">Token not found.</h4>
+            <h4 th:if="${verify_result.getReason() == 'userAlreadyEnable'}">User already confirmed.</h4>
+            <h4 th:if="${verify_result.getReason() == 'tokenExpired'}">Registration token expired! Please resend a new one by the link below.</h4>
+        </th:block>
+    </div>
+    <div th:if="${verify_result.getIsSuccess()}">
+        <a th:if="${verify_result.getReason() == 'tokenExpired'}" th:href="@{/register/resendToken/__${verify_result.userEmail}__}">Send new token</a>
+    </div>
+    <a th:href="@{'/login'}" class="btn btn-primary">Go to login</a>
+</div>
+</body>
+</html>

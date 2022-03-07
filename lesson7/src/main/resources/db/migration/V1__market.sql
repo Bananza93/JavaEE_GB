@@ -121,6 +121,7 @@ CREATE TABLE orders
 (
     id                BIGSERIAL PRIMARY KEY NOT NULL,
     user_id           bigint,
+    contact_email     varchar,
     user_pers_data_id bigint,
     deli_addr_id      bigint,
     created_at        timestamp(3)          not null DEFAULT now()

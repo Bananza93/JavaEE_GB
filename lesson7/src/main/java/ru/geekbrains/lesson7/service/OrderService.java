@@ -54,8 +54,9 @@ public class OrderService {
         Order order = new Order();
         User user = principal == null ? UserMapper.userCheckoutDtoToUser(ucd)
                 : UserMapper.userCheckoutDtoToUser(ucd, userService.getUserByEmail(principal.getName()));
-        if (user.getEmail() != null) order.setUser(user);
+        if (user.getId() != null) order.setUser(user);
 
+        order.setContactEmail(ucd.getEmail());
         order.setUserPersonalData(user.getPersonalData());
         order.setDeliveryAddress(user.getDeliveryAddress());
 

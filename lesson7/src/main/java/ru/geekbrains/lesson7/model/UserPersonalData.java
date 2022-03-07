@@ -44,9 +44,6 @@ public class UserPersonalData {
     @Column(name = "middle_name")
     private String middleName;
 
-    @Column
-    private String email;
-
     @Column(name = "phone_number")
     private String phoneNumber;
 

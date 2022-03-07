@@ -388,7 +388,7 @@ VALUES ('email_template',
                                                     <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td><a href="http://localhost:8080/register/confirm?token=%s" target="_blank">Verify</a></td>
+                                                            <td><a href="http://localhost:8888/lesson7/register/verify?token=${token}" target="_blank">Verify</a></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

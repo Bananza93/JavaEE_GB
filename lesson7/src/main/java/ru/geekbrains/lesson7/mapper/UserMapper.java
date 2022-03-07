@@ -45,10 +45,6 @@ public class UserMapper {
     }
 
     public static User userCheckoutDtoToUser(UserCheckoutDto userCheckoutDto, User user) {
-        if (user.getEmail() == null) {
-            user.setEmail(userCheckoutDto.getEmail());
-        }
-
         if (user.getPersonalData() == null) {
             user.setPersonalData(new UserPersonalData());
         }
@@ -58,11 +54,13 @@ public class UserMapper {
         }
 
         UserPersonalData upd = user.getPersonalData();
+        if (user.getId() != null) upd.setUser(user);
         upd.setSurname(userCheckoutDto.getSurname());
         upd.setName(userCheckoutDto.getName());
         upd.setPhoneNumber(userCheckoutDto.getPhoneNumber());
 
         DeliveryAddress da = user.getDeliveryAddress();
+        if (user.getId() != null) da.setUser(user);
         da.setPostcode(userCheckoutDto.getPostcode());
         da.setCity(userCheckoutDto.getCity());
         da.setStreet(userCheckoutDto.getStreet());
