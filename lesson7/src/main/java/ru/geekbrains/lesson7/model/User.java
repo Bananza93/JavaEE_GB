@@ -36,16 +36,16 @@ public class User {
     private Long id;
 
     @Column
-    private String username;
+    private String email;
 
     @Column
     private String password;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", insertable = false)
     private Instant createdTime;
 
     @Column(name = "is_enable")
-    private boolean isEnable;
+    private boolean enabled;
 
     @ManyToMany
     @JoinTable(

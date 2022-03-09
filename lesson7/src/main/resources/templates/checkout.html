@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:include="fragments/common-head" th:with="currentPage='Checkout'">
 </head>
 <body>
@@ -15,77 +16,88 @@
                     <div class="row row-cols-4">
                         <div class="col-lg-6 col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">First Name<span>*</span></label>
-                                <input type="text" class="form-control" name="name" required="required"
-                                       th:value="${user.name}">
+                                <label class="form-label">First Name<span>*</span>
+                                    <input type="text" class="form-control" name="name" required="required"
+                                           th:value="${user.name}">
+                                </label>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Last Name<span>*</span></label>
-                                <input type="text" class="form-control" name="surname" required="required"
-                                       th:value="${user.surname}">
+                                <label class="form-label">Last Name<span>*</span>
+                                    <input type="text" class="form-control" name="surname" required="required"
+                                           th:value="${user.surname}">
+                                </label>
+                            </div>
+                        </div>
+                        <div sec:authorize="!isAuthenticated()" class="col-lg-6 col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Email Address<span>*</span>
+                                    <input type="email" class="form-control" name="email" required="required"
+                                           th:value="${user.email}">
+                                </label>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Email Address<span>*</span></label>
-                                <input type="email" class="form-control" name="email" required="required"
-                                       th:value="${user.email}">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label">Phone Number<span>*</span></label>
-                                <input type="tel" class="form-control" name="phoneNumber" required="required"
-                                       th:value="${user.phoneNumber}">
+                                <label class="form-label">Phone Number<span>*</span>
+                                    <input type="tel" class="form-control" name="phoneNumber" required="required"
+                                           th:value="${user.phoneNumber}">
+                                </label>
                             </div>
                         </div>
                         <div>
                             <div class="mb-3">
-                                <label class="form-label">Postal Code<span>*</span></label>
-                                <input type="text" class="form-control" name="postcode" required="required"
-                                       th:value="${user.postcode}">
+                                <label class="form-label">Postal Code<span>*</span>
+                                    <input type="text" class="form-control" name="postcode" required="required"
+                                           th:value="${user.postcode}">
+                                </label>
                             </div>
                         </div>
                         <div class="col col-lg-3 col-md-3">
                             <div class="mb-3">
-                                <label class="form-label">City<span>*</span></label>
-                                <input type="text" class="form-control" name="city" required="required"
-                                       th:value="${user.city}">
+                                <label class="form-label">City<span>*</span>
+                                    <input type="text" class="form-control" name="city" required="required"
+                                           th:value="${user.city}">
+                                </label>
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Street<span>*</span></label>
-                                <input type="text" class="form-control" name="street" required="required"
-                                       th:value="${user.street}">
+                                <label class="form-label">Street<span>*</span>
+                                    <input type="text" class="form-control" name="street" required="required"
+                                           th:value="${user.street}">
+                                </label>
                             </div>
                         </div>
                         <div>
                             <div class="mb-3">
-                                <label class="form-label">Building<span>*</span></label>
-                                <input type="text" class="form-control" name="building" required="required"
-                                       th:value="${user.building}">
+                                <label class="form-label">Building<span>*</span>
+                                    <input type="text" class="form-control" name="building" required="required"
+                                           th:value="${user.building}">
+                                </label>
                             </div>
                         </div>
                         <div>
                             <div class="mb-3">
-                                <label class="form-label">Entrance</label>
-                                <input type="text" class="form-control" name="entrance" th:value="${user.entrance}">
+                                <label class="form-label">Entrance
+                                    <input type="text" class="form-control" name="entrance" th:value="${user.entrance}">
+                                </label>
                             </div>
                         </div>
                         <div>
                             <div class="mb-3">
-                                <label class="form-label">Floor</label>
-                                <input type="text" class="form-control" name="floor" th:value="${user.floor}">
+                                <label class="form-label">Floor
+                                    <input type="text" class="form-control" name="floor" th:value="${user.floor}">
+                                </label>
                             </div>
                         </div>
                         <div>
                             <div class="mb-3">
-                                <label class="form-label">Apartment<span>*</span></label>
-                                <input type="text" class="form-control" name="apartment" required="required"
-                                       th:value="${user.apartment}">
+                                <label class="form-label">Apartment<span>*</span>
+                                    <input type="text" class="form-control" name="apartment" required="required"
+                                           th:value="${user.apartment}">
+                                </label>
                             </div>
                         </div>
                     </div>

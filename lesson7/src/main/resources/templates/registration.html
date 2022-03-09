@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head" th:with="currentPage='Registration'">
+</head>
+<body>
+
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <div class="row justify-content-center">
+        <form method="post" th:action="@{/register}" class="col-md-6">
+            <h2>Registration</h2>
+            <div th:if="${message}" th:text="${message}" class="alert alert-danger"></div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required="required">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required="required" onchange="passwordsValidator()">
+                <br>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm password</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required="required" onchange="passwordsValidator()">
+                <br>
+            </div>
+            <button type="submit" class="btn btn-primary">Confirm</button>
+            <a th:href="@{'/login'}" class="btn btn-secondary">Back</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>

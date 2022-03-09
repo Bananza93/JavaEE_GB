@@ -16,7 +16,7 @@ class UserRepositoryTest {
 
     @Test
     void findUserByNameTest() {
-        User user = userRepository.findUserByUsername("admin").orElse(null);
+        User user = userRepository.findUserByEmail("admin@shop.ru").orElse(null);
         assertNotNull(user);
         assertTrue(user.getRoles().stream().anyMatch(r -> r.getName().equals("ROLE_ADMIN")));
     }

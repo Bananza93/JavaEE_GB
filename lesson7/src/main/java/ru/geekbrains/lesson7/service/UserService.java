@@ -28,10 +28,14 @@ public class UserService implements UserDetailsService {
     @TrackExecutionTime
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUserByUsername(username)
+        return userRepository.findUserByEmail(username)
                 .map(user -> new User(
-                        user.getUsername(),
+                        user.getEmail(),
                         user.getPassword(),
+                        user.isEnabled(),
+                        true,
+                        true,
+                        true,
                         user.getRoles().stream()
                                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                                 .collect(Collectors.toSet())
@@ -44,7 +48,7 @@ public class UserService implements UserDetailsService {
     }
 
     @TrackExecutionTime
-    public ru.geekbrains.lesson7.model.User getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username).orElse(null);
+    public ru.geekbrains.lesson7.model.User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email).orElse(null);
     }
 }

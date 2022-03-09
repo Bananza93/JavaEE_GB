@@ -62,7 +62,7 @@ CREATE TABLE product_price_histories
 CREATE TABLE users
 (
     id         BIGSERIAL PRIMARY KEY NOT NULL,
-    username   varchar UNIQUE        NOT NULL,
+    email      varchar UNIQUE        NOT NULL,
     password   varchar               NOT NULL,
     created_at timestamp(3) DEFAULT now(),
     is_enable  boolean      DEFAULT false
@@ -88,7 +88,6 @@ CREATE TABLE user_personal_data
     surname      varchar,
     name         varchar,
     middle_name  varchar,
-    email        varchar,
     phone_number varchar               NOT NULL,
     birth_date   date
 );
@@ -122,6 +121,7 @@ CREATE TABLE orders
 (
     id                BIGSERIAL PRIMARY KEY NOT NULL,
     user_id           bigint,
+    contact_email     varchar,
     user_pers_data_id bigint,
     deli_addr_id      bigint,
     created_at        timestamp(3)          not null DEFAULT now()
@@ -161,6 +161,13 @@ CREATE TABLE order_status_histories
     status_id  bigint       default 1,
     start_date timestamp(3) DEFAULT now(),
     end_date   timestamp(3)
+);
+
+CREATE TABLE registration_tokens (
+    id bigserial primary key not null,
+    user_id bigint not null,
+    token varchar(128) not null,
+    expired_at timestamp not null
 );
 
 ALTER TABLE products
@@ -205,6 +212,8 @@ ALTER TABLE order_status_histories
     ADD FOREIGN KEY (order_id) REFERENCES orders (id);
 ALTER TABLE order_status_histories
     ADD FOREIGN KEY (status_id) REFERENCES order_statuses (id);
+ALTER TABLE registration_tokens
+    ADD FOREIGN KEY (user_id) REFERENCES users (id);
 
 CREATE UNIQUE INDEX unique_prod_attr_idx ON products_attribute_values (product_id, attr_value_id);
 
@@ -269,10 +278,10 @@ values ('notPaid', 'Awaiting Payment'),
        ('cancelled', 'Cancelled'),
        ('refunded', 'Refunded');
 
-insert into users (username, password, is_enable)
-VALUES ('admin', '$2a$12$ceaV6lsFESjPYbj0sxvMl.1vZ/BKOrzRkY0Iue2Q9B325OWUhWJ2u', true),
-       ('manager', '$2a$12$qGqr6T2/cXdD/HUT9w2KpOpnkhahpNbY/TXLx2YaHa2XgI0cp6zaW', true),
-       ('user', '$2a$12$C4CmyvinB6utYfp7WAZCqe3qrdX5KDyvldbesg8mxH.hqGBk9eCVG', true);
+insert into users (email, password, is_enable)
+VALUES ('admin@shop.ru', '$2a$12$ceaV6lsFESjPYbj0sxvMl.1vZ/BKOrzRkY0Iue2Q9B325OWUhWJ2u', true),
+       ('manager@shop.ru', '$2a$12$qGqr6T2/cXdD/HUT9w2KpOpnkhahpNbY/TXLx2YaHa2XgI0cp6zaW', true),
+       ('user@shop.ru', '$2a$12$C4CmyvinB6utYfp7WAZCqe3qrdX5KDyvldbesg8mxH.hqGBk9eCVG', true);
 
 insert into roles (name)
 values ('ROLE_ADMIN'),
@@ -289,8 +298,8 @@ values ('toStore', 'Доставка до выбранного магазина'
        ('toPost', 'Доставка до пункта выдачи'),
        ('toDoor', 'Доставка курьером по адресу');
 
-insert into user_personal_data (user_id, surname, name, email, phone_number)
-values (1, 'admin_surname', 'admin_name', 'admin@email', 'admin_phone');
+insert into user_personal_data (user_id, surname, name, phone_number)
+values (1, 'admin_surname', 'admin_name', 'admin_phone');
 
 insert into delivery_addresses (user_id, postcode, city, street, building, entrance, floor, apartment)
 values (1, 'admin_post', 'admin_city', 'admin_street', 'admin_build', 'admin_entr', 'admin_floor', 'admin_apt');

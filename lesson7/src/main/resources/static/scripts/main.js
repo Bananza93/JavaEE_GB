@@ -54,3 +54,13 @@ function renderCart(cart) {
     <a href="/lesson7/order" class="btn btn-success w-100"">Оформить заказ</a>`;
     document.getElementById("shoppingCart").innerHTML = cartInnerHtml;
 }
+
+function passwordsValidator() {
+    const password = document.querySelector('input[name=password]');
+    const confirmPassword = document.querySelector('input[name=confirmPassword]');
+    if (confirmPassword.value === password.value) {
+        confirmPassword.setCustomValidity('');
+    } else {
+        confirmPassword.setCustomValidity('Passwords do not match');
+    }
+}
