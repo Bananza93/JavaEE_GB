@@ -4,7 +4,14 @@
 </head>
 <body>
 <nav th:replace="fragments/nav-bar::nav-bar"></nav>
-    <h2>Thank you for your order!</h2>
-    <h4 th:text="'Your order number is: '+${order.id}"></h4>
+<div class="container">
+    <div class="row justify-content-center g-0">
+        <div class="col-6">
+            <h2>Thank you for your order!</h2>
+            <h4 th:text="'Your order number is: '+${order.id}"></h4>
+            <p>Order details was sent to your email.</p>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.lesson7.aspect.TrackExecutionTime;
 import ru.geekbrains.lesson7.dto.UserDto;
 import ru.geekbrains.lesson7.mapper.UserMapper;
+import ru.geekbrains.lesson7.model.AppUser;
 import ru.geekbrains.lesson7.repository.UserRepository;
 
 import java.util.List;
@@ -48,7 +49,15 @@ public class UserService implements UserDetailsService {
     }
 
     @TrackExecutionTime
-    public ru.geekbrains.lesson7.model.User getUserByEmail(String email) {
+    public AppUser getUserByEmail(String email) {
         return userRepository.findUserByEmail(email).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<AppUser> getActiveManagers() {
+        return userRepository.findAllFetchRole().stream()
+                .filter(AppUser::isEnabled)
+                .filter(user -> user.getRoles().stream().anyMatch(role -> role.getName().equals("ROLE_MANAGER")))
+                .collect(Collectors.toList());
     }
 }

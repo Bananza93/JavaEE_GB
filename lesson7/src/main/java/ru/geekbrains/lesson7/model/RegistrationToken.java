@@ -28,7 +28,7 @@ public class RegistrationToken {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private AppUser user;
 
     @Column
     private String token;
@@ -36,7 +36,7 @@ public class RegistrationToken {
     @Column(name = "expired_at")
     private Instant expiredAt;
 
-    public RegistrationToken(User user, String token, Instant expiredAt) {
+    public RegistrationToken(AppUser user, String token, Instant expiredAt) {
         this.user = user;
         this.token = token;
         this.expiredAt = expiredAt;

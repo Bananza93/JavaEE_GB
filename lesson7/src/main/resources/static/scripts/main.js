@@ -51,7 +51,7 @@ function renderCart(cart) {
         <span class="lighter-text">Итог:</span>
         <span class="main-color-text">${cart.sumPrice} ₽</span>
     </div>
-    <a href="/lesson7/order" class="btn btn-success w-100"">Оформить заказ</a>`;
+    <a href="/lesson7/order" class="btn cart-button w-100">Оформить заказ</a>`;
     document.getElementById("shoppingCart").innerHTML = cartInnerHtml;
 }
 

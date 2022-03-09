@@ -4,14 +4,14 @@ import ru.geekbrains.lesson7.dto.UserCheckoutDto;
 import ru.geekbrains.lesson7.dto.UserDto;
 import ru.geekbrains.lesson7.model.DeliveryAddress;
 import ru.geekbrains.lesson7.model.Role;
-import ru.geekbrains.lesson7.model.User;
+import ru.geekbrains.lesson7.model.AppUser;
 import ru.geekbrains.lesson7.model.UserPersonalData;
 
 import java.util.stream.Collectors;
 
 public class UserMapper {
     
-    public static UserDto userToUserDto(User user) {
+    public static UserDto userToUserDto(AppUser user) {
         UserDto userDto = new UserDto();
         userDto.setId(user.getId());
         userDto.setEmail(user.getEmail());
@@ -19,7 +19,7 @@ public class UserMapper {
         return userDto;
     }
 
-    public static UserCheckoutDto userToUserCheckoutDto(User user) {
+    public static UserCheckoutDto userToUserCheckoutDto(AppUser user) {
         UserCheckoutDto userCheckoutDto = new UserCheckoutDto();
 
         userCheckoutDto.setEmail(user.getEmail());
@@ -44,7 +44,7 @@ public class UserMapper {
         return userCheckoutDto;
     }
 
-    public static User userCheckoutDtoToUser(UserCheckoutDto userCheckoutDto, User user) {
+    public static AppUser userCheckoutDtoToUser(UserCheckoutDto userCheckoutDto, AppUser user) {
         if (user.getPersonalData() == null) {
             user.setPersonalData(new UserPersonalData());
         }
@@ -72,7 +72,7 @@ public class UserMapper {
         return user;
     }
 
-    public static User userCheckoutDtoToUser(UserCheckoutDto userCheckoutDto) {
-        return userCheckoutDtoToUser(userCheckoutDto, new User());
+    public static AppUser userCheckoutDtoToUser(UserCheckoutDto userCheckoutDto) {
+        return userCheckoutDtoToUser(userCheckoutDto, new AppUser());
     }
 }

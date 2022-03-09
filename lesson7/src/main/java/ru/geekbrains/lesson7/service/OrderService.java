@@ -10,7 +10,7 @@ import ru.geekbrains.lesson7.model.Order;
 import ru.geekbrains.lesson7.model.OrderItem;
 import ru.geekbrains.lesson7.model.OrderItemId;
 import ru.geekbrains.lesson7.model.OrderStatus;
-import ru.geekbrains.lesson7.model.User;
+import ru.geekbrains.lesson7.model.AppUser;
 import ru.geekbrains.lesson7.repository.OrderRepository;
 
 import javax.annotation.PostConstruct;
@@ -21,18 +21,25 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static ru.geekbrains.lesson7.model.EmailType.*;
+
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
     private final UserService userService;
     private final CartService cartService;
+    private final EmailService emailService;
     private Map<String, OrderStatus> orderStatusCache;
 
-    public OrderService(OrderRepository orderRepository, UserService userService, CartService cartService) {
+    public OrderService(OrderRepository orderRepository,
+                        UserService userService,
+                        CartService cartService,
+                        EmailService emailService) {
         this.orderRepository = orderRepository;
         this.userService = userService;
         this.cartService = cartService;
+        this.emailService = emailService;
     }
 
     @PostConstruct
@@ -52,7 +59,7 @@ public class OrderService {
             throw new IllegalStateException("Cart is empty");
         }
         Order order = new Order();
-        User user = principal == null ? UserMapper.userCheckoutDtoToUser(ucd)
+        AppUser user = principal == null ? UserMapper.userCheckoutDtoToUser(ucd)
                 : UserMapper.userCheckoutDtoToUser(ucd, userService.getUserByEmail(principal.getName()));
         if (user.getId() != null) order.setUser(user);
 
@@ -74,6 +81,13 @@ public class OrderService {
         order.setOrderStatus(List.of(orderStatusCache.get("notPaid")));
         orderRepository.save(order);
         cartService.init();
+
+        String userEmail = principal == null ? order.getContactEmail() : order.getUser().getEmail();
+        List<String> managerEmails = userService.getActiveManagers().stream().map(AppUser::getEmail).collect(Collectors.toList());
+
+        emailService.sendEmail(USER_ORDER_CREATED, Map.of("orderId", order.getId(), "orderPrice", order.getTotalPrice()), List.of(userEmail));
+        emailService.sendEmail(MANAGER_ORDER_CREATED, Map.of("orderId", order.getId(), "orderPrice", order.getTotalPrice()), managerEmails);
+
         return order;
     }
 

@@ -225,27 +225,27 @@ insert into product_categories (name)
 values ('PC Components'),
        ('Peripherals');
 
-insert into products (name, description, category_id)
-values ('PSU', 'PSU Description', 1),
-       ('Motherboard', 'MB Description', 1),
-       ('Memory RAM', 'RAM Description', 1),
-       ('CPU', 'CPU Description', 1),
-       ('Graphic card', 'VGA Description', 1),
-       ('HDD', 'HDD Description', 1),
-       ('SSD', 'SSD Description', 1),
-       ('Sound card', 'Sound Card Description', 1),
-       ('Case', 'Case Description', 1),
-       ('CPU Cooler', 'CPU Cooler Description', 1),
-       ('Fan', 'Fan Description', 1),
-       ('Network Adapter', 'Network Adapter Description', 1),
-       ('Wi-Fi Adapter', 'Wi-Fi Adapter Description', 1),
-       ('Monitor', 'Monitor Description', 2),
-       ('Keyboard', 'Keyboard Description', 2),
-       ('Mouse Adapter', 'Mouse Adapter Description', 2),
-       ('Headphones', 'Headphones Description', 2),
-       ('Wi-Fi Router', 'Wi-Fi Router Description', 2),
-       ('Web Camera', 'Web Camera Description', 2),
-       ('USB Hub', 'USB Hub Description', 2);
+insert into products (name, description, category_id, image)
+values ('PSU', 'PSU Description', 1, '/images/psu.jpg'),
+       ('Motherboard', 'MB Description', 1, '/images/mb.png'),
+       ('Memory RAM', 'RAM Description', 1, '/images/ram.jpg'),
+       ('CPU', 'CPU Description', 1, '/images/cpu.jpg'),
+       ('Graphic card', 'VGA Description', 1, '/images/vga.jpg'),
+       ('HDD', 'HDD Description', 1, '/images/hdd.jpg'),
+       ('SSD', 'SSD Description', 1, '/images/ssd.jpg'),
+       ('Sound card', 'Sound Card Description', 1, '/images/sound_card.jpg'),
+       ('Case', 'Case Description', 1, '/images/case.jpg'),
+       ('CPU Cooler', 'CPU Cooler Description', 1, '/images/cpu_cooler.jpg'),
+       ('Fan', 'Fan Description', 1, '/images/fan.jpg'),
+       ('Network Adapter', 'Network Adapter Description', 1, '/images/network_adapter.jpg'),
+       ('Wi-Fi Adapter', 'Wi-Fi Adapter Description', 1, '/images/wifi_adapter.jpg'),
+       ('Monitor', 'Monitor Description', 2, '/images/monitor.jpg'),
+       ('Keyboard', 'Keyboard Description', 2, '/images/keyboard.jpg'),
+       ('Mouse Adapter', 'Mouse Adapter Description', 2, '/images/mouse.jpg'),
+       ('Headphones', 'Headphones Description', 2, '/images/headphones.jpg'),
+       ('Wi-Fi Router', 'Wi-Fi Router Description', 2, '/images/router.jpg'),
+       ('Web Camera', 'Web Camera Description', 2, '/images/web_camera.jpg'),
+       ('USB Hub', 'USB Hub Description', 2, '/images/usb_hub.jpg');
 
 insert into product_price_histories (product_id, price)
 values (1, 100),
@@ -280,7 +280,8 @@ values ('notPaid', 'Awaiting Payment'),
 
 insert into users (email, password, is_enable)
 VALUES ('admin@shop.ru', '$2a$12$ceaV6lsFESjPYbj0sxvMl.1vZ/BKOrzRkY0Iue2Q9B325OWUhWJ2u', true),
-       ('manager@shop.ru', '$2a$12$qGqr6T2/cXdD/HUT9w2KpOpnkhahpNbY/TXLx2YaHa2XgI0cp6zaW', true),
+       ('manager1@shop.ru', '$2a$12$qGqr6T2/cXdD/HUT9w2KpOpnkhahpNbY/TXLx2YaHa2XgI0cp6zaW', true),
+       ('manager2@shop.ru', '$2a$12$qGqr6T2/cXdD/HUT9w2KpOpnkhahpNbY/TXLx2YaHa2XgI0cp6zaW', true),
        ('user@shop.ru', '$2a$12$C4CmyvinB6utYfp7WAZCqe3qrdX5KDyvldbesg8mxH.hqGBk9eCVG', true);
 
 insert into roles (name)
@@ -291,7 +292,8 @@ values ('ROLE_ADMIN'),
 insert into users_roles
 values (1, 1),
        (2, 2),
-       (3, 3);
+       (3, 2),
+       (4, 3);
 
 insert into delivery_methods (code, description)
 values ('toStore', 'Доставка до выбранного магазина'),
