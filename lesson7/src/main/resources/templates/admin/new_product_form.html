@@ -15,22 +15,31 @@
 </div>
 <div class="container">
     <h1 th:text="#{title.product.form}">Форма добавления товара</h1><br>
-    <form id="addForm" method="post" th:action="@{/admin/products/add}">
+    <form id="addForm" method="post" th:action="@{/admin/products/add}" th:object="${productDto}" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="productName" class="form-label">Title:</label>
-            <input type="text" name="name" class="form-control" id="productName">
+            <input type="text" class="form-control" id="productName" th:field="*{name}" required>
         </div>
         <div class="mb-3">
             <label for="productCategory" class="form-label">Category:</label>
-            <input type="text" name="category" class="form-control" id="productCategory">
+            <input class="form-control" list="categoriesOptions" id="productCategory" placeholder="Выберите категорию"
+                   th:field="*{category}" required>
+            <datalist id="categoriesOptions">
+                <option th:each="category : ${categories}" value="Категория" th:value="${category}">
+            </datalist>
         </div>
         <div class="mb-3">
             <label for="productDescription" class="form-label">Description:</label>
-            <input type="text" name="description" class="form-control" id="productDescription">
+            <input type="text" class="form-control" id="productDescription" th:field="*{description}">
         </div>
         <div class="mb-3">
             <label for="productPrice" class="form-label">Price:</label>
-            <input type="number" name="price" class="form-control" id="productPrice">
+            <input type="number" class="form-control" id="productPrice" th:field="*{price}" required>
+        </div>
+        <div class="mb-3">
+            <label for="productImage" class="form-label">Image:</label>
+            <input type="file" class="form-control" id="productImage" name="image">
+            <br>
         </div>
     </form>
     <div class="btn-group" role="group">

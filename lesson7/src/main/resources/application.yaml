@@ -35,3 +35,4 @@ spring:
           writetimeout: 5000
   flyway:
     placeholder-replacement: false
+location: lesson7\media

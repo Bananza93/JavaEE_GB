@@ -11,15 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.geekbrains.lesson7.dto.OrderDto;
 import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.mapper.OrderMapper;
 import ru.geekbrains.lesson7.mapper.ProductMapper;
 import ru.geekbrains.lesson7.model.Product;
-import ru.geekbrains.lesson7.service.OrderService;
-import ru.geekbrains.lesson7.service.ProductService;
-import ru.geekbrains.lesson7.service.StatisticService;
-import ru.geekbrains.lesson7.service.UserService;
+import ru.geekbrains.lesson7.service.*;
 
 import javax.validation.Valid;
 
@@ -32,20 +30,26 @@ public class AdminPanelController {
 
     private final UserService userService;
     private final ProductService productService;
+    private final CategoryService categoryService;
     private final ProductMapper productMapper;
     private final StatisticService statisticService;
     private final OrderService orderService;
+    private final StorageService storageService;
 
     public AdminPanelController(UserService userService,
                                 ProductService productService,
+                                CategoryService categoryService,
                                 ProductMapper productMapper,
                                 StatisticService statisticService,
-                                OrderService orderService) {
+                                OrderService orderService,
+                                StorageService storageService) {
         this.userService = userService;
         this.productService = productService;
+        this.categoryService = categoryService;
         this.productMapper = productMapper;
         this.statisticService = statisticService;
         this.orderService = orderService;
+        this.storageService = storageService;
     }
 
     @GetMapping("/users")
@@ -64,14 +68,18 @@ public class AdminPanelController {
     }
 
     @GetMapping("/products/add")
-    public String getAddNewProductForm() {
+    public String getAddNewProductForm(Model model) {
+        model.addAttribute("productDto", new ProductDto());
+        model.addAttribute("categories", categoryService.getAllNames());
         return "admin/new_product_form";
     }
 
     @PostMapping("/products/add")
-    public String addNewProduct(@Valid ProductDto productDto) {
+    public String addNewProduct(@Valid ProductDto productDto, @RequestParam MultipartFile image, Model model) {
+        storageService.store(image);
+        productDto.setImageURL("/media/" + image.getOriginalFilename());
         productService.addProduct(productMapper.productDtoToProduct(productDto));
-        return "admin/new_product_form";
+        return getAddNewProductForm(model);
     }
 
     @PostMapping("/products/delete/{id}")
