@@ -33,7 +33,7 @@ public class UserPersonalData {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private AppUser user;
 
     @Column
     private String surname;

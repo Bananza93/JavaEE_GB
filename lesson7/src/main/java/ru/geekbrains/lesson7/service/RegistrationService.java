@@ -4,8 +4,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.lesson7.dto.ConfirmRegistrationDto;
+import ru.geekbrains.lesson7.model.EmailType;
 import ru.geekbrains.lesson7.model.RegistrationToken;
-import ru.geekbrains.lesson7.model.User;
+import ru.geekbrains.lesson7.model.AppUser;
 import ru.geekbrains.lesson7.repository.RegistrationTokenRepository;
 import ru.geekbrains.lesson7.repository.RoleRepository;
 import ru.geekbrains.lesson7.repository.UserRepository;
@@ -13,6 +14,7 @@ import ru.geekbrains.lesson7.repository.UserRepository;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -39,7 +41,7 @@ public class RegistrationService {
 
     @Transactional
     public void signUp(String email, String password) {
-        User user = userRepository.findUserByEmail(email).orElse(null);
+        AppUser user = userRepository.findUserByEmail(email).orElse(null);
         if (user != null) {
             if (!user.isEnabled()) {
                 registrationTokenRepository.annulCurrentUserRegistrationToken(user.getId());
@@ -47,7 +49,7 @@ public class RegistrationService {
                 throw new IllegalStateException("User " + email + " already exists");
             }
         } else {
-            user = new User();
+            user = new AppUser();
             user.setEmail(email);
             user.setPassword(passwordEncoder.encode(password));
             user.setRoles(List.of(roleRepository.findRoleByName("ROLE_USER")));
@@ -57,11 +59,11 @@ public class RegistrationService {
     }
 
     public void resendRegistrationToken(String userEmail) {
-        User user = userRepository.findUserByEmail(userEmail).orElse(null);
+        AppUser user = userRepository.findUserByEmail(userEmail).orElse(null);
         sendConfirmationEmail(createRegistrationToken(user));
     }
 
-    private RegistrationToken createRegistrationToken(User user) {
+    private RegistrationToken createRegistrationToken(AppUser user) {
         String tokenUid = UUID.randomUUID().toString();
         var token = new RegistrationToken(user, tokenUid, Instant.now().plus(15, ChronoUnit.MINUTES));
         registrationTokenRepository.save(token);
@@ -69,7 +71,7 @@ public class RegistrationService {
     }
 
     private void sendConfirmationEmail(RegistrationToken token) {
-        emailService.sendVerificationEmail(token.getUser().getEmail(), token.getToken());
+        emailService.sendEmail(EmailType.USER_REGISTRATION, Map.of("token", token.getToken()), List.of(token.getUser().getEmail()));
     }
 
     @Transactional

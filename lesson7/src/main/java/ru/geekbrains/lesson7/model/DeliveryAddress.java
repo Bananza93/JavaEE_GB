@@ -33,7 +33,7 @@ public class DeliveryAddress {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    private AppUser user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "method_id", referencedColumnName = "id")
