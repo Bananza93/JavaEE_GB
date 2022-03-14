@@ -91,6 +91,14 @@ public class OrderService {
         return order;
     }
 
+    public List<Order> getUserOrders(AppUser user) {
+        return orderRepository.getAllUserOrders(user);
+    }
+
+    public Order getUserOrder(AppUser user, Long orderId) {
+        return orderRepository.getUserOrder(user, orderId);
+    }
+
     public List<Order> getAllProcessedOrders() {
         return orderRepository.getProcessedOrders();
     }

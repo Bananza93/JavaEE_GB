@@ -26,11 +26,16 @@ public class OrderController {
     private final OrderService orderService;
     private final UserService userService;
     private final CartService cartService;
+    private final OrderMapper orderMapper;
 
-    public OrderController(OrderService orderService, UserService userService, CartService cartService) {
+    public OrderController(OrderService orderService,
+                           UserService userService,
+                           CartService cartService,
+                           OrderMapper orderMapper) {
         this.orderService = orderService;
         this.userService = userService;
         this.cartService = cartService;
+        this.orderMapper = orderMapper;
     }
 
     @GetMapping
@@ -46,7 +51,7 @@ public class OrderController {
                                           @ModelAttribute OrderDto order,
                                           final RedirectAttributes attributes) {
         try {
-            order = OrderMapper.orderToOrderDto(orderService.makeOrder(ucd, principal));
+            order = orderMapper.orderToOrderDto(orderService.makeOrder(ucd, principal));
             attributes.addFlashAttribute("order", order);
             return new RedirectView("/order/success", true);
         } catch (IllegalStateException e) {

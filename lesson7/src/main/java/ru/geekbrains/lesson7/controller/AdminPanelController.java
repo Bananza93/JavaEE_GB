@@ -37,6 +37,7 @@ public class AdminPanelController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final ProductMapper productMapper;
+    private final OrderMapper orderMapper;
     private final StatisticService statisticService;
     private final OrderService orderService;
     private final StorageService storageService;
@@ -45,6 +46,7 @@ public class AdminPanelController {
                                 ProductService productService,
                                 CategoryService categoryService,
                                 ProductMapper productMapper,
+                                OrderMapper orderMapper,
                                 StatisticService statisticService,
                                 OrderService orderService,
                                 StorageService storageService) {
@@ -52,6 +54,7 @@ public class AdminPanelController {
         this.productService = productService;
         this.categoryService = categoryService;
         this.productMapper = productMapper;
+        this.orderMapper = orderMapper;
         this.statisticService = statisticService;
         this.orderService = orderService;
         this.storageService = storageService;
@@ -121,7 +124,7 @@ public class AdminPanelController {
     public String getProcessedOrders(@ModelAttribute OrderDto order, BindingResult result, Model model) {
         model.addAttribute("orders", orderService.getAllProcessedOrders()
                 .stream()
-                .map(OrderMapper::orderToOrderDto)
+                .map(orderMapper::orderToOrderDto)
                 .collect(Collectors.toList()));
         model.addAttribute("order", new OrderDto());
         model.addAttribute("statusMap", orderService.getOrderStatusCache());
