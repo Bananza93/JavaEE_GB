@@ -13,6 +13,9 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{'#'}">Contacts</a>
                 </li>
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    <a class="nav-link" th:href="@{'/profile/orders'}">My orders</a>
+                </li>
                 <li sec:authorize="hasRole('ADMIN')" class="nav-item">
                     <a class="nav-link" th:href="@{'/admin/products'}">Admin panel</a>
                 </li>

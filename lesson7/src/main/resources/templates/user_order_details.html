@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head" th:with="currentPage='Order ' + ${order.getId()}">
+</head>
+<body>
+<nav th:replace="fragments/nav-bar::nav-bar"></nav>
+<div class="container">
+    <div class="row justify-content-center g-0">
+        <div class="col">
+            <h2 th:text="'Order №' + ${order.getId()} + ' details'">Order details</h2>
+            <table class="table table-borderless">
+                <tr>
+                    <td>ID</td>
+                    <td th:text="${order.getId()}"></td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td th:text="${order.getCreatedAt()}"></td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td th:text="${order.getTotalPrice()}"></td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td th:text="${order.getDeliveryAddress()}"></td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td th:text="${order.getOrderStatus()}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container">
+    <h2>Products</h2>
+    <table class="table table-hover" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 70%;">
+            <col span="1" style="width: 15%;">
+            <col span="1" style="width: 15%;">
+        </colgroup>
+
+        <tbody>
+        <tr th:each="item : ${order.getItems()}">
+            <td>
+                <a th:text="${item.getProduct().getName()}"
+                   th:href="@{${'/products/info/' + item.getProduct().getId()}}"></a>
+            </td>
+            <td th:text="${item.getQuantity()}"></td>
+            <td th:text="${item.getPrice()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
