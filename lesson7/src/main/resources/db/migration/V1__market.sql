@@ -4,6 +4,7 @@ CREATE TABLE product_categories
 (
     id        BIGSERIAL PRIMARY KEY NOT NULL,
     name      varchar UNIQUE        NOT NULL,
+    image     varchar,
     parent_id bigint
 );
 
@@ -221,9 +222,10 @@ ALTER TABLE products_attribute_values ADD constraint unique_prod_attr UNIQUE (pr
 
 CREATE INDEX prod_attr_values_idx ON products_attribute_values (product_id, attr_value_id);
 
-insert into product_categories (name)
-values ('PC Components'),
-       ('Peripherals');
+insert into product_categories (name, image)
+values ('PC Components', '/media/cat_pc_parts.jpg'),
+       ('Peripherals', '/media/cat_periph.jpg'),
+       ('PC, Notebooks', '/media/cat_pc.jpg');
 
 insert into products (name, description, category_id, image)
 values ('PSU', 'PSU Description', 1, '/media/psu.jpg'),
@@ -245,7 +247,10 @@ values ('PSU', 'PSU Description', 1, '/media/psu.jpg'),
        ('Headphones', 'Headphones Description', 2, '/media/headphones.jpg'),
        ('Wi-Fi Router', 'Wi-Fi Router Description', 2, '/media/router.jpg'),
        ('Web Camera', 'Web Camera Description', 2, '/media/web_camera.jpg'),
-       ('USB Hub', 'USB Hub Description', 2, '/media/usb_hub.jpg');
+       ('USB Hub', 'USB Hub Description', 2, '/media/usb_hub.jpg'),
+       ('PC', 'PC Description', 3, '/media/pc.jpg'),
+       ('Notebook', 'Notebook Description', 3, '/media/notebook.jpg'),
+       ('Monoblock PC', 'Monoblock PC Description', 3, '/media/mono.jpg');
 
 insert into product_price_histories (product_id, price)
 values (1, 100),
@@ -267,7 +272,10 @@ values (1, 100),
        (17, 230),
        (18, 90),
        (19, 60),
-       (20, 25);
+       (20, 25),
+       (21, 1500),
+       (22, 2000),
+       (23, 2500);
 
 insert into order_statuses (code, description)
 values ('notPaid', 'Awaiting Payment'),

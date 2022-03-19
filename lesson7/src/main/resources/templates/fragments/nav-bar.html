@@ -10,8 +10,11 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{'/products'}">Catalog</a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" th:href="@{'/category'}">Categories</a>
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{'#'}">Contacts</a>
+                    <a class="nav-link" th:href="@{'/about'}">About</a>
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
                     <a class="nav-link" th:href="@{'/profile/orders'}">My orders</a>

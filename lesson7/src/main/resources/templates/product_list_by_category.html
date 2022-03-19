@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="fragments/common-head" th:with="currentPage='Products list'"></head>
+<body>
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <h2 th:text="${category.name}">Category name</h2>
+    <div  sec:authorize="isAuthenticated()">
+        <h4 th:text="'Вы вошли как ' +${#authentication.getName()}"></h4>
+    </div>
+    <div class="row">
+        <div th:each="product : ${category.products}" class="col-12 col-sm-6 col-md-3 mb-1">
+            <div class="card shadow h-100">
+                <img class="card-body card-img-top" th:src="@{${product.imageURL}}" src="..." alt="Product info">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">
+                        <a class="link-dark" th:href="@{${'/products/info/' + product.id}}" th:text="${product.name}">Подробнее</a>
+                    </h5>
+                    <p th:text="${product.name}" class="card-text">Category</p>
+                    <p th:text="${product.price}" class="card-text mt-auto">Price</p>
+                </div>
+                <button th:attr="data-product-id=${product.id}" class="cart-button w-100" onclick="onClickAddToCart(this, 1)">
+                    Add to cart
+                </button>
+            </div>
+        </div>
+    </div>
+    <nav aria-label="Products navigation" th:if="${category.products.getTotalPages() &gt; 1}">
+        <ul class="pagination justify-content-center">
+            <li th:if="${category.products.isFirst()}" class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+            <li th:unless="${category.products.isFirst()}" class="page-item">
+                <a class="page-link" th:href="@{/category/__${category.id}__}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <li th:if="${category.products.isFirst()}" class="page-item disabled">
+                <span class="page-link">&lt;</span>
+            </li>
+            <li th:unless="${category.products.isFirst()}" class="page-item">
+                <a th:if="${category.products.getNumber() - 1 == 0}" class="page-link" th:href="@{/category/__${category.id}__}">&lt;</a>
+                <a th:unless="${category.products.getNumber() - 1 == 0}" class="page-link"
+                   th:href="@{/category/__${category.id}__(page=${category.products.getNumber() - 1})}">&lt;</a>
+            </li>
+
+            <th:block th:each="i: ${#numbers.sequence(0, category.products.getTotalPages() - 1)}">
+                <li th:if="${category.products.getNumber() == i}" class="page-item active" aria-current="page">
+                    <span class="page-link" th:text="${i + 1}">0</span>
+                </li>
+                <li th:unless="${category.products.getNumber() == i}" class="page-item">
+                    <a th:if="${i == 0}" class="page-link" th:text="${i + 1}" th:href="@{/category/__${category.id}__}">0</a>
+                    <a th:unless="${i == 0}" class="page-link" th:text="${i + 1}"
+                       th:href="@{/category/__${category.id}__(page=${i})}">0</a>
+                </li>
+            </th:block>
+
+            <li th:if="${category.products.isLast()}" class="page-item disabled">
+                <span class="page-link">&gt;</span>
+            </li>
+            <li th:unless="${category.products.isLast()}" class="page-item">
+                <a class="page-link" th:href="@{/category/__${category.id}__(page=${category.products.getNumber() + 1})}">&gt;</a>
+            </li>
+
+            <li th:if="${category.products.isLast()}" class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+            <li th:unless="${category.products.isLast()}" class="page-item">
+                <a class="page-link" th:href="@{/category/__${category.id}__(page=${category.products.getTotalPages() - 1})}" aria-label="Last">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</body>
+</html>
