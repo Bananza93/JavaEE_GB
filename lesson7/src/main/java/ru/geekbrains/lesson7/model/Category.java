@@ -36,6 +36,9 @@ public class Category {
     @Column
     private String name;
 
+    @Column(name = "image")
+    private String imageURL;
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> product;
 

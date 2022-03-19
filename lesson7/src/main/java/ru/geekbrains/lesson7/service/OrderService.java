@@ -55,7 +55,7 @@ public class OrderService {
     @TrackExecutionTime
     @Transactional
     public Order makeOrder(UserCheckoutDto ucd, Principal principal) {
-        if (cartService.getCart().getCurrentCart().isEmpty()) {
+        if (cartService.getCartForCurrentUser().getCurrentCart().isEmpty()) {
             throw new IllegalStateException("Cart is empty");
         }
         Order order = new Order();
@@ -67,9 +67,9 @@ public class OrderService {
         order.setUserPersonalData(user.getPersonalData());
         order.setDeliveryAddress(user.getDeliveryAddress());
 
-        order.setTotalPrice(cartService.getCart().getSumPrice());
+        order.setTotalPrice(cartService.getCartForCurrentUser().getSumPrice());
         List<OrderItem> items = new ArrayList<>();
-        for(CartPosition cp : cartService.getCart().getCurrentCart().values()) {
+        for(CartPosition cp : cartService.getCartForCurrentUser().getCurrentCart().values()) {
             OrderItem item = new OrderItem();
             item.setId(new OrderItemId(order, cp.getProduct()));
             item.setPrice(cp.getPositionPrice());
@@ -80,7 +80,7 @@ public class OrderService {
 
         order.setOrderStatus(List.of(orderStatusCache.get("notPaid")));
         orderRepository.save(order);
-        cartService.init();
+        cartService.removeCartForCurrentUser();
 
         String userEmail = principal == null ? order.getContactEmail() : order.getUser().getEmail();
         List<String> managerEmails = userService.getActiveManagers().stream().map(AppUser::getEmail).collect(Collectors.toList());

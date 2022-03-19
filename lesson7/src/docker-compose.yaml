@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:80"
+      - "25:25"
+  redis:
+    image: 'bitnami/redis:latest'
+    ports:
+      - "9999:7000"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - REDIS_PORT_NUMBER=7000

@@ -30,7 +30,7 @@ class OrderServiceTest {
     @BeforeEach
     void setUp() {
         cart = new Cart();
-        given(cartService.getCart()).willReturn(cart);
+        given(cartService.getCartForCurrentUser()).willReturn(cart);
     }
 
     @Test
