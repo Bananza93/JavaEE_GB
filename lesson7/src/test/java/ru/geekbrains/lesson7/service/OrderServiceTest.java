@@ -7,7 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.geekbrains.lesson7.dto.UserCheckoutDto;
 import ru.geekbrains.lesson7.model.Cart;
+import ru.geekbrains.lesson7.model.CartPositionProduct;
 import ru.geekbrains.lesson7.model.Order;
+import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.repository.ProductRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,7 +43,8 @@ class OrderServiceTest {
 
     @Test
     void makeOrderTest() {
-        cart.addProduct(productRepository.findById(1L).get(), 2);
+        Product p = productRepository.findById(1L).get();
+        cart.addProduct(new CartPositionProduct(p.getId(), p.getName(), p.getPrice()), 2);
         UserCheckoutDto ucd = new UserCheckoutDto();
         ucd.setPhoneNumber("+77777777777");
 

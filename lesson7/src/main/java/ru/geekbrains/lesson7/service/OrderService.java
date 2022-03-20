@@ -12,6 +12,7 @@ import ru.geekbrains.lesson7.model.OrderItemId;
 import ru.geekbrains.lesson7.model.OrderStatus;
 import ru.geekbrains.lesson7.model.AppUser;
 import ru.geekbrains.lesson7.repository.OrderRepository;
+import ru.geekbrains.lesson7.repository.ProductRepository;
 
 import javax.annotation.PostConstruct;
 import java.security.Principal;
@@ -27,16 +28,19 @@ import static ru.geekbrains.lesson7.model.EmailType.*;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
     private final UserService userService;
     private final CartService cartService;
     private final EmailService emailService;
     private Map<String, OrderStatus> orderStatusCache;
 
     public OrderService(OrderRepository orderRepository,
+                        ProductRepository productRepository,
                         UserService userService,
                         CartService cartService,
                         EmailService emailService) {
         this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
         this.userService = userService;
         this.cartService = cartService;
         this.emailService = emailService;
@@ -71,7 +75,7 @@ public class OrderService {
         List<OrderItem> items = new ArrayList<>();
         for(CartPosition cp : cartService.getCartForCurrentUser().getCurrentCart().values()) {
             OrderItem item = new OrderItem();
-            item.setId(new OrderItemId(order, cp.getProduct()));
+            item.setId(new OrderItemId(order, productRepository.getById(cp.getProduct().getId())));
             item.setPrice(cp.getPositionPrice());
             item.setQuantity(cp.getQnt());
             items.add(item);

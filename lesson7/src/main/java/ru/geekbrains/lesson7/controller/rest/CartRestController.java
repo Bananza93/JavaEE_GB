@@ -10,6 +10,8 @@ import ru.geekbrains.lesson7.dto.CartDto;
 import ru.geekbrains.lesson7.service.CartService;
 import ru.geekbrains.lesson7.service.OrderService;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/cart")
 public class CartRestController {

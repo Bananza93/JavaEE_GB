@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Data
 @ToString(onlyExplicitlyIncluded = true)
-@RedisHash(value = "Cart")
+@RedisHash(value = "Cart", timeToLive = 86400)
 public class Cart {
 
     private String id;
@@ -29,7 +29,7 @@ public class Cart {
         this.id = id;
     }
 
-    public void addProduct(Product product, Integer qnt) {
+    public void addProduct(CartPositionProduct product, Integer qnt) {
         currentCart.merge(product.getId(), new CartPosition(product, qnt), (oldItem, newItem) -> {
             oldItem.increaseQnt(qnt);
             return oldItem;
