@@ -3,6 +3,7 @@ package ru.geekbrains.lesson7.service;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -17,7 +18,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Arrays;
-import java.util.UUID;
 
 @Service
 public class CartService {
@@ -33,43 +33,47 @@ public class CartService {
     }
 
     @TrackExecutionTime
-    public CartDto getCartDto() {
-        return getCartDto(null);
+    private CartDto getCartDto(Cart cart) {
+        return cartMapper.cartToCartDto(cart);
     }
 
     @TrackExecutionTime
-    public CartDto getCartDto(Cart cart) {
-        return cartMapper.cartToCartDto(cart == null ? getCartForCurrentUser() : cart);
+    public CartDto getCartDto(Principal principal, String anonCartUUID) {
+        return getCartDto(getCartForCurrentUser(principal, anonCartUUID));
     }
 
     @TrackExecutionTime
     public Cart getCartForCurrentUser() {
         Principal principal = SecurityContextHolder.getContext().getAuthentication();
-        return getCart(principal);
+        String anonCartUUID = getAnonCartCookieValue();
+        return getCartForCurrentUser(principal, anonCartUUID);
     }
 
-    private Cart getCart(Principal principal) {
-        String anonCartUUID = UUID.randomUUID().toString();//getAnonCartCookieValue();
-        System.out.println("Anon cart cookie = " + anonCartUUID);
+    @TrackExecutionTime
+    @Transactional
+    public Cart getCartForCurrentUser(Principal principal, String anonCartUUID) {
         if (principal instanceof AnonymousAuthenticationToken) {
-            Cart cart = cartRepository.getCartById(anonCartUUID).orElse(new Cart(anonCartUUID));
-            System.out.println("Find cart with size = " + cart.getCurrentCart().size());
-            return cart;
+            return cartRepository.findById(anonCartUUID).orElse(new Cart(anonCartUUID));
         } else {
-            Cart userCart = cartRepository.getCartById(principal.getName()).orElse(new Cart(principal.getName()));
+            Cart userCart = cartRepository.findById(principal.getName()).orElse(new Cart(principal.getName()));
             if (anonCartUUID != null) {
-                Cart anonCart = cartRepository.getCartById(anonCartUUID).orElse(null);
+                Cart anonCart = cartRepository.findById(anonCartUUID).orElse(null);
                 if (anonCart != null && !anonCart.getCurrentCart().isEmpty()) {
-                    anonCart.getCurrentCart().values().forEach(e -> userCart.addProduct(e.getProduct(), e.getQnt()));
-                    cartRepository.delete(anonCart);
+                    mergeAnonCartToUserCart(userCart, anonCart);
                 }
             }
             return userCart;
         }
     }
 
+    private void mergeAnonCartToUserCart(Cart userCart, Cart anonCart) {
+        anonCart.getCurrentCart().forEach(e -> userCart.addProduct(e.getProduct(), e.getQnt()));
+        cartRepository.save(userCart);
+        cartRepository.delete(anonCart);
+    }
+
     private String getAnonCartCookieValue() {
-        /*RequestAttributes attrs = RequestContextHolder.getRequestAttributes();
+        RequestAttributes attrs = RequestContextHolder.getRequestAttributes();
         if (attrs != null) {
             HttpServletRequest request = ((ServletRequestAttributes) attrs).getRequest();
             Cookie cookie = Arrays.stream(request.getCookies())
@@ -77,20 +81,21 @@ public class CartService {
                     .findFirst()
                     .orElse(null);
             return cookie == null ? null : cookie.getValue();
-        }*/
+        }
         return null;
     }
 
     @TrackExecutionTime
+    @Transactional
     public CartDto addToCart(Long id, Integer qnt) {
         Cart cart = getCartForCurrentUser();
         productService.getProductById(id).ifPresent(product -> cart.addProduct(cartMapper.productToCartPositionProduct(product), qnt));
-        System.out.println("Cart size after adding = " + cart.getCurrentCart().size());
         cartRepository.save(cart);
         return getCartDto(cart);
     }
 
     @TrackExecutionTime
+    @Transactional
     public CartDto removeFromCart(Long id, Integer qnt) {
         Cart cart = getCartForCurrentUser();
         cart.removeProduct(id, qnt);
@@ -99,6 +104,7 @@ public class CartService {
     }
 
     @TrackExecutionTime
+    @Transactional
     public void removeCartForCurrentUser() {
         cartRepository.delete(getCartForCurrentUser());
     }

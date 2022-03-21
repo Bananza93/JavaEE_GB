@@ -1,6 +1,5 @@
 package ru.geekbrains.lesson7.mapper;
 
-
 import org.springframework.stereotype.Component;
 import ru.geekbrains.lesson7.dto.CartDto;
 import ru.geekbrains.lesson7.dto.CartPositionDto;
@@ -15,7 +14,7 @@ public class CartMapper {
         if (cart == null) return null;
         CartDto cartDto = new CartDto();
         cartDto.setProductCount(cart.getProductCount());
-        cartDto.setCurrentCart(cart.getCurrentCart().values().stream().map(this::cartPositionToCartPositionDto).toList());
+        cartDto.setCurrentCart(cart.getCurrentCart().stream().map(this::cartPositionToCartPositionDto).toList());
         cartDto.setSumPrice(cart.getSumPrice());
         return cartDto;
     }

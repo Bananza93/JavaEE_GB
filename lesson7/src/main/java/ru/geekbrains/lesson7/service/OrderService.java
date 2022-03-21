@@ -5,12 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.lesson7.aspect.TrackExecutionTime;
 import ru.geekbrains.lesson7.dto.UserCheckoutDto;
 import ru.geekbrains.lesson7.mapper.UserMapper;
-import ru.geekbrains.lesson7.model.CartPosition;
-import ru.geekbrains.lesson7.model.Order;
-import ru.geekbrains.lesson7.model.OrderItem;
-import ru.geekbrains.lesson7.model.OrderItemId;
-import ru.geekbrains.lesson7.model.OrderStatus;
-import ru.geekbrains.lesson7.model.AppUser;
+import ru.geekbrains.lesson7.model.*;
 import ru.geekbrains.lesson7.repository.OrderRepository;
 import ru.geekbrains.lesson7.repository.ProductRepository;
 
@@ -59,9 +54,12 @@ public class OrderService {
     @TrackExecutionTime
     @Transactional
     public Order makeOrder(UserCheckoutDto ucd, Principal principal) {
-        if (cartService.getCartForCurrentUser().getCurrentCart().isEmpty()) {
+        Cart cart = cartService.getCartForCurrentUser();
+
+        if (cart.getCurrentCart().isEmpty()) {
             throw new IllegalStateException("Cart is empty");
         }
+
         Order order = new Order();
         AppUser user = principal == null ? UserMapper.userCheckoutDtoToUser(ucd)
                 : UserMapper.userCheckoutDtoToUser(ucd, userService.getUserByEmail(principal.getName()));
@@ -70,10 +68,10 @@ public class OrderService {
         order.setContactEmail(ucd.getEmail());
         order.setUserPersonalData(user.getPersonalData());
         order.setDeliveryAddress(user.getDeliveryAddress());
+        order.setTotalPrice(cart.getSumPrice());
 
-        order.setTotalPrice(cartService.getCartForCurrentUser().getSumPrice());
         List<OrderItem> items = new ArrayList<>();
-        for(CartPosition cp : cartService.getCartForCurrentUser().getCurrentCart().values()) {
+        for(CartPosition cp : cart.getCurrentCart()) {
             OrderItem item = new OrderItem();
             item.setId(new OrderItemId(order, productRepository.getById(cp.getProduct().getId())));
             item.setPrice(cp.getPositionPrice());

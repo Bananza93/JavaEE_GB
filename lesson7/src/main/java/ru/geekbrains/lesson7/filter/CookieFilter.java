@@ -27,7 +27,7 @@ public class CookieFilter extends GenericFilterBean {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        //checkCookie(request, response, principal);
+        checkCookie(request, response, principal);
 
         filterChain.doFilter(servletRequest, servletResponse);
     }
@@ -41,17 +41,9 @@ public class CookieFilter extends GenericFilterBean {
         if (principal instanceof AnonymousAuthenticationToken) {
             if (cookie == null) {
                 cookie = new Cookie(ANON_CART_COOKIE_NAME, UUID.randomUUID().toString());
-                cookie.setPath("/");
+                cookie.setPath("/lesson7");
                 cookie.setHttpOnly(true);
                 cookie.setMaxAge(900);
-                response.addCookie(cookie);
-            }
-        } else {
-            if (cookie != null) {
-                cookie = new Cookie(ANON_CART_COOKIE_NAME, cookie.getValue());
-                cookie.setPath("/");
-                cookie.setHttpOnly(true);
-                cookie.setMaxAge(0);
                 response.addCookie(cookie);
             }
         }
