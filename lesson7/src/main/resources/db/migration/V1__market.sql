@@ -125,6 +125,7 @@ CREATE TABLE orders
     contact_email     varchar,
     user_pers_data_id bigint,
     deli_addr_id      bigint,
+    manager_id        bigint,
     created_at        timestamp(3)          not null DEFAULT now()
 );
 
@@ -199,6 +200,8 @@ ALTER TABLE delivery_addresses
     ADD FOREIGN KEY (method_id) REFERENCES delivery_methods (id);
 ALTER TABLE orders
     ADD FOREIGN KEY (user_id) REFERENCES users (id);
+ALTER TABLE orders
+    ADD FOREIGN KEY (manager_id) REFERENCES users (id);
 ALTER TABLE orders
     ADD FOREIGN KEY (user_pers_data_id) REFERENCES user_personal_data (id);
 ALTER TABLE orders

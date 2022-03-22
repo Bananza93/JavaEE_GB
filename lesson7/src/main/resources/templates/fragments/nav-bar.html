@@ -16,8 +16,11 @@
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{'/about'}">About</a>
                 </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item">
+                <li sec:authorize="hasRole('USER')" class="nav-item">
                     <a class="nav-link" th:href="@{'/profile/orders'}">My orders</a>
+                </li>
+                <li sec:authorize="hasRole('MANAGER')" class="nav-item">
+                    <a class="nav-link" th:href="@{'/management/unprocessedOrders'}">Orders management</a>
                 </li>
                 <li sec:authorize="hasRole('ADMIN')" class="nav-item">
                     <a class="nav-link" th:href="@{'/admin/products'}">Admin panel</a>

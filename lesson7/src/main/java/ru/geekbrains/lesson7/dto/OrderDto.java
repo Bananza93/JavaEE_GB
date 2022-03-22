@@ -9,7 +9,8 @@ public class OrderDto {
 
     private Long id;
     private BigDecimal totalPrice;
-    private String statusCode;
+    private OrderStatusDto status;
+    private String managerEmail;
     private String createdAt;
     private String lastChangeStatusDate;
 }

@@ -27,6 +27,7 @@ import ru.geekbrains.lesson7.service.UserService;
 import javax.validation.Valid;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
@@ -133,7 +134,7 @@ public class AdminPanelController {
 
     @PostMapping("/orders/{id}/changeStatus")
     public String changeOrderStatus(@PathVariable Long id, OrderDto dto) {
-        orderService.changeOrderStatus(id, dto.getStatusCode());
+        orderService.changeOrderStatus(id, dto.getStatus().getCode());
         return "redirect:/admin/orders";
     }
 }

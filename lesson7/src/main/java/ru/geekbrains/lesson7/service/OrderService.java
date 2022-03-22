@@ -5,7 +5,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.lesson7.aspect.TrackExecutionTime;
 import ru.geekbrains.lesson7.dto.UserCheckoutDto;
 import ru.geekbrains.lesson7.mapper.UserMapper;
-import ru.geekbrains.lesson7.model.*;
+import ru.geekbrains.lesson7.model.AppUser;
+import ru.geekbrains.lesson7.model.Cart;
+import ru.geekbrains.lesson7.model.CartPosition;
+import ru.geekbrains.lesson7.model.Order;
+import ru.geekbrains.lesson7.model.OrderItem;
+import ru.geekbrains.lesson7.model.OrderItemId;
+import ru.geekbrains.lesson7.model.OrderStatus;
 import ru.geekbrains.lesson7.repository.OrderRepository;
 import ru.geekbrains.lesson7.repository.ProductRepository;
 
@@ -109,5 +115,11 @@ public class OrderService {
     public void changeOrderStatus(Long orderId, String newStatusCode) {
         orderRepository.closeCurrentOrderStatus(orderId);
         orderRepository.insertNewOrderStatus(orderId, orderStatusCache.get(newStatusCode).getId());
+    }
+
+    @Transactional
+    public void changeManager(Order order, AppUser manager) {
+        order.setManager(manager);
+        orderRepository.save(order);
     }
 }

@@ -1,7 +1,5 @@
 package ru.geekbrains.lesson7.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.lesson7.mapper.CategoryMapper;
 import ru.geekbrains.lesson7.model.Category;
 import ru.geekbrains.lesson7.repository.CategoryRepository;
-
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/category")
@@ -33,9 +29,8 @@ public class CategoryController {
         return "categories";
     }
 
-    @GetMapping
-    @RequestMapping("/{id}")
-    public String getAllCategories(@PathVariable Long id, Model model, @PageableDefault(size = 8) Pageable pageable) {
+    @GetMapping("/{id}")
+    public String getProductsByCategory(@PathVariable Long id, Model model, @PageableDefault(size = 8) Pageable pageable) {
         Category category = categoryRepository.findCategoryByIdFetchProducts(id).orElse(new Category());
         model.addAttribute("category", categoryMapper.categoryToCategoryDto(category, pageable));
         return "product_list_by_category";

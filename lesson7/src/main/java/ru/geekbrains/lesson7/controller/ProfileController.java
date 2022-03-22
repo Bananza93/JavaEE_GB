@@ -9,23 +9,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.geekbrains.lesson7.dto.OrderDto;
 import ru.geekbrains.lesson7.mapper.OrderMapper;
-import ru.geekbrains.lesson7.service.OrderService;
 import ru.geekbrains.lesson7.service.ProfileService;
 
 import java.security.Principal;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
 
     private final ProfileService profileService;
-    private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    public ProfileController(ProfileService profileService, OrderService orderService, OrderMapper orderMapper) {
+    public ProfileController(ProfileService profileService, OrderMapper orderMapper) {
         this.profileService = profileService;
-        this.orderService = orderService;
         this.orderMapper = orderMapper;
     }
 
@@ -35,8 +31,7 @@ public class ProfileController {
         model.addAttribute("orders", profileService.getUserOrders(principal)
                 .stream()
                 .map(orderMapper::orderToOrderDto)
-                .collect(Collectors.toList()));
-        model.addAttribute("statusMap", orderService.getOrderStatusCache());
+                .toList());
         return "user_orders";
     }
 
