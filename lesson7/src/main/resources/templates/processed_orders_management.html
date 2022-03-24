@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="fragments/common-head" th:with="currentPage='My orders'">
+<head th:include="fragments/common-head" th:with="currentPage='Management - My processed orders'">
 </head>
 <body>
-<nav th:replace="fragments/nav-bar::nav-bar"></nav>
+<nav th:replace="fragments/manager-nav-bar::nav-bar"></nav>
+<div th:replace="fragments/manager-nav-bar::log-bar"></div>
 <div class="container">
-    <h2>Orders</h2>
+    <h2>My processed orders</h2>
     <table class="table" style="width: 100%">
         <colgroup>
             <col span="1" style="width: 10%;">
@@ -18,8 +19,8 @@
         <thead class="table-secondary">
         <tr>
             <td>ID</td>
-            <td>Created</td>
             <td>Price</td>
+            <td>Created</td>
             <td>Status</td>
             <td></td>
         </tr>
@@ -28,11 +29,11 @@
         <tbody>
         <tr th:each="order : ${orders}">
             <td th:text="${order.getId()}"></td>
-            <td th:text="${order.getCreatedAt()}"></td>
             <td th:text="${order.getTotalPrice()}"></td>
+            <td th:text="${order.getCreatedAt()}"></td>
             <td th:text="${order.getStatus().getDescription()}"></td>
             <td>
-                <a th:href="@{${'/profile/orders/' + order.getId()}}" class="btn btn-info me-2">Show details</a>
+                <a th:href="@{${'/management/order/' + order.getId()}}" class="btn btn-primary">Open</a>
             </td>
         </tr>
         </tbody>

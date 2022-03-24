@@ -10,11 +10,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @ToString(onlyExplicitlyIncluded = true)
 public class CartPosition {
-    private Product product;
+
+    private CartPositionProduct product;
     private Integer qnt;
     private BigDecimal positionPrice;
 
-    public CartPosition(Product product, Integer qnt) {
+    public CartPosition(CartPositionProduct product, Integer qnt) {
         this.product = product;
         this.qnt = qnt;
         calculatePositionPrice();

@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
+import ru.geekbrains.lesson7.filter.CookieFilter;
 import ru.geekbrains.lesson7.service.UserService;
 
 @Configuration
@@ -35,11 +37,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/management/**").hasRole("MANAGER")
                 .antMatchers("/profile/**").fullyAuthenticated()
-            .and()
+                .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/")
-            .and()
-                .logout().logoutSuccessUrl("/");
+                .and()
+                .logout().logoutSuccessUrl("/")
+                .and()
+                .addFilterAfter(new CookieFilter(), SwitchUserFilter.class);
 
         http.csrf().disable().headers().frameOptions().disable();
     }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.geekbrains.lesson7.dto.OrderDetailsDto;
 import ru.geekbrains.lesson7.dto.OrderDto;
 import ru.geekbrains.lesson7.dto.OrderItemDto;
+import ru.geekbrains.lesson7.dto.OrderStatusDto;
 import ru.geekbrains.lesson7.model.DeliveryAddress;
 import ru.geekbrains.lesson7.model.Order;
 import ru.geekbrains.lesson7.model.OrderItem;
@@ -24,7 +25,8 @@ public class OrderMapper {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());
         orderDto.setTotalPrice(order.getTotalPrice());
-        orderDto.setStatusCode(order.getOrderStatus().get(0).getCode());
+        orderDto.setStatus(new OrderStatusDto(order.getOrderStatus().get(0).getCode(), order.getOrderStatus().get(0).getDescription()));
+        orderDto.setManagerEmail(order.getManager() == null ? null : order.getManager().getEmail());
         orderDto.setCreatedAt(order.getCreatedAt() == null ? null : order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")));
         orderDto.setLastChangeStatusDate(order.getLastChangeStatusStartDate() == null ? null : order.getLastChangeStatusStartDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")));
         return orderDto;
@@ -34,7 +36,8 @@ public class OrderMapper {
         OrderDetailsDto dto = new OrderDetailsDto();
         dto.setId(order.getId());
         dto.setItems(order.getOrderItems().stream().map(this::orderItemToOrderItemDto).collect(Collectors.toList()));
-        dto.setOrderStatus(order.getOrderStatus().get(0).getDescription());
+        dto.setStatus(new OrderStatusDto(order.getOrderStatus().get(0).getCode(), order.getOrderStatus().get(0).getDescription()));
+        dto.setManagerEmail(order.getManager() == null ? null : order.getManager().getEmail());
         dto.setTotalPrice(order.getTotalPrice());
         dto.setCreatedAt(order.getCreatedAt() == null ? null : order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")));
         dto.setDeliveryAddress(deliveryAddressToString(order.getDeliveryAddress()));

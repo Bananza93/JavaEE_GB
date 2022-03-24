@@ -40,7 +40,7 @@ public class OrderController {
 
     @GetMapping
     public String getCheckoutForm(Model model, Principal principal) {
-        model.addAttribute("orderPrice", cartService.getCartDto().getSumPrice());
+        model.addAttribute("orderPrice", cartService.getCartDto(principal, null).getSumPrice());
         model.addAttribute("user", UserMapper.userToUserCheckoutDto(principal == null ? new AppUser() : userService.getUserByEmail(principal.getName())));
         return "checkout";
     }

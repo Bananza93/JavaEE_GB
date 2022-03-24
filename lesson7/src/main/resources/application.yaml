@@ -35,4 +35,7 @@ spring:
           writetimeout: 5000
   flyway:
     placeholder-replacement: false
+  main:
+    allow-bean-definition-overriding: true
+
 location: lesson7\media

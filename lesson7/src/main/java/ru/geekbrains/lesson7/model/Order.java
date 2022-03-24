@@ -82,4 +82,8 @@ public class Order {
 
     @Column(name = "end_date", table = "order_status_histories")
     private LocalDateTime lastChangeStatusEndDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "manager_id", referencedColumnName = "id")
+    private AppUser manager;
 }

@@ -23,7 +23,7 @@ class CartRestControllerTest {
 
         CartService cartService = mock(CartService.class);
 
-        when(cartService.getCartDto()).thenReturn(cartDto1);
+        when(cartService.getCartDto(null, null)).thenReturn(cartDto1);
         when(cartService.addToCart(1L, 2)).thenReturn(cartDto2);
         when(cartService.removeFromCart(1L, 2)).thenReturn(cartDto1);
 
@@ -32,7 +32,7 @@ class CartRestControllerTest {
 
     @Test
     void getCart() {
-        CartDto cart = controller.getCart();
+        CartDto cart = controller.getCart(null).getBody();
         assertSame(cartDto1, cart);
     }
 

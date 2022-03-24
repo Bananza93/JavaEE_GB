@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head" th:with="currentPage='Management - Unprocessed orders'">
+</head>
+<body>
+<nav th:replace="fragments/manager-nav-bar::nav-bar"></nav>
+<div th:replace="fragments/manager-nav-bar::log-bar"></div>
+<div class="container">
+    <h2>Unprocessed orders</h2>
+    <div th:if="${alreadySubmit}" th:text="${alreadySubmit.getMessage()}" class="alert alert-danger"></div>
+    <table class="table" style="width: 100%">
+        <colgroup>
+            <col span="1" style="width: 10%;">
+            <col span="1" style="width: 30%;">
+            <col span="1" style="width: 20%;">
+            <col span="1" style="width: 40%;">
+        </colgroup>
+
+        <thead class="table-secondary">
+        <tr>
+            <td>ID</td>
+            <td>Price</td>
+            <td>Created</td>
+            <td></td>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.getId()}"></td>
+            <td th:text="${order.getTotalPrice()}"></td>
+            <td th:text="${order.getCreatedAt()}"></td>
+            <form method="post" th:action="@{/management/unprocessedOrders/__${order.getId()}__/submit}">
+                <td>
+                    <button type="submit" class="btn btn-primary">Submit order</button>
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

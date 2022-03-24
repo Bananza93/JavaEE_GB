@@ -39,18 +39,18 @@
         <tbody>
         <tr th:each="order : ${orders}">
             <td th:text="${order.getId()}"></td>
-            <td th:text="${statusMap.get(order.getStatusCode()).getDescription()}"></td>
+            <td th:text="${order.getStatus().getDescription()}"></td>
             <td th:text="${order.getCreatedAt()}"></td>
             <td th:text="${order.getLastChangeStatusDate()}"></td>
             <form method="post" th:object="${order}"
                   th:action="@{${'/admin/orders/' + order.getId() + '/changeStatus'}}">
                 <td>
-                    <select id="status" th:field="*{statusCode}">
-                        <option th:unless="${order.getStatusCode() == 'notPaid'}" th:value="'notPaid'"
+                    <select id="status" th:field="*{status.code}">
+                        <option th:unless="${order.getStatus().getCode() == 'notPaid'}" th:value="'notPaid'"
                                 th:text="${statusMap.get('notPaid').getDescription()}"></option>
-                        <option th:unless="${order.getStatusCode() == 'created'}" th:value="'created'"
+                        <option th:unless="${order.getStatus().getCode() == 'created'}" th:value="'created'"
                                 th:text="${statusMap.get('created').getDescription()}"></option>
-                        <option th:unless="${order.getStatusCode() == 'fulfilled'}" th:value="'fulfilled'"
+                        <option th:unless="${order.getStatus().getCode() == 'fulfilled'}" th:value="'fulfilled'"
                                 th:text="${statusMap.get('fulfilled').getDescription()}"></option>
                     </select>
                 </td>

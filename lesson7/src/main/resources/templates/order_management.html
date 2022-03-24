@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="fragments/common-head" th:with="currentPage='Order ' + ${order.getId()}">
+<head th:include="fragments/common-head" th:with="currentPage='Management - Order №' + ${order.getId()}">
 </head>
 <body>
-<nav th:replace="fragments/nav-bar::nav-bar"></nav>
+<nav th:replace="fragments/manager-nav-bar::nav-bar"></nav>
+<div th:replace="fragments/manager-nav-bar::log-bar"></div>
 <div class="container">
     <div class="row justify-content-center g-0">
         <div class="col">
@@ -53,6 +54,19 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div class="container">
+    <form method="post" th:object="${order}" th:action="@{/management/order/__${order.getId()}__/changeStatus}">
+        <select id="status" th:field="*{status.code}">
+            <option th:unless="${order.getStatus().getCode() == 'notPaid'}" th:value="'notPaid'"
+                    th:text="${statusMap.get('notPaid').getDescription()}"></option>
+            <option th:unless="${order.getStatus().getCode() == 'created'}" th:value="'created'"
+                    th:text="${statusMap.get('created').getDescription()}"></option>
+            <option th:unless="${order.getStatus().getCode() == 'fulfilled'}" th:value="'fulfilled'"
+                    th:text="${statusMap.get('fulfilled').getDescription()}"></option>
+        </select>
+        <button type="submit" class="btn btn-primary">Change status</button>
+    </form>
 </div>
 </body>
 </html>
