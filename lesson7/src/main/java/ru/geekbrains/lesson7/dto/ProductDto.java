@@ -9,6 +9,7 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class ProductDto {
@@ -33,5 +34,9 @@ public class ProductDto {
     @DecimalMax(value = Product.STR_MAX_PRICE, message = "{validation.Product.PriceMax.message}")
     @Digits(integer = 7, fraction = 2, message = "{validation.Product.PriceDigits.message}")
     private BigDecimal price;
+
+    private Boolean isAvailable;
+
+    private List<ProductAttributeValueDto> productCharacteristics;
 
 }
