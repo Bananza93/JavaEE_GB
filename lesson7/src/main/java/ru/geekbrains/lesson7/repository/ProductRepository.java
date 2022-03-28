@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.model.ProductAttribute;
@@ -26,4 +27,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("FROM ProductAttribute pa")
     List<ProductAttribute> getAllProductAttributes();
+
+    @Query("FROM Product p LEFT JOIN FETCH p.category WHERE p.id IN :productsId")
+    List<Product> getProductsById(@Param("productsId") List<Long> productsId);
 }

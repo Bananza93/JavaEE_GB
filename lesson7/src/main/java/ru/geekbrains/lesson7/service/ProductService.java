@@ -8,6 +8,7 @@ import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.model.ProductAttributeValue;
 import ru.geekbrains.lesson7.repository.ProductRepository;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,9 +19,17 @@ import java.util.Optional;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductSearchService productSearchService;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, ProductSearchService productSearchService) {
         this.productRepository = productRepository;
+        this.productSearchService = productSearchService;
+    }
+
+    @PostConstruct
+    void indexingAllProductsForSearch() {
+        var products = productRepository.findAll();
+        productSearchService.indexProducts(products);
     }
 
     public Optional<Product> getProductById(Long id) {
@@ -48,12 +57,14 @@ public class ProductService {
 
     @TrackExecutionTime
     public void addProduct(Product product) {
-        productRepository.saveAndFlush(product);
+        productRepository.save(product);
+        productSearchService.indexProduct(product);
     }
 
     @TrackExecutionTime
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
+        productSearchService.deleteProduct(id);
     }
 
     @TrackExecutionTime
@@ -62,6 +73,7 @@ public class ProductService {
             throw new EntityNotFoundException();
         });
         productRepository.save(product);
+        productSearchService.indexProduct(product);
     }
 
     public Product joinFullCharacteristicListToProduct(Product product) {
