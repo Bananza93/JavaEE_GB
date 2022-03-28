@@ -34,15 +34,15 @@ CREATE TABLE attributes
 CREATE TABLE attributes_categories
 (
     attribute_id bigint NOT NULL,
-    category_id bigint NOT NULL
+    category_id  bigint NOT NULL
 );
 
 -- Перечень значений характеристик для конкретного товара
 CREATE TABLE attribute_values
 (
     id           BIGSERIAL PRIMARY KEY NOT NULL,
-    attribute_id bigint NOT NULL,
-    value        varchar NOT NULL
+    attribute_id bigint                NOT NULL,
+    value        varchar               NOT NULL
 );
 
 CREATE TABLE products_attribute_values
@@ -132,9 +132,9 @@ CREATE TABLE orders
 -- Перечень позиций заказа и их стоимоть
 CREATE TABLE order_items
 (
-    order_id   bigint        not null,
-    product_id bigint        not null,
-    quantity   integer       NOT NULL,
+    order_id   bigint         not null,
+    product_id bigint         not null,
+    quantity   integer        NOT NULL,
     price      decimal(12, 2) NOT NULL
 );
 
@@ -142,7 +142,7 @@ CREATE TABLE order_items
 -- Method: PayPal, карта и т.д.
 CREATE TABLE order_payments
 (
-    order_id    bigint        not null,
+    order_id    bigint         not null,
     tx_id       varchar,
     method      varchar,
     price       decimal(12, 2) NOT NULL,
@@ -165,11 +165,12 @@ CREATE TABLE order_status_histories
     end_date   timestamp(3)
 );
 
-CREATE TABLE registration_tokens (
-    id bigserial primary key not null,
-    user_id bigint not null,
-    token varchar(128) not null,
-    expired_at timestamp not null
+CREATE TABLE registration_tokens
+(
+    id         bigserial primary key not null,
+    user_id    bigint                not null,
+    token      varchar(128)          not null,
+    expired_at timestamp             not null
 );
 
 ALTER TABLE products
@@ -221,7 +222,8 @@ ALTER TABLE registration_tokens
 
 CREATE UNIQUE INDEX unique_prod_attr_idx ON products_attribute_values (product_id, attr_value_id);
 
-ALTER TABLE products_attribute_values ADD constraint unique_prod_attr UNIQUE (product_id, attr_value_id);
+ALTER TABLE products_attribute_values
+    ADD constraint unique_prod_attr UNIQUE (product_id, attr_value_id);
 
 CREATE INDEX prod_attr_values_idx ON products_attribute_values (product_id, attr_value_id);
 
@@ -316,3 +318,22 @@ values (1, 'admin_surname', 'admin_name', 'admin_phone');
 
 insert into delivery_addresses (user_id, postcode, city, street, building, entrance, floor, apartment)
 values (1, 'admin_post', 'admin_city', 'admin_street', 'admin_build', 'admin_entr', 'admin_floor', 'admin_apt');
+
+insert into attributes (name)
+VALUES ('Product Dimensions'),
+       ('Item Weight'),
+       ('Colour'),
+       ('Manufacturer'),
+       ('Date First Available');
+
+insert into attribute_values (attribute_id, value) VALUES
+(1, '140 x 140 x 75'),
+(2, '3'),
+(4, 'Super Flower'),
+(5, '27.10.2020');
+
+insert into products_attribute_values (product_id, attr_value_id) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4);

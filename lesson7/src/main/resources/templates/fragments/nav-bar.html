@@ -26,9 +26,9 @@
                     <a class="nav-link" th:href="@{'/admin/products'}">Admin panel</a>
                 </li>
             </ul>
-            <form class="d-flex ms-5">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+            <form class="d-flex ms-5" method="get" th:action="@{/products/search}">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
+                <button type="submit" class="btn btn-outline-success" >Search</button>
             </form>
         </div>
 

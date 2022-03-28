@@ -20,6 +20,12 @@ import java.util.List;
 @Table(name = "attributes")
 public class ProductAttribute {
 
+    public ProductAttribute(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
     @Id
     @Column
     private Long id;

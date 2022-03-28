@@ -99,12 +99,16 @@ public class AdminPanelController {
 
     @GetMapping("/products/edit/{id}")
     public String getEditProductForm(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productMapper.productToProductDto(productService.getProductById(id).orElse(null)));
+        var product = productService.joinFullCharacteristicListToProduct(productService.getProductById(id).orElse(null));
+        model.addAttribute("product", productMapper.productToProductDto(product));
+        model.addAttribute("categories", categoryService.getAllNames());
         return "admin/edit_product_form";
     }
 
     @PostMapping("/products/edit/{id}")
-    public String editProduct(@PathVariable Long id, @Valid ProductDto productDto) {
+    public String editProduct(@PathVariable Long id, @Valid @ModelAttribute ProductDto productDto, @RequestParam MultipartFile image) {
+        storageService.store(image);
+        productDto.setImageURL("/media/" + image.getOriginalFilename());
         productService.editProduct(id, productMapper.productDtoToProduct(productDto));
         return "redirect:/admin/products/info/{id}";
     }

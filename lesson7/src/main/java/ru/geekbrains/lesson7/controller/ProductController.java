@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.mapper.ProductMapper;
 import ru.geekbrains.lesson7.model.Product;
+import ru.geekbrains.lesson7.service.ProductSearchService;
 import ru.geekbrains.lesson7.service.ProductService;
 
 
@@ -22,10 +23,12 @@ import java.math.BigDecimal;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductSearchService productSearchService;
     private final ProductMapper productMapper;
 
-    public ProductController(ProductService productService, ProductMapper productMapper) {
+    public ProductController(ProductService productService, ProductSearchService productSearchService, ProductMapper productMapper) {
         this.productService = productService;
+        this.productSearchService = productSearchService;
         this.productMapper = productMapper;
     }
 
@@ -45,4 +48,10 @@ public class ProductController {
         return "product_info";
     }
 
+    @GetMapping("/search")
+    public String getSearchProductsResult(@RequestParam(defaultValue = "") String search, Model model) {
+        model.addAttribute("products", productSearchService.searchProducts(search).stream().map(productMapper::productToProductDto).toList());
+        model.addAttribute("searchString", search);
+        return "search_products_result";
+    }
 }

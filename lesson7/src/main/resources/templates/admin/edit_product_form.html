@@ -12,23 +12,82 @@
     </div>
 </div>
 <div class="container">
-    <h1 th:text="'Editing: ' + ${product.name}"></h1><br>
-    <form id="editForm" th:action="@{/admin/products/edit/__${product.id}__}" method="post">
+    <h2 th:text="'Editing: ' + ${product.getName()}"></h2><br>
+    <form id="editForm" th:action="@{/admin/products/edit/__${product.id}__}" method="post" th:object="${product}" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="productName" class="form-label">Title:</label>
-            <input type="text" name="name" class="form-control" id="productName" th:value="${product.name}">
+            <input type="text" name="name" class="form-control" id="productName" th:value="*{name}">
         </div>
         <div class="mb-3">
             <label for="productCategory" class="form-label">Category:</label>
-            <input type="text" name="category" class="form-control" id="productCategory" th:value="${product.category}">
+            <input class="form-control" list="categoriesOptions" id="productCategory" placeholder="Выберите категорию"
+                   th:field="*{category}" th:default="*{category}" required>
+            <datalist id="categoriesOptions">
+                <option th:each="category : ${categories}" value="Категория" th:value="${category}">
+            </datalist>
         </div>
         <div class="mb-3">
             <label for="productDescription" class="form-label">Description:</label>
-            <input type="text" name="description" class="form-control" id="productDescription" th:value="${product.description}">
+            <input type="text" name="description" class="form-control" id="productDescription"
+                   th:value="*{description}">
+        </div>
+        <div class="mb-3">
+            <label for="productImage" class="form-label">Image:</label>
+            <p th:text="'Current image: ' + *{imageURL.replace('/media/', '')}"></p>
+            <input type="file" class="form-control" id="productImage" name="image">
         </div>
         <div class="mb-3">
             <label for="productPrice" class="form-label">Price:</label>
-            <input type="number" name="price" class="form-control" id="productPrice" th:value="${product.price}">
+            <input type="number" name="price" class="form-control" id="productPrice" th:value="*{price}" th:default="0">
+        </div>
+        <div class="mb-3">
+            <label for="productQnt" class="form-label">Quantity:</label>
+            <input type="number" name="quantity" class="form-control" id="productQnt" th:value="*{quantity}"
+                   th:default="0">
+        </div>
+        <div class="form-check">
+            <label for="productAvailability" class="form-label">Product available</label>
+            <input type="checkbox" name="isAvailable" class="form-check-input" id="productAvailability"
+                   th:field="*{isAvailable}" th:value="*{isAvailable}">
+        </div>
+        <div class="mb-3">
+            <h2>Characteristics:</h2>
+            <table class="table table-hover" style="width: 50%">
+                <colgroup>
+                    <col span="1" style="width: 0;">
+                    <col span="1" style="width: 50%;">
+                    <col span="1" style="width: 0;">
+                    <col span="1" style="width: 50%;">
+                </colgroup>
+
+                <tbody>
+                <tr th:each="char, stat : ${product.productCharacteristics}">
+                    <td>
+                        <input hidden
+                               th:name="|productCharacteristics[${stat.index}].attribute.id|"
+                               th:value="${char.getAttribute().getId()}"/>
+                    </td>
+                    <td>
+                        <input type="text"
+                               readonly="readonly"
+                               class="form-control"
+                               th:name="|productCharacteristics[${stat.index}].attribute.name|"
+                               th:value="${char.getAttribute().getName()}"/>
+                    </td>
+                    <td>
+                        <input hidden
+                               th:name="|productCharacteristics[${stat.index}].id|"
+                               th:value="${char.id}"/>
+                    </td>
+                    <td>
+                        <input type="text"
+                               class="form-control"
+                               th:name="|productCharacteristics[${stat.index}].value|"
+                               th:value="${char.value}"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </form>
     <div class="btn-group" role="group">
