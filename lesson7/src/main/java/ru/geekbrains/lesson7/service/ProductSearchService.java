@@ -88,7 +88,9 @@ public class ProductSearchService {
                 .build();
         try {
             CreateIndexResponse response = client.indices().create(createIndexRequest);
-            if (Boolean.TRUE.equals(response.acknowledged())) return true;
+            if (Boolean.TRUE.equals(response.acknowledged())) {
+                return true;
+            }
         } catch (IOException e) {
             LOGGER.error("Create index failure: cause = " + e.getCause() + ", message = " + e.getMessage(), e);
         }
@@ -132,7 +134,10 @@ public class ProductSearchService {
     }
 
     public void deleteProduct(Long id) {
-        DeleteRequest request = new DeleteRequest.Builder().index(INDEX_NAME).id(id.toString()).build();
+        DeleteRequest request = new DeleteRequest.Builder()
+                .index(INDEX_NAME)
+                .id(id.toString())
+                .build();
         try {
             client.delete(request);
         } catch (IOException e) {
