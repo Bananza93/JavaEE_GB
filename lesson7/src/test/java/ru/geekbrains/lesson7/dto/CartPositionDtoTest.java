@@ -19,11 +19,12 @@ class CartPositionDtoTest {
 
     @Test
     void toJsonTest() throws IOException {
-        CartPositionDto dto = new CartPositionDto();
-        dto.setProductId(1L);
-        dto.setTitle("product");
-        dto.setPrice(BigDecimal.valueOf(100.99));
-        dto.setQnt(2);
+        CartPositionDto dto = CartPositionDto.builder()
+                .productId(1L)
+                .title("product")
+                .price(BigDecimal.valueOf(100.99))
+                .qnt(2)
+                .build();
 
         JsonContent<CartPositionDto> positionJson = cartPositionDtoJsonTester.write(dto);
 

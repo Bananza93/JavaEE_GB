@@ -10,11 +10,11 @@ import ru.geekbrains.lesson7.model.Order;
 import ru.geekbrains.lesson7.model.OrderItem;
 
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
 
 @Component
 public class OrderMapper {
 
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm");
     private final ProductMapper productMapper;
 
     public OrderMapper(ProductMapper productMapper) {
@@ -22,34 +22,34 @@ public class OrderMapper {
     }
 
     public OrderDto orderToOrderDto(Order order) {
-        OrderDto orderDto = new OrderDto();
-        orderDto.setId(order.getId());
-        orderDto.setTotalPrice(order.getTotalPrice());
-        orderDto.setStatus(new OrderStatusDto(order.getOrderStatus().get(0).getCode(), order.getOrderStatus().get(0).getDescription()));
-        orderDto.setManagerEmail(order.getManager() == null ? null : order.getManager().getEmail());
-        orderDto.setCreatedAt(order.getCreatedAt() == null ? null : order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")));
-        orderDto.setLastChangeStatusDate(order.getLastChangeStatusStartDate() == null ? null : order.getLastChangeStatusStartDate().format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")));
-        return orderDto;
+        return OrderDto.builder()
+                .id(order.getId())
+                .totalPrice(order.getTotalPrice())
+                .status(new OrderStatusDto(order.getOrderStatus().get(0).getCode(), order.getOrderStatus().get(0).getDescription()))
+                .managerEmail(order.getManager() == null ? null : order.getManager().getEmail())
+                .createdAt(order.getCreatedAt() == null ? null : order.getCreatedAt().format(DATE_TIME_FORMATTER))
+                .lastChangeStatusDate(order.getLastChangeStatusStartDate() == null ? null : order.getLastChangeStatusStartDate().format(DATE_TIME_FORMATTER))
+                .build();
     }
 
     public OrderDetailsDto orderToOrderDetailsDto(Order order) {
-        OrderDetailsDto dto = new OrderDetailsDto();
-        dto.setId(order.getId());
-        dto.setItems(order.getOrderItems().stream().map(this::orderItemToOrderItemDto).collect(Collectors.toList()));
-        dto.setStatus(new OrderStatusDto(order.getOrderStatus().get(0).getCode(), order.getOrderStatus().get(0).getDescription()));
-        dto.setManagerEmail(order.getManager() == null ? null : order.getManager().getEmail());
-        dto.setTotalPrice(order.getTotalPrice());
-        dto.setCreatedAt(order.getCreatedAt() == null ? null : order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd MMMM yyyy HH:mm")));
-        dto.setDeliveryAddress(deliveryAddressToString(order.getDeliveryAddress()));
-        return dto;
+        return OrderDetailsDto.builder()
+                .id(order.getId())
+                .items(order.getOrderItems().stream().map(this::orderItemToOrderItemDto).toList())
+                .status(new OrderStatusDto(order.getOrderStatus().get(0).getCode(), order.getOrderStatus().get(0).getDescription()))
+                .managerEmail(order.getManager() == null ? null : order.getManager().getEmail())
+                .totalPrice(order.getTotalPrice())
+                .createdAt(order.getCreatedAt() == null ? null : order.getCreatedAt().format(DATE_TIME_FORMATTER))
+                .deliveryAddress(deliveryAddressToString(order.getDeliveryAddress()))
+                .build();
     }
 
     private OrderItemDto orderItemToOrderItemDto(OrderItem item) {
-        OrderItemDto dto = new OrderItemDto();
-        dto.setProduct(productMapper.productToProductDto(item.getId().getProduct()));
-        dto.setQuantity(item.getQuantity());
-        dto.setPrice(item.getPrice());
-        return dto;
+        return OrderItemDto.builder()
+                .product(productMapper.productToProductDto(item.getId().getProduct()))
+                .price(item.getPrice())
+                .quantity(item.getQuantity())
+                .build();
     }
 
     private String deliveryAddressToString(DeliveryAddress address) {

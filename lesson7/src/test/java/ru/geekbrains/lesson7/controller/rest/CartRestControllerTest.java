@@ -18,8 +18,8 @@ class CartRestControllerTest {
 
     @BeforeEach
     void setUp() {
-        cartDto1 = new CartDto();
-        cartDto2 = new CartDto();
+        cartDto1 = CartDto.builder().build();
+        cartDto2 = CartDto.builder().build();
 
         CartService cartService = mock(CartService.class);
 

@@ -1,5 +1,6 @@
 package ru.geekbrains.lesson7.dto;
 
+import lombok.Builder;
 import lombok.Data;
 import ru.geekbrains.lesson7.model.Product;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
+@Builder
 public class ProductDto {
 
     private Long id;

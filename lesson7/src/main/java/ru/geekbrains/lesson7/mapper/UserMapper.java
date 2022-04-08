@@ -10,38 +10,43 @@ import ru.geekbrains.lesson7.model.UserPersonalData;
 import java.util.stream.Collectors;
 
 public class UserMapper {
-    
+
     public static UserDto userToUserDto(AppUser user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setEmail(user.getEmail());
-        userDto.setRoles(user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
-        return userDto;
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .roles(user.getRoles().stream()
+                        .map(Role::getName)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     public static UserCheckoutDto userToUserCheckoutDto(AppUser user) {
-        UserCheckoutDto userCheckoutDto = new UserCheckoutDto();
+        UserCheckoutDto.UserCheckoutDtoBuilder userCheckoutDto = UserCheckoutDto.builder();
 
-        userCheckoutDto.setEmail(user.getEmail());
+        userCheckoutDto.email(user.getEmail());
+
         UserPersonalData upd = user.getPersonalData();
         if (upd != null) {
-            userCheckoutDto.setSurname(upd.getSurname());
-            userCheckoutDto.setName(upd.getName());
-            userCheckoutDto.setPhoneNumber(upd.getPhoneNumber());
+            userCheckoutDto
+                    .surname(upd.getSurname())
+                    .name(upd.getName())
+                    .phoneNumber(upd.getPhoneNumber());
         }
 
         DeliveryAddress da = user.getDeliveryAddress();
         if (da != null) {
-            userCheckoutDto.setPostcode(da.getPostcode());
-            userCheckoutDto.setCity(da.getCity());
-            userCheckoutDto.setStreet(da.getStreet());
-            userCheckoutDto.setBuilding(da.getBuilding());
-            userCheckoutDto.setEntrance(da.getEntrance());
-            userCheckoutDto.setFloor(da.getFloor());
-            userCheckoutDto.setApartment(da.getApartment());
+            userCheckoutDto
+                    .postcode(da.getPostcode())
+                    .city(da.getCity())
+                    .street(da.getStreet())
+                    .building(da.getBuilding())
+                    .entrance(da.getEntrance())
+                    .floor(da.getFloor())
+                    .apartment(da.getApartment());
         }
 
-        return userCheckoutDto;
+        return userCheckoutDto.build();
     }
 
     public static AppUser userCheckoutDtoToUser(UserCheckoutDto userCheckoutDto, AppUser user) {

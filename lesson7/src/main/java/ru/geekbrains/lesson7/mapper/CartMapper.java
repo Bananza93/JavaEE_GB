@@ -12,21 +12,21 @@ import ru.geekbrains.lesson7.model.Product;
 public class CartMapper {
     public CartDto cartToCartDto(Cart cart) {
         if (cart == null) return null;
-        CartDto cartDto = new CartDto();
-        cartDto.setProductCount(cart.getProductCount());
-        cartDto.setCurrentCart(cart.getCurrentCart().stream().map(this::cartPositionToCartPositionDto).toList());
-        cartDto.setSumPrice(cart.getSumPrice());
-        return cartDto;
+        return CartDto.builder()
+                .productCount(cart.getProductCount())
+                .currentCart(cart.getCurrentCart().stream().map(this::cartPositionToCartPositionDto).toList())
+                .sumPrice(cart.getSumPrice())
+                .build();
     }
 
     public CartPositionDto cartPositionToCartPositionDto(CartPosition cartPosition) {
         if (cartPosition == null) return null;
-        CartPositionDto cartPositionDto = new CartPositionDto();
-        cartPositionDto.setProductId(cartPosition.getProduct().getId());
-        cartPositionDto.setTitle(cartPosition.getProduct().getName());
-        cartPositionDto.setPrice(cartPosition.getPositionPrice());
-        cartPositionDto.setQnt(cartPosition.getQnt());
-        return cartPositionDto;
+        return CartPositionDto.builder()
+                .productId(cartPosition.getProduct().getId())
+                .title(cartPosition.getProduct().getName())
+                .price(cartPosition.getPositionPrice())
+                .qnt(cartPosition.getQnt())
+                .build();
     }
 
     public CartPositionProduct productToCartPositionProduct(Product product) {

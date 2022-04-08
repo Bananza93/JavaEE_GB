@@ -49,28 +49,27 @@ public class ProductMapper {
 
     public ProductDto productToProductDto(Product product) {
         if (product == null) return null;
-        ProductDto productDto = new ProductDto();
-        productDto.setId(product.getId());
-        productDto.setName(product.getName());
-        productDto.setDescription(product.getDescription());
-        productDto.setImageURL(product.getImageURL());
-        productDto.setCategory(product.getCategory().getName());
-        productDto.setPrice(product.getPrice());
-        productDto.setQuantity(product.getQuantity());
-        productDto.setIsAvailable(product.getIsAvailable());
-        productDto.setProductCharacteristics(product.getProductCharacteristics().stream()
-                .map(e -> new ProductAttributeValueDto(
-                        e.getId(),
-                        new ProductAttributeDto(
-                                e.getAttribute().getId(),
-                                e.getAttribute().getName(),
-                                e.getAttribute().getDescription()
-                        ),
-                        e.getValue()
-                ))
-                .collect(Collectors.toList())
-        );
-        return productDto;
+        return ProductDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .imageURL(product.getImageURL())
+                .category(product.getCategory().getName())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
+                .isAvailable(product.getIsAvailable())
+                .productCharacteristics(product.getProductCharacteristics().stream()
+                        .map(e -> new ProductAttributeValueDto(
+                                e.getId(),
+                                new ProductAttributeDto(
+                                        e.getAttribute().getId(),
+                                        e.getAttribute().getName(),
+                                        e.getAttribute().getDescription()
+                                ),
+                                e.getValue()
+                        ))
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     private Category getCategoryFromCategoryTitle(String name) {
