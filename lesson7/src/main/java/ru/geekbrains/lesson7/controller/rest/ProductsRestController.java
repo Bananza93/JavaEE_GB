@@ -1,5 +1,6 @@
 package ru.geekbrains.lesson7.controller.rest;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +24,8 @@ public class ProductsRestController {
     private final ProductMapper productMapper;
 
 
-    public ProductsRestController(ProductService productService, ProductMapper productMapper) {
+    public ProductsRestController(@Qualifier(value = "productService") ProductService productService,
+                                  ProductMapper productMapper) {
         this.productService = productService;
         this.productMapper = productMapper;
     }

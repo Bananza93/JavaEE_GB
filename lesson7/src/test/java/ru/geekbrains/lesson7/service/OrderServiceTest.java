@@ -37,7 +37,7 @@ class OrderServiceTest {
 
     @Test
     void makeOrderEmptyCartTest() {
-        UserCheckoutDto ucd = new UserCheckoutDto();
+        UserCheckoutDto ucd = UserCheckoutDto.builder().build();
         assertThrows(IllegalStateException.class, () -> orderService.makeOrder(ucd, null));
     }
 
@@ -45,7 +45,7 @@ class OrderServiceTest {
     void makeOrderTest() {
         Product p = productRepository.findById(1L).get();
         cart.addProduct(new CartPositionProduct(p.getId(), p.getName(), p.getPrice()), 2);
-        UserCheckoutDto ucd = new UserCheckoutDto();
+        UserCheckoutDto ucd = UserCheckoutDto.builder().build();
         ucd.setPhoneNumber("+77777777777");
 
         Order order = orderService.makeOrder(ucd, null);

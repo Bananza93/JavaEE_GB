@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.geekbrains.lesson7.mapper.ProductMapper;
 import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.service.ProductService;
+import ru.geekbrains.lesson7.service.ProductServiceImpl;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -40,7 +41,7 @@ class ProductsRestControllerTest {
         productList1 = List.of(product1, product2);
         productList2 = List.of(product3);
 
-        ProductService productService = mock(ProductService.class);
+        ProductService productService = mock(ProductServiceImpl.class);
         ProductMapper productMapper = mock(ProductMapper.class);
 
         when(productService.getProductById(1L)).thenReturn(Optional.of(product1));

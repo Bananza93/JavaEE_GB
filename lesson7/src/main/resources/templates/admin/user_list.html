@@ -33,7 +33,7 @@
         <tbody>
         <tr th:each="user : ${users}">
             <td th:text="${user.id}"></td>
-            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
             <td>
                 <ul class="list-group list-group-flush" th:each="role : ${user.roles}">
                     <li class="list-group-item" th:text="${role}"></li>

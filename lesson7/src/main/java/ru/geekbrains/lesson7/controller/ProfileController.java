@@ -27,7 +27,7 @@ public class ProfileController {
 
     @GetMapping("/orders")
     public String getUserOrdersPage(@ModelAttribute OrderDto order, BindingResult result, Model model, Principal principal) {
-        model.addAttribute("orderDto", new OrderDto());
+        model.addAttribute("orderDto", OrderDto.builder().build());
         model.addAttribute("orders", profileService.getUserOrders(principal)
                 .stream()
                 .map(orderMapper::orderToOrderDto)

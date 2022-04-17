@@ -1,5 +1,6 @@
 package ru.geekbrains.lesson7.controller;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,7 +16,6 @@ import ru.geekbrains.lesson7.model.Product;
 import ru.geekbrains.lesson7.service.ProductSearchService;
 import ru.geekbrains.lesson7.service.ProductService;
 
-
 import java.math.BigDecimal;
 
 @Controller
@@ -26,7 +26,7 @@ public class ProductController {
     private final ProductSearchService productSearchService;
     private final ProductMapper productMapper;
 
-    public ProductController(ProductService productService, ProductSearchService productSearchService, ProductMapper productMapper) {
+    public ProductController(@Qualifier(value = "productServiceWithCache") ProductService productService, ProductSearchService productSearchService, ProductMapper productMapper) {
         this.productService = productService;
         this.productSearchService = productSearchService;
         this.productMapper = productMapper;

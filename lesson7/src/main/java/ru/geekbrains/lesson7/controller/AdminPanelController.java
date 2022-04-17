@@ -1,5 +1,6 @@
 package ru.geekbrains.lesson7.controller;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -17,17 +18,11 @@ import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.mapper.OrderMapper;
 import ru.geekbrains.lesson7.mapper.ProductMapper;
 import ru.geekbrains.lesson7.model.Product;
-import ru.geekbrains.lesson7.service.CategoryService;
-import ru.geekbrains.lesson7.service.OrderService;
-import ru.geekbrains.lesson7.service.ProductService;
-import ru.geekbrains.lesson7.service.StatisticService;
-import ru.geekbrains.lesson7.service.StorageService;
-import ru.geekbrains.lesson7.service.UserService;
+import ru.geekbrains.lesson7.service.*;
 
 import javax.validation.Valid;
 
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.util.stream.Collectors;
 
 @Controller
@@ -44,7 +39,7 @@ public class AdminPanelController {
     private final StorageService storageService;
 
     public AdminPanelController(UserService userService,
-                                ProductService productService,
+                                @Qualifier(value = "productService") ProductService productService,
                                 CategoryService categoryService,
                                 ProductMapper productMapper,
                                 OrderMapper orderMapper,
@@ -78,7 +73,7 @@ public class AdminPanelController {
 
     @GetMapping("/products/add")
     public String getAddNewProductForm(Model model) {
-        model.addAttribute("productDto", new ProductDto());
+        model.addAttribute("productDto", ProductDto.builder().build());
         model.addAttribute("categories", categoryService.getAllNames());
         return "admin/new_product_form";
     }
@@ -131,7 +126,7 @@ public class AdminPanelController {
                 .stream()
                 .map(orderMapper::orderToOrderDto)
                 .collect(Collectors.toList()));
-        model.addAttribute("order", new OrderDto());
+        model.addAttribute("order", OrderDto.builder().build());
         model.addAttribute("statusMap", orderService.getOrderStatusCache());
         return "/admin/processed_orders";
     }

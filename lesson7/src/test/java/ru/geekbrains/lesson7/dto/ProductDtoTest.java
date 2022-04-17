@@ -19,14 +19,15 @@ class ProductDtoTest {
 
     @Test
     void toJsonTest() throws IOException {
-        ProductDto dto = new ProductDto();
-        dto.setId(1L);
-        dto.setName("product");
-        dto.setDescription("product description");
-        dto.setImageURL("https://imghosting.co/product_image.jpg");
-        dto.setCategory("category");
-        dto.setPrice(BigDecimal.valueOf(100.99));
-        dto.setQuantity(2);
+        ProductDto dto = ProductDto.builder()
+                .id(1L)
+                .name("product")
+                .description("product description")
+                .imageURL("https://imghosting.co/product_image.jpg")
+                .category("category")
+                .price(BigDecimal.valueOf(100.99))
+                .quantity(2)
+                .build();
 
         JsonContent<ProductDto> json = productDtoJacksonTester.write(dto);
 
