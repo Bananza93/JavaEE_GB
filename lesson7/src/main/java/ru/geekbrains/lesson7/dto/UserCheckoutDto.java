@@ -1,8 +1,10 @@
 package ru.geekbrains.lesson7.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class UserCheckoutDto {
 
     private String surname;

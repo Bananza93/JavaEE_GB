@@ -20,11 +20,24 @@ class CartDtoTest {
 
     @Test
     void toJsonTest() throws IOException {
-        CartDto dto = new CartDto();
-        dto.setProductCount(6);
-        dto.setSumPrice(BigDecimal.valueOf(400));
-        dto.setCurrentCart(List.of(new CartPositionDto(1L, "product1", BigDecimal.valueOf(100), 2),
-                                   new CartPositionDto(2L, "product2", BigDecimal.valueOf(50), 4)));
+        CartDto dto = CartDto.builder()
+                .productCount(6)
+                .sumPrice(BigDecimal.valueOf(400))
+                .currentCart(List.of(
+                        CartPositionDto.builder()
+                                .productId(1L)
+                                .title("product1")
+                                .price(BigDecimal.valueOf(100))
+                                .qnt(2)
+                                .build(),
+                        CartPositionDto.builder()
+                                .productId(2L)
+                                .title("product2")
+                                .price(BigDecimal.valueOf(50))
+                                .qnt(4)
+                                .build()
+                ))
+                .build();
 
         JsonContent<CartDto> json = cartDtoJson.write(dto);
 
