@@ -18,7 +18,12 @@ import ru.geekbrains.lesson7.dto.ProductDto;
 import ru.geekbrains.lesson7.mapper.OrderMapper;
 import ru.geekbrains.lesson7.mapper.ProductMapper;
 import ru.geekbrains.lesson7.model.Product;
-import ru.geekbrains.lesson7.service.*;
+import ru.geekbrains.lesson7.service.CategoryService;
+import ru.geekbrains.lesson7.service.OrderService;
+import ru.geekbrains.lesson7.service.ProductService;
+import ru.geekbrains.lesson7.service.StatisticService;
+import ru.geekbrains.lesson7.service.StorageService;
+import ru.geekbrains.lesson7.service.UserService;
 
 import javax.validation.Valid;
 
