@@ -1,5 +1,6 @@
 package ru.geekbrains.lesson7.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,9 @@ public class CartService {
     private final ProductService productService;
     private final CartRepository cartRepository;
 
-    public CartService(CartMapper cartMapper, ProductService productService, CartRepository cartRepository) {
+    public CartService(CartMapper cartMapper,
+                       @Qualifier(value = "productServiceWithCache") ProductService productService,
+                       CartRepository cartRepository) {
         this.cartMapper = cartMapper;
         this.productService = productService;
         this.cartRepository = cartRepository;
